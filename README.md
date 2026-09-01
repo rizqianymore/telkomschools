@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Telkom Schools
 
-## Getting Started
+Web aplikasi Next.js dengan dukungan SSR, Tailwind CSS v4, dan Base UI.
 
-First, run the development server:
+## Development
+
+Jalankan server development lokal:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka http://localhost:3000 pada browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment VPS
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Menggunakan Script Deploy
 
-## Learn More
+```bash
+chmod +x deploy/deploy.sh
+./deploy/deploy.sh
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Manual dengan Docker Compose
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Jalankan container aplikasi (port 3000):
+```bash
+docker compose up -d --build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Jalankan dengan Cloudflare Tunnel (isi CLOUDFLARE_TUNNEL_TOKEN di .env):
+```bash
+cp .env.example .env
+docker compose --profile tunnel up -d --build
+```
 
-## Deploy on Vercel
+### 3. Manual dengan PM2
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm install
+npm run build
+pm2 start ecosystem.config.js
+pm2 save
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 4. Nginx Reverse Proxy & Anti-DDoS
+
+Salin konfigurasi Nginx dan sesuaikan domain:
+```bash
+sudo cp deploy/nginx.conf /etc/nginx/sites-available/telkomschools
+sudo ln -s /etc/nginx/sites-available/telkomschools /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+```
