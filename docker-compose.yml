@@ -1,12 +1,29 @@
 services:
+  # Next.js Dynamic App
   app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: telkomschools-app
     restart: always
-    ports:
-      - "3000:3000"
     environment:
       - NODE_ENV=production
       - PORT=3000
+    expose:
+      - "3000"
+    ports:
+      - "127.0.0.1:3000:3000" # Hanya expose ke localhost / tunnel / nginx
+
+  # Cloudflare Tunnel (Opsional: Sangat aman tanpa buka port VPS)
+  # Cara pakai: Isi CLOUDFLARE_TUNNEL_TOKEN di file .env
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: telkomschools-tunnel
+    restart: always
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN:-}
+    depends_on:
+      - app
+    profiles:
+      - tunnel # Jalankan dengan: docker compose --profile tunnel up -d
