@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { cn } from "cn"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,11 +12,13 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
+import { setStoredUser } from "@/lib/auth"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const router = useRouter()
   const [identifier, setIdentifier] = React.useState("")
   const [password, setPassword] = React.useState("")
   const [loading, setLoading] = React.useState(false)
@@ -77,6 +80,15 @@ export function LoginForm({
         setErrorMessage(data.message || "Gagal masuk ke sistem.")
       } else {
         setSuccessMessage(data.message)
+        if (data.user) {
+          setStoredUser(data.user)
+        }
+        const search = typeof window !== "undefined" ? window.location.search : ""
+        const params = new URLSearchParams(search)
+        const redirectUrl = params.get("redirect") || "/"
+        setTimeout(() => {
+          router.push(redirectUrl)
+        }, 700)
       }
     } catch {
       setErrorMessage("Gagal terhubung ke server. Periksa koneksi internet Anda.")

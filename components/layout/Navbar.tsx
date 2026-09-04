@@ -1,7 +1,9 @@
+"use client"
+
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu } from "lucide-react"
+import { Menu, UserCheck, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -11,6 +13,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
+import { getStoredUser, removeStoredUser, AuthUser } from "@/lib/auth"
 
 const navLinks = [
   { name: "Beranda", href: "/" },
@@ -24,6 +27,14 @@ const navLinks = [
 ]
 
 export function Navbar() {
+  const [currentUser, setCurrentUser] = React.useState<AuthUser | null>(null)
+
+  React.useEffect(() => {
+    setCurrentUser(getStoredUser())
+    const handleChange = () => setCurrentUser(getStoredUser())
+    window.addEventListener("auth_state_changed", handleChange)
+    return () => window.removeEventListener("auth_state_changed", handleChange)
+  }, [])
   return (
     <header className="sticky top-0 z-40 w-full border-b border-neutral-200/80 bg-white">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -61,14 +72,35 @@ export function Navbar() {
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center gap-2.5">
-          <Button
-            variant="ghost"
-            size="default"
-            render={<Link href="/login" />}
-            className="rounded-xl px-4 text-sm font-medium text-neutral-700 hover:text-primary hover:bg-neutral-50"
-          >
-            Masuk
-          </Button>
+          {currentUser ? (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-100 text-xs font-semibold text-neutral-800">
+                <UserCheck className="h-3.5 w-3.5 text-primary" />
+                <span className="max-w-[110px] truncate">{currentUser.name}</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  removeStoredUser()
+                  setCurrentUser(null)
+                }}
+                className="text-xs text-neutral-500 hover:text-red-600 px-2"
+                title="Keluar"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="ghost"
+              size="default"
+              render={<Link href="/login" />}
+              className="rounded-xl px-4 text-sm font-medium text-neutral-700 hover:text-primary hover:bg-neutral-50"
+            >
+              Masuk
+            </Button>
+          )}
           <Button
             size="default"
             render={<Link href="/kontak" />}
@@ -122,18 +154,43 @@ export function Navbar() {
               </div>
 
               <div className="mt-8 flex flex-col gap-2.5">
+                {currentUser ? (
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 text-primary">
+                        <UserCheck className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div className="font-bold text-neutral-900 leading-tight">{currentUser.name}</div>
+                        <div className="text-[11px] text-neutral-500 mt-0.5">{currentUser.role_label}</div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        removeStoredUser()
+                        setCurrentUser(null)
+                      }}
+                      className="text-red-600 hover:text-red-700 font-semibold text-xs flex items-center gap-1 cursor-pointer"
+                    >
+                      <LogOut className="h-3 w-3" />
+                      <span>Keluar</span>
+                    </button>
+                  </div>
+                ) : (
+                  <Button
+                    variant="outline"
+                    render={<Link href="/login" />}
+                    className="w-full rounded-xl py-2.5 text-sm font-medium border-neutral-200 text-neutral-800"
+                  >
+                    Masuk ke Akun
+                  </Button>
+                )}
                 <Button
                   render={<Link href="/kontak" />}
                   className="w-full rounded-xl py-2.5 text-sm font-medium"
                 >
                   Daftar Sekarang
-                </Button>
-                <Button
-                  variant="outline"
-                  render={<Link href="/login" />}
-                  className="w-full rounded-xl py-2.5 text-sm font-medium border-neutral-200 text-neutral-800"
-                >
-                  Masuk ke Akun
                 </Button>
               </div>
             </SheetContent>
