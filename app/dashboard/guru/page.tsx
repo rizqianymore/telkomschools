@@ -16,8 +16,6 @@ import {
   Edit3,
   CheckCircle2,
   AlertCircle,
-  Clock,
-  Sparkles,
   ArrowRight,
   TrendingUp,
 } from "lucide-react"
@@ -41,8 +39,7 @@ export default function GuruDashboardPage() {
   const [submitting, setSubmitting] = React.useState(false)
 
   // Load data from API
-  const fetchData = async () => {
-    setLoading(true)
+  const fetchData = React.useCallback(async () => {
     try {
       const res = await fetch("/api/quiz/manage")
       const json = await res.json()
@@ -55,10 +52,28 @@ export default function GuruDashboardPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   React.useEffect(() => {
-    fetchData()
+    let ignore = false
+    const load = async () => {
+      try {
+        const res = await fetch("/api/quiz/manage")
+        const json = await res.json()
+        if (!ignore && json.success) {
+          setQuestions(json.questions || [])
+          setSubmissions(json.submissions || [])
+        }
+      } catch (err) {
+        console.error("Gagal memuat data guru:", err)
+      } finally {
+        if (!ignore) setLoading(false)
+      }
+    }
+    load()
+    return () => {
+      ignore = true
+    }
   }, [])
 
   const handleDeleteQuestion = async (id: number) => {

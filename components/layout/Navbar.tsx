@@ -27,10 +27,9 @@ const navLinks = [
 ]
 
 export function Navbar() {
-  const [currentUser, setCurrentUser] = React.useState<AuthUser | null>(null)
+  const [currentUser, setCurrentUser] = React.useState<AuthUser | null>(() => getStoredUser())
 
   React.useEffect(() => {
-    setCurrentUser(getStoredUser())
     const handleChange = () => setCurrentUser(getStoredUser())
     window.addEventListener("auth_state_changed", handleChange)
     return () => window.removeEventListener("auth_state_changed", handleChange)

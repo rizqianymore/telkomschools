@@ -7,7 +7,7 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { 
   Sparkles, 
   ArrowRight, 
@@ -31,23 +31,17 @@ export default function QuizPage() {
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const [answers, setAnswers] = React.useState<Record<number, string>>({})
   const [result, setResult] = React.useState<QuizResult | null>(null)
-  const [studentName, setStudentName] = React.useState("")
+  const [studentName, setStudentName] = React.useState(() => getStoredUser()?.name || "")
   const [loadingQuestions, setLoadingQuestions] = React.useState(false)
-  const [currentUser, setCurrentUser] = React.useState<AuthUser | null>(null)
+  const [currentUser, setCurrentUser] = React.useState<AuthUser | null>(() => getStoredUser())
 
   // Cek status autentikasi pengguna dari storage
   React.useEffect(() => {
-    const user = getStoredUser()
-    if (user) {
-      setCurrentUser(user)
-      setStudentName(user.name)
-    }
-
     const handleAuthChange = () => {
       const updatedUser = getStoredUser()
       setCurrentUser(updatedUser)
       if (updatedUser) {
-        setStudentName(updatedUser.name)
+        setStudentName((prev) => prev || updatedUser.name)
       }
     }
 
