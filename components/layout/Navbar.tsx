@@ -43,9 +43,9 @@ export function Navbar() {
           <Image
             src="/img/image.png"
             alt="Logo SMK Telkom"
-            width={44}
-            height={44}
-            className="h-11 w-auto object-contain rounded-md"
+            width={40}
+            height={40}
+            className="h-10 w-10 object-contain"
             priority
           />
           <div className="flex flex-col">
@@ -133,7 +133,7 @@ export function Navbar() {
                     alt="Logo SMK Telkom"
                     width={36}
                     height={36}
-                    className="h-9 w-auto object-contain rounded-md"
+                    className="h-9 w-9 object-contain"
                   />
                   <span>SMK Telkom Jakarta</span>
                 </SheetTitle>
