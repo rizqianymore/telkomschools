@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { calculateQuizRecommendation } from "@/lib/quiz-data"
+import { calculateQuizRecommendation, QUIZ_SUBMISSIONS, QuizSubmissionLog } from "@/lib/quiz-data"
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,11 +17,29 @@ export async function POST(req: NextRequest) {
     }
 
     const result = calculateQuizRecommendation(answers)
+    const cleanStudentName = studentName?.trim() || "Calon Siswa"
+
+    // Simpan ke log submission agar Guru bisa melihat di Dashboard
+    const submissionLog: QuizSubmissionLog = {
+      id: `sub-${Date.now()}`,
+      studentName: cleanStudentName,
+      submittedAt: new Date().toISOString().replace("T", " ").substring(0, 16),
+      primaryMajor: result.primary.major.code,
+      score: result.primary.score,
+      percentage: result.allScores[0]?.percentage || 0,
+      allScores: result.allScores.map(s => ({
+        major: s.major.code,
+        score: s.score,
+        percentage: s.percentage,
+      }))
+    }
+
+    QUIZ_SUBMISSIONS.unshift(submissionLog)
 
     return NextResponse.json({
       success: true,
       data: {
-        studentName: studentName || "Calon Siswa",
+        studentName: cleanStudentName,
         result
       }
     })

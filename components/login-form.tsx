@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { cn } from "cn"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,6 +17,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const router = useRouter()
   const [identifier, setIdentifier] = React.useState("")
   const [password, setPassword] = React.useState("")
   const [loading, setLoading] = React.useState(false)
@@ -77,6 +79,11 @@ export function LoginForm({
         setErrorMessage(data.message || "Gagal masuk ke sistem.")
       } else {
         setSuccessMessage(data.message)
+        if (data.user?.role === "guru") {
+          setTimeout(() => {
+            router.push("/dashboard/guru")
+          }, 800)
+        }
       }
     } catch {
       setErrorMessage("Gagal terhubung ke server. Periksa koneksi internet Anda.")
