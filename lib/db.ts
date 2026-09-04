@@ -16,7 +16,7 @@ export interface UserRecord {
   role_label: string
 }
 
-// Data pengguna per role untuk verifikasi & demo
+// Data pengguna untuk verifikasi & demo
 export const MOCK_MYSQL_USERS: UserRecord[] = [
   {
     id: 1,
@@ -45,7 +45,7 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
     name: "Siti Rahmawati, M.Kom.",
     password_hash: "guru123",
     role: "guru",
-    role_label: "Guru / Pendidik",
+    role_label: "Guru",
   },
   {
     id: 4,
@@ -54,41 +54,32 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
     name: "Administrator Sistem",
     password_hash: "admin123",
     role: "admin",
-    role_label: "Administrator",
+    role_label: "Admin",
   },
 ]
 
 /**
- * Otomatis mendeteksi role atau mencari user berdasarkan identifier:
- * - Siswa: NIS atau Email
- * - Guru: NIP atau Email
- * - Orang Tua: Email
- * - Admin: Email
+ * Mencari user di database MySQL secara fleksibel:
+ * Logic OR: email = ? OR nis = ? OR nip = ?
+ * Otomatis mendeteksi role tanpa perlu memilih peran secara manual.
  *
  * Query MySQL ekuivalen:
- * SELECT * FROM users
+ * SELECT id, email, nis, nip, name, password_hash, role, role_label
+ * FROM users
  * WHERE (email = ? OR nis = ? OR nip = ?)
  * LIMIT 1;
  */
-export async function findUserByIdentifier(
-  identifier: string,
-  explicitRole?: UserRole
+export async function findUserByAnyIdentifier(
+  identifier: string
 ): Promise<UserRecord | null> {
   const cleanId = identifier.trim().toLowerCase()
 
   const user = MOCK_MYSQL_USERS.find((u) => {
-    // Cek kecocokan identifier
     const emailMatches = u.email.toLowerCase() === cleanId
-    const nisMatches = u.nis && u.nis.toLowerCase() === cleanId
-    const nipMatches = u.nip && u.nip.toLowerCase() === cleanId
+    const nisMatches = u.nis ? u.nis.toLowerCase() === cleanId : false
+    const nipMatches = u.nip ? u.nip.toLowerCase() === cleanId : false
 
-    const matched = emailMatches || nisMatches || nipMatches
-    if (!matched) return false
-
-    // Jika user memilih tab role secara manual, pastikan role sesuai
-    if (explicitRole && u.role !== explicitRole) return false
-
-    return true
+    return emailMatches || nisMatches || nipMatches
   })
 
   return user || null

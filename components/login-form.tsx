@@ -10,103 +10,76 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { CheckCircle2, AlertCircle, Loader2, GraduationCap, Users, BookOpen, Shield } from "lucide-react"
-import type { UserRole } from "@/lib/db"
-
-interface RoleConfig {
-  key: UserRole
-  label: string
-  icon: React.ComponentType<{ className?: string }>
-  identifierLabel: string
-  placeholder: string
-  helperText: string
-}
-
-const roleConfigs: RoleConfig[] = [
-  {
-    key: "siswa",
-    label: "Siswa",
-    icon: GraduationCap,
-    identifierLabel: "Nomor Induk Siswa (NIS) atau Email",
-    placeholder: "Contoh: 10214055 atau nama@smktelkom-jkt.sch.id",
-    helperText: "Gunakan NIS resmi atau email siswa yang terdaftar",
-  },
-  {
-    key: "ortu",
-    label: "Orang Tua",
-    icon: Users,
-    identifierLabel: "Alamat Email Orang Tua",
-    placeholder: "nama@smktelkom-jkt.sch.id",
-    helperText: "Email yang didaftarkan saat registrasi PPDB",
-  },
-  {
-    key: "guru",
-    label: "Guru",
-    icon: BookOpen,
-    identifierLabel: "NIP atau Email Pendidik",
-    placeholder: "Contoh: 19850412... atau guru@smktelkom-jkt.sch.id",
-    helperText: "Gunakan NIP resmi atau email kedinasan SMK Telkom",
-  },
-  {
-    key: "admin",
-    label: "Admin",
-    icon: Shield,
-    identifierLabel: "Email Administrator",
-    placeholder: "admin@smktelkom-jkt.sch.id",
-    helperText: "Akses khusus pengelola sistem dan PPDB",
-  },
-]
+import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
-  const [selectedRole, setSelectedRole] = React.useState<UserRole>("siswa")
   const [identifier, setIdentifier] = React.useState("")
   const [password, setPassword] = React.useState("")
   const [loading, setLoading] = React.useState(false)
+
+  // Otomatisasi pesan & field error
+  const [errorField, setErrorField] = React.useState<"identifier" | "password" | null>(null)
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
   const [successMessage, setSuccessMessage] = React.useState<string | null>(null)
 
-  const activeConfig = roleConfigs.find((r) => r.key === selectedRole) || roleConfigs[0]
-
-  // Otomatis mengenali input identifier jika pengguna mengetik NIP / NIS
+  // Validasi real-time saat pengguna mengetik (auto clear error)
   const handleIdentifierChange = (val: string) => {
     setIdentifier(val)
-    const trimmed = val.trim()
-
-    // Jika berupa angka 18 digit -> otomatis ganti ke Guru (format NIP)
-    if (/^\d{16,18}$/.test(trimmed)) {
-      if (selectedRole !== "guru") setSelectedRole("guru")
+    if (errorField === "identifier") {
+      setErrorField(null)
+      setErrorMessage(null)
     }
-    // Jika berupa angka 8 digit -> otomatis ganti ke Siswa (format NIS)
-    else if (/^\d{7,10}$/.test(trimmed)) {
-      if (selectedRole !== "siswa") setSelectedRole("siswa")
+  }
+
+  const handlePasswordChange = (val: string) => {
+    setPassword(val)
+    if (errorField === "password") {
+      setErrorField(null)
+      setErrorMessage(null)
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    setErrorField(null)
     setErrorMessage(null)
     setSuccessMessage(null)
+
+    // Validasi otomatis sebelum kirim
+    if (!identifier.trim()) {
+      setErrorField("identifier")
+      setErrorMessage("Silakan masukkan NIS, NIP, atau Email Anda.")
+      return
+    }
+
+    if (!password.trim()) {
+      setErrorField("password")
+      setErrorMessage("Silakan masukkan kata sandi Anda.")
+      return
+    }
+
+    setLoading(true)
 
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier, password, role: selectedRole }),
+        body: JSON.stringify({ identifier: identifier.trim(), password: password.trim() }),
       })
 
       const data = await res.json()
 
       if (!res.ok || !data.success) {
-        setErrorMessage(data.message || "Gagal melakukan verifikasi akun.")
+        setErrorField(data.field || null)
+        setErrorMessage(data.message || "Gagal masuk ke sistem.")
       } else {
         setSuccessMessage(data.message)
       }
     } catch {
-      setErrorMessage("Koneksi ke server gagal. Periksa jaringan Anda.")
+      setErrorMessage("Gagal terhubung ke server. Periksa koneksi internet Anda.")
     } finally {
       setLoading(false)
     }
@@ -120,72 +93,52 @@ export function LoginForm({
             Masuk Portal Terpadu
           </h1>
           <p className="text-sm text-neutral-500 text-balance">
-            Pilih peran Anda dan masukkan identitas akun untuk melanjutkan
+            Masukkan NIS / NIP / Email dan kata sandi Anda untuk melanjutkan
           </p>
         </div>
 
-        {/* Role Selector Tabs */}
-        <div className="grid grid-cols-4 gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50/80 p-1">
-          {roleConfigs.map((r) => {
-            const Icon = r.icon
-            const isActive = selectedRole === r.key
-            return (
-              <button
-                key={r.key}
-                type="button"
-                onClick={() => {
-                  setSelectedRole(r.key)
-                  setErrorMessage(null)
-                  setSuccessMessage(null)
-                }}
-                className={cn(
-                  "flex flex-col items-center justify-center gap-1 rounded-lg py-2 px-1 text-xs font-semibold transition-all",
-                  isActive
-                    ? "bg-white text-primary shadow-xs border border-neutral-200"
-                    : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100/60"
-                )}
-              >
-                <Icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-neutral-500")} />
-                <span className="leading-tight">{r.label}</span>
-              </button>
-            )
-          })}
-        </div>
-
-        {/* Feedback Alert Messages */}
+        {/* Notifikasi Alert Error Otomatis */}
         {errorMessage && (
-          <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs font-medium text-red-600">
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
-            <span>{errorMessage}</span>
+          <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-3 text-xs font-medium text-red-700 animate-in fade-in duration-200">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
+            <div className="leading-snug">{errorMessage}</div>
           </div>
         )}
 
+        {/* Notifikasi Alert Sukses */}
         {successMessage && (
-          <div className="flex items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-xs font-medium text-neutral-900">
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
-            <span>{successMessage}</span>
+          <div className="flex items-start gap-2.5 rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-xs font-medium text-neutral-900 animate-in fade-in duration-200">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-primary mt-0.5" />
+            <div className="leading-snug">{successMessage}</div>
           </div>
         )}
 
-        {/* Dynamic Identifier Field (NIS/Email for Siswa, NIP/Email for Guru, Email for Ortu/Admin) */}
+        {/* Input Identifier Tunggal: NIS / NIP / Email */}
         <Field>
           <FieldLabel htmlFor="identifier" className="text-xs font-semibold text-neutral-700">
-            {activeConfig.identifierLabel}
+            NIS / NIP / Email
           </FieldLabel>
           <Input
             id="identifier"
             type="text"
             value={identifier}
             onChange={(e) => handleIdentifierChange(e.target.value)}
-            placeholder={activeConfig.placeholder}
-            className="rounded-xl border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
+            placeholder="NIS siswa, NIP guru, atau email akun"
+            autoComplete="username"
+            className={cn(
+              "rounded-xl transition-colors",
+              errorField === "identifier"
+                ? "border-red-500 ring-2 ring-red-500/10 focus-visible:border-red-500 focus-visible:ring-red-500/20"
+                : "border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
+            )}
             required
           />
           <span className="text-[11px] text-neutral-400 mt-0.5">
-            {activeConfig.helperText}
+            Siswa (NIS/Email) • Guru (NIP/Email) • Orang Tua & Admin (Email)
           </span>
         </Field>
 
+        {/* Input Password */}
         <Field>
           <div className="flex items-center justify-between">
             <FieldLabel htmlFor="password" className="text-xs font-semibold text-neutral-700">
@@ -202,26 +155,33 @@ export function LoginForm({
             id="password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => handlePasswordChange(e.target.value)}
             placeholder="••••••••"
-            className="rounded-xl border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
+            autoComplete="current-password"
+            className={cn(
+              "rounded-xl transition-colors",
+              errorField === "password"
+                ? "border-red-500 ring-2 ring-red-500/10 focus-visible:border-red-500 focus-visible:ring-red-500/20"
+                : "border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
+            )}
             required
           />
         </Field>
 
+        {/* Submit Button */}
         <Field className="mt-1">
           <Button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl py-2.5 text-sm font-semibold bg-primary text-white hover:bg-red-700 shadow-sm"
+            className="w-full rounded-xl py-2.5 text-sm font-semibold bg-primary text-white hover:bg-red-700 shadow-sm transition-all"
           >
             {loading ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Memverifikasi...
+                Memverifikasi Akun...
               </span>
             ) : (
-              `Masuk sebagai ${activeConfig.label}`
+              "Masuk ke Portal"
             )}
           </Button>
         </Field>
