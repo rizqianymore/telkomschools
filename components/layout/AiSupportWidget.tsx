@@ -106,9 +106,9 @@ export function AiSupportWidget() {
     }
   }, [messages, loading])
 
-  const handleSend = async (e?: React.FormEvent) => {
+  const handleSend = async (e?: React.FormEvent, customPrompt?: string) => {
     if (e) e.preventDefault()
-    const prompt = input.trim()
+    const prompt = (customPrompt || input).trim()
     if (!prompt || loading) return
 
     const now = new Date()
@@ -342,7 +342,7 @@ export function AiSupportWidget() {
                 type="button"
                 disabled={loading}
                 onClick={() => {
-                  setInput(q)
+                  handleSend(undefined, q)
                 }}
                 className="shrink-0 rounded-md border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[10px] font-medium text-neutral-600 hover:border-red-300 hover:text-primary transition-colors disabled:opacity-50 cursor-pointer min-w-[44px]"
               >
