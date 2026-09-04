@@ -51,7 +51,7 @@ export function LoginForm({
     // Validasi otomatis sebelum kirim
     if (!identifier.trim()) {
       setErrorField("identifier")
-      setErrorMessage("Silakan masukkan NIS, NIP, atau Email Anda.")
+      setErrorMessage("Silakan masukkan NIS / NIP / Email Anda.")
       return
     }
 
@@ -93,7 +93,7 @@ export function LoginForm({
             Masuk Portal Terpadu
           </h1>
           <p className="text-sm text-neutral-500 text-balance">
-            Masukkan NIS / NIP / Email dan kata sandi Anda untuk melanjutkan
+            Masukkan identitas akun dan kata sandi Anda untuk melanjutkan
           </p>
         </div>
 
@@ -113,7 +113,7 @@ export function LoginForm({
           </div>
         )}
 
-        {/* Input Identifier Tunggal: NIS / NIP / Email */}
+        {/* Input Identifier Tunggal: NIS / NIP / Email (Tanpa teks pemisah) */}
         <Field>
           <FieldLabel htmlFor="identifier" className="text-xs font-semibold text-neutral-700">
             NIS / NIP / Email
@@ -123,7 +123,7 @@ export function LoginForm({
             type="text"
             value={identifier}
             onChange={(e) => handleIdentifierChange(e.target.value)}
-            placeholder="NIS siswa, NIP guru, atau email akun"
+            placeholder="Masukkan NIS / NIP / Email"
             autoComplete="username"
             className={cn(
               "rounded-xl transition-colors",
@@ -133,9 +133,6 @@ export function LoginForm({
             )}
             required
           />
-          <span className="text-[11px] text-neutral-400 mt-0.5">
-            Siswa (NIS/Email) • Guru (NIP/Email) • Orang Tua & Admin (Email)
-          </span>
         </Field>
 
         {/* Input Password */}

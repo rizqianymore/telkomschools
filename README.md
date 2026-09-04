@@ -6,17 +6,14 @@ Website resmi dan portal akademik terpadu SMK Telkom Jakarta dibangun menggunaka
 
 ## Akun Pengujian Login (Demo Credentials)
 
-Portal login terletak di rute `/login`. Sistem telah dilengkapi dengan pemisahan peran (*role-based authentication*) dan pendeteksian otomatis identifier:
+Portal login terletak di rute `/login`. Sistem menggunakan logika pencarian OR otomatis (`NIS / NIP / Email`):
 
 | Peran (Role) | Identitas Login (NIS / NIP / Email) | Kata Sandi | Keterangan |
 | :--- | :--- | :--- | :--- |
-| **Siswa** | NIS: `10214055` <br>atau Email: `siswa@smktelkom-jkt.sch.id` | `siswa123` | Akses nilai, presensi, & tugas digital siswa |
+| **Siswa** | NIS: `10214055` <br>atau `siswa@smktelkom-jkt.sch.id` | `siswa123` | Akses nilai, presensi, & tugas digital siswa |
 | **Orang Tua** | Email: `ortu@smktelkom-jkt.sch.id` | `ortu123` | Monitoring kehadiran & perkembangan belajar anak |
-| **Guru** | NIP: `198504122010011002` <br>atau Email: `guru@smktelkom-jkt.sch.id` | `guru123` | Manajemen kelas, input nilai, & modul pelajaran |
-| **Admin** | Email: `admin@smktelkom-jkt.sch.id` | `admin123` | Pengelolaan data master & administrasi PPDB |
-
-> **Fitur Deteksi Otomatis:**
-> Jika Anda mengetikkan nomor NIS (angka 8 digit) atau NIP (angka 18 digit), sistem formulir akan secara otomatis beralih ke tab peran **Siswa** atau **Guru**.
+| **Guru** | NIP: `198504122010011002` <br>atau `guru@smktelkom-jkt.sch.id` | `guru123` | Manajemen kelas, input nilai, & modul pelajaran |
+| **Staff** | Email: `staff@smktelkom-jkt.sch.id` | `staff123` | Pengelolaan administrasi sekolah & sistem |
 
 ---
 

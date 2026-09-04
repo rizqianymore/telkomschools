@@ -2,7 +2,7 @@
 // Arsitektur data koneksi MySQL untuk SMK Telkom Jakarta
 // Menggunakan pool koneksi MySQL produksi dan mock in-memory untuk demo instan.
 
-export type UserRole = "siswa" | "ortu" | "guru" | "admin"
+export type UserRole = "siswa" | "ortu" | "guru" | "staff"
 
 export interface UserRecord {
   id: number
@@ -49,12 +49,12 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
   },
   {
     id: 4,
-    identifier: "admin@smktelkom-jkt.sch.id",
-    email: "admin@smktelkom-jkt.sch.id",
-    name: "Administrator Sistem",
-    password_hash: "admin123",
-    role: "admin",
-    role_label: "Admin",
+    identifier: "staff@smktelkom-jkt.sch.id",
+    email: "staff@smktelkom-jkt.sch.id",
+    name: "Staff Administrasi & IT",
+    password_hash: "staff123",
+    role: "staff",
+    role_label: "Staff",
   },
 ]
 
