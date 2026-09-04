@@ -19,7 +19,7 @@ export default function LoginPage() {
                 SMK Telkom <span className="text-primary">Jakarta</span>
               </span>
               <span className="text-[10px] font-medium text-neutral-500 uppercase tracking-wider mt-1">
-                Portal Akademik & Siswa
+                Sistem Informasi Terpadu
               </span>
             </div>
           </Link>
@@ -33,7 +33,7 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <div className="mx-auto my-10 w-full max-w-sm">
+        <div className="mx-auto my-8 w-full max-w-sm">
           <LoginForm />
         </div>
 
@@ -41,12 +41,12 @@ export default function LoginPage() {
           <span>© {new Date().getFullYear()} SMK Telkom Jakarta</span>
           <div className="flex items-center gap-1 text-neutral-500">
             <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-            <span>Sistem Terenkripsi Aman</span>
+            <span>Sistem Terenkripsi & Terverifikasi</span>
           </div>
         </div>
       </div>
 
-      {/* Right Column: Visual Brand Card (Red & White minimal aesthetic) */}
+      {/* Right Column: Visual Brand Card */}
       <div className="relative hidden bg-neutral-900 lg:block overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -54,30 +54,34 @@ export default function LoginPage() {
           alt="SMK Telkom Jakarta Campus"
           className="absolute inset-0 h-full w-full object-cover opacity-30"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/70 to-neutral-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/75 to-neutral-950/40" />
 
         <div className="absolute inset-0 flex flex-col justify-end p-12 text-white">
           <div className="max-w-md space-y-4">
             <div className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-950/60 px-3 py-1 text-xs font-semibold text-red-200">
-              <span>Pusat Layanan Terpadu</span>
+              <span>Portal Akademik & Layanan</span>
             </div>
 
             <h2 className="text-3xl font-extrabold tracking-tight leading-tight text-white">
-              Pintu Masuk Menuju Ekosistem Digital Berstandar Industri
+              Pusat Aktivitas Akademik & Komunikasi Sekolah
             </h2>
 
             <p className="text-sm text-neutral-300 leading-relaxed">
-              Akses informasi akademik siswa, rekap presensi, materi pembelajaran terpadu, dan pelaporan berkala bagi seluruh civitas SMK Telkom Jakarta.
+              Satu portal terintegrasi untuk mendukung proses belajar mengajar, monitoring perkembangan studi siswa, serta manajemen operasional sekolah secara efisien.
             </p>
 
             <div className="pt-2 space-y-2 text-xs text-neutral-300">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                <span>Terhubung langsung dengan basis data MySQL terpusat</span>
+                <span>Pencatatan presensi, nilai, dan rekap tugas digital</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                <span>Single Sign-On (SSO) untuk Siswa, Guru, dan Orang Tua</span>
+                <span>Akses materi kurikulum berbasis industri teknologi</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                <span>Layanan konsultasi dan komunikasi terpadu</span>
               </div>
             </div>
           </div>

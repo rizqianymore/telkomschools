@@ -10,12 +10,21 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
+import { CheckCircle2, AlertCircle, Loader2, GraduationCap, Users, BookOpen, Shield } from "lucide-react"
+import type { UserRole } from "@/lib/db"
+
+const roles: { key: UserRole; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { key: "siswa", label: "Siswa", icon: GraduationCap },
+  { key: "ortu", label: "Orang Tua", icon: Users },
+  { key: "guru", label: "Guru", icon: BookOpen },
+  { key: "admin", label: "Admin", icon: Shield },
+]
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const [selectedRole, setSelectedRole] = React.useState<UserRole>("siswa")
   const [email, setEmail] = React.useState("")
   const [password, setPassword] = React.useState("")
   const [loading, setLoading] = React.useState(false)
@@ -32,36 +41,64 @@ export function LoginForm({
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, role: selectedRole }),
       })
 
       const data = await res.json()
 
       if (!res.ok || !data.success) {
-        setErrorMessage(data.message || "Gagal melakukan login.")
+        setErrorMessage(data.message || "Gagal melakukan verifikasi akun.")
       } else {
-        setSuccessMessage(`${data.message} (Login sebagai: ${data.user.name})`)
+        setSuccessMessage(data.message)
       }
     } catch {
-      setErrorMessage("Koneksi ke server gagal. Pastikan koneksi internet stabil.")
+      setErrorMessage("Koneksi ke server gagal. Periksa jaringan Anda.")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
+    <form className={cn("flex flex-col gap-5", className)} onSubmit={handleSubmit} {...props}>
       <FieldGroup>
         <div className="flex flex-col items-center gap-1.5 text-center">
           <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
-            Masuk ke Portal
+            Masuk Portal Terpadu
           </h1>
           <p className="text-sm text-neutral-500 text-balance">
-            Masukkan email dan password Anda untuk mengakses sistem SMK Telkom Jakarta
+            Pilih peran Anda dan masukkan identitas akun untuk melanjutkan
           </p>
         </div>
 
-        {/* Feedback Messages */}
+        {/* Role Selector Tabs */}
+        <div className="grid grid-cols-4 gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50/80 p-1">
+          {roles.map((r) => {
+            const Icon = r.icon
+            const isActive = selectedRole === r.key
+            return (
+              <button
+                key={r.key}
+                type="button"
+                onClick={() => {
+                  setSelectedRole(r.key)
+                  setErrorMessage(null)
+                  setSuccessMessage(null)
+                }}
+                className={cn(
+                  "flex flex-col items-center justify-center gap-1 rounded-lg py-2 px-1 text-xs font-semibold transition-all",
+                  isActive
+                    ? "bg-white text-primary shadow-xs border border-neutral-200"
+                    : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100/60"
+                )}
+              >
+                <Icon className={cn("h-4 w-4", isActive ? "text-primary" : "text-neutral-500")} />
+                <span className="leading-tight">{r.label}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Feedback Alert Messages */}
         {errorMessage && (
           <div className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-xs font-medium text-red-600">
             <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
@@ -78,14 +115,14 @@ export function LoginForm({
 
         <Field>
           <FieldLabel htmlFor="email" className="text-xs font-semibold text-neutral-700">
-            Alamat Email
+            Alamat Email ({roles.find((r) => r.key === selectedRole)?.label})
           </FieldLabel>
           <Input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="admin@smktelkom-jkt.sch.id"
+            placeholder={`nama@smktelkom-jkt.sch.id`}
             className="rounded-xl border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
             required
           />
@@ -100,7 +137,7 @@ export function LoginForm({
               href="#"
               className="text-xs text-neutral-500 hover:text-primary transition-colors underline-offset-4 hover:underline"
             >
-              Lupa sandi?
+              Lupa kata sandi?
             </a>
           </div>
           <Input
@@ -126,20 +163,13 @@ export function LoginForm({
                 Memverifikasi...
               </span>
             ) : (
-              "Masuk Sekarang"
+              `Masuk sebagai ${roles.find((r) => r.key === selectedRole)?.label}`
             )}
           </Button>
         </Field>
 
-        {/* Demo Account Hint */}
-        <div className="rounded-xl border border-neutral-200/80 bg-neutral-50/70 p-3 text-xs text-neutral-600 space-y-1">
-          <div className="font-semibold text-neutral-800">Akun Contoh (MySQL Query Demo):</div>
-          <div>• Email: <span className="font-mono text-neutral-900 font-medium">admin@smktelkom-jkt.sch.id</span> (sandi: <span className="font-mono text-neutral-900 font-medium">admin123</span>)</div>
-          <div>• Email: <span className="font-mono text-neutral-900 font-medium">siswa@smktelkom-jkt.sch.id</span> (sandi: <span className="font-mono text-neutral-900 font-medium">siswa123</span>)</div>
-        </div>
-
         <FieldDescription className="text-center text-xs text-neutral-500">
-          Belum memiliki akun siswa baru?{" "}
+          Belum terdaftar sebagai siswa baru?{" "}
           <a href="/kontak" className="font-medium text-primary hover:underline underline-offset-4">
             Daftar PPDB Di Sini
           </a>
