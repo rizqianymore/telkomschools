@@ -33,10 +33,10 @@ export function Navbar() {
           </div>
           <div className="flex flex-col">
             <span className="text-lg font-bold tracking-tight text-neutral-900 leading-none">
-              Telkom<span className="text-primary">Schools</span>
+              SMK Telkom <span className="text-primary">Jakarta</span>
             </span>
             <span className="text-[11px] font-medium text-neutral-500 tracking-wider uppercase mt-1">
-              Yayasan Pendidikan
+              Pelopor Pendidikan Vokasi Digital
             </span>
           </div>
         </Link>
@@ -55,7 +55,15 @@ export function Navbar() {
         </nav>
 
         {/* CTA Button */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2.5">
+          <Button
+            variant="ghost"
+            size="default"
+            render={<Link href="/login" />}
+            className="rounded-xl px-4 text-sm font-medium text-neutral-700 hover:text-primary hover:bg-neutral-50"
+          >
+            Masuk
+          </Button>
           <Button
             size="default"
             render={<Link href="/kontak" />}
@@ -86,7 +94,7 @@ export function Navbar() {
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                     <GraduationCap className="h-4 w-4" />
                   </div>
-                  <span>TelkomSchools</span>
+                  <span>SMK Telkom Jakarta</span>
                 </SheetTitle>
               </SheetHeader>
 
@@ -104,12 +112,19 @@ export function Navbar() {
                 ))}
               </div>
 
-              <div className="mt-8">
+              <div className="mt-8 flex flex-col gap-2.5">
                 <Button
                   render={<Link href="/kontak" />}
                   className="w-full rounded-xl py-2.5 text-sm font-medium"
                 >
                   Daftar Sekarang
+                </Button>
+                <Button
+                  variant="outline"
+                  render={<Link href="/login" />}
+                  className="w-full rounded-xl py-2.5 text-sm font-medium border-neutral-200 text-neutral-800"
+                >
+                  Masuk ke Akun
                 </Button>
               </div>
             </SheetContent>

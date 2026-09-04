@@ -22,8 +22,8 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Keunggulan Kami - Telkom Schools",
-  description: "Fasilitas, kurikulum teknologi, sertifikasi industri, dan keunggulan kompetitif Telkom Schools.",
+  title: "Keunggulan Kami - SMK Telkom Jakarta",
+  description: "Fasilitas, kurikulum teknologi, sertifikasi industri, dan keunggulan kompetitif SMK Telkom Jakarta.",
 }
 
 const mainPillars = [
@@ -95,10 +95,10 @@ export default function KeunggulanPage() {
               Standar Kualitas Unggul
             </Badge>
             <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl">
-              Keunggulan <span className="text-primary">Telkom Schools</span>
+              Keunggulan <span className="text-primary">SMK Telkom Jakarta</span>
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-neutral-600 leading-relaxed">
-              Mengenal lebih dalam keunggulan kurikulum, sarana canggih, dan jaminan mutu yang menjadikan kami pilihan terbaik di Indonesia.
+              Mengenal lebih dalam keunggulan kurikulum kejuruan, sarana laboratorium modern, dan jaminan mutu yang menjadikan kami sekolah vokasi terbaik di Jakarta.
             </p>
           </div>
         </section>

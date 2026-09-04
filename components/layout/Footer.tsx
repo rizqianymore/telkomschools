@@ -15,7 +15,7 @@ export function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold tracking-tight text-neutral-900 leading-tight">
-                  Telkom<span className="text-primary">Schools</span>
+                  SMK Telkom <span className="text-primary">Jakarta</span>
                 </span>
                 <span className="text-[11px] font-medium text-neutral-500 uppercase tracking-wider">
                   Yayasan Pendidikan Telkom
@@ -23,7 +23,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-neutral-600">
-              Pelopor pendidikan terpadu berkarakter digital di Indonesia. Menyiapkan generasi penerus bangsa yang unggul, berakhlak mulia, dan berdaya saing global.
+              Pelopor pendidikan vokasi teknologi berkarakter digital di Jakarta. Menyiapkan talenta kejuruan masa depan yang kompeten, berakhlak mulia, dan berdaya saing global.
             </p>
 
             {/* Social Media Links with Minimal Neutral SVGs */}
@@ -128,15 +128,15 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm">
               <li className="flex items-start gap-2.5">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span>Jl. Telekomunikasi No. 1, Terusan Buahbatu, Bandung, Jawa Barat</span>
+                <span>Jl. Daan Mogot KM. 11, Cengkareng Timur, Jakarta Barat, DKI Jakarta</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 shrink-0 text-primary" />
-                <span>(021) 1234-5678</span>
+                <span>(021) 5451-697 / (021) 1234-5678</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 shrink-0 text-primary" />
-                <span>admissions@telkomschools.sch.id</span>
+                <span>info@smktelkom-jkt.sch.id</span>
               </li>
             </ul>
           </div>
@@ -146,7 +146,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col items-center justify-between gap-4 text-xs text-neutral-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} Telkom Schools. Hak Cipta Dilindungi.</p>
+          <p>© {new Date().getFullYear()} SMK Telkom Jakarta. Hak Cipta Dilindungi.</p>
           <div className="flex space-x-6">
             <a href="#" className="hover:text-primary transition-colors">Kebijakan Privasi</a>
             <a href="#" className="hover:text-primary transition-colors">Syarat & Ketentuan</a>

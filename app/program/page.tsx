@@ -18,8 +18,8 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Program Pendidikan - Telkom Schools",
-  description: "Daftar lengkap jenjang pendidikan, kurikulum kejuruan, dan alur pendaftaran siswa baru Telkom Schools.",
+  title: "Program Keahlian & Jurusan - SMK Telkom Jakarta",
+  description: "Daftar lengkap jurusan kejuruan teknologi, kurikulum industri, dan alur pendaftaran siswa baru SMK Telkom Jakarta.",
 }
 
 const detailedPrograms = [

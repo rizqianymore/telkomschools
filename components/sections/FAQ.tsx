@@ -8,27 +8,27 @@ import {
 
 const faqs = [
   {
-    question: "Kapan periode pendaftaran siswa baru Telkom Schools dibuka?",
+    question: "Kapan periode pendaftaran siswa baru SMK Telkom Jakarta dibuka?",
     answer:
-      "Pendaftaran siswa baru (PPDB) dibuka sepanjang tahun akademik secara bertahap dalam beberapa gelombang. Anda dapat mendaftar secara online melalui portal resmi kami atau langsung mengunjungi sekretariat pendaftaran di kampus sekolah terdekat.",
+      "Pendaftaran siswa baru (PPDB) dibuka sepanjang tahun akademik secara bertahap dalam beberapa gelombang. Anda dapat mendaftar secara online melalui portal resmi kami atau langsung mengunjungi sekretariat pendaftaran di kampus SMK Telkom Jakarta.",
   },
   {
     question: "Apa saja kurikulum dan konsentrasi keahlian yang ditawarkan?",
     answer:
-      "Kami menerapkan Kurikulum Nasional yang diperkaya dengan kurikulum vokasi berbasis teknologi informasi dan industri. Jurusan unggulan meliputi Rekayasa Perangkat Lunak (RPL), Teknik Komputer dan Jaringan (TKJ), Desain Komunikasi Visual (DKV), serta program persiapan akademik unggulan.",
+      "Kami menerapkan Kurikulum Merdeka yang diperkaya dengan kurikulum vokasi berbasis teknologi informasi dan industri. Jurusan unggulan meliputi Rekayasa Perangkat Lunak (RPL), Teknik Komputer dan Jaringan (TKJ), serta Desain Komunikasi Visual (DKV).",
   },
   {
     question: "Apakah tersedia program beasiswa untuk siswa berprestasi?",
     answer:
-      "Ya, Telkom Schools menyediakan berbagai skema beasiswa, mulai dari beasiswa prestasi akademik, beasiswa kejuaraan sains/teknologi/olahraga, hingga program bantuan pendidikan dari Yayasan Pendidikan Telkom.",
+      "Ya, SMK Telkom Jakarta menyediakan berbagai skema beasiswa, mulai dari beasiswa prestasi akademik, beasiswa kejuaraan sains/teknologi/olahraga, hingga program bantuan pendidikan dari Yayasan Pendidikan Telkom.",
   },
   {
     question: "Bagaimana dengan fasilitas laboratorium dan teknologi pendukung?",
     answer:
-      "Seluruh unit sekolah dilengkapi dengan laboratorium komputer mutakhir, studio multimedia, akses internet fiber optic berkecepatan tinggi, perpustakaan digital, serta ruang kelas interaktif modern.",
+      "Sekolah kami dilengkapi dengan laboratorium komputer mutakhir, studio multimedia, lab Cisco networking, akses internet fiber optic berkecepatan tinggi, perpustakaan digital, serta ruang kelas interaktif modern.",
   },
   {
-    question: "Apakah lulusan Telkom Schools dibantu dalam penyaluran kerja dan kuliah?",
+    question: "Apakah lulusan SMK Telkom Jakarta dibantu dalam penyaluran kerja dan kuliah?",
     answer:
       "Benar. Kami memiliki unit Bursa Kerja Khusus (BKK) yang bermitra dengan lebih dari 100 perusahaan teknologi skala nasional dan multinasional, serta program pembinaan akselerasi tembus perguruan tinggi negeri (PTN) dan perguruan tinggi kedinasan.",
   },
@@ -50,7 +50,7 @@ export function FAQ() {
             Frequently Asked Questions
           </h2>
           <p className="mt-4 text-base sm:text-lg text-neutral-600 leading-relaxed">
-            Informasi penting seputar pendaftaran, kurikulum, fasilitas, dan prospek kelulusan di Telkom Schools.
+            Informasi penting seputar pendaftaran, kurikulum kejuruan, fasilitas, dan prospek kelulusan di SMK Telkom Jakarta.
           </p>
         </div>
 

@@ -14,8 +14,8 @@ import {
 import { MessageSquare, PhoneCall, Mail, ArrowRight, BookOpen, GraduationCap, DollarSign } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Pusat Bantuan & FAQ - Telkom Schools",
-  description: "Daftar lengkap jawaban pertanyaan seputar PPDB, kurikulum, fasilitas, biaya, dan beasiswa di Telkom Schools.",
+  title: "Pusat Bantuan & FAQ - SMK Telkom Jakarta",
+  description: "Daftar lengkap jawaban pertanyaan seputar PPDB, kurikulum kejuruan, fasilitas lab, biaya, dan beasiswa di SMK Telkom Jakarta.",
 }
 
 const faqCategories = [
@@ -24,16 +24,16 @@ const faqCategories = [
     icon: GraduationCap,
     items: [
       {
-        q: "Kapan periode pendaftaran siswa baru Telkom Schools dibuka?",
-        a: "Pendaftaran siswa baru dibuka dalam 3 gelombang setiap tahun ajaran (Gelombang Prestasi, Reguler 1, dan Reguler 2). Calon siswa dapat mendaftar secara online melalui portal resmi atau langsung di sekretariat kampus cabang terdekat.",
+        q: "Kapan periode pendaftaran siswa baru SMK Telkom Jakarta dibuka?",
+        a: "Pendaftaran siswa baru dibuka dalam 3 gelombang setiap tahun ajaran (Gelombang Prestasi, Reguler 1, dan Reguler 2). Calon siswa dapat mendaftar secara online melalui portal resmi atau langsung di sekretariat kampus SMK Telkom Jakarta di Cengkareng, Jakarta Barat.",
       },
       {
         q: "Apa saja dokumen persyaratan wajib yang harus disiapkan?",
         a: "Dokumen yang dibutuhkan meliputi salinan rapor 2 semester terakhir, Akta Kelahiran, Kartu Keluarga (KK), pas foto berwarna terbaru, dan piagam/sertifikat kejuaraan bagi pendaftar jalur prestasi.",
       },
       {
-        q: "Apakah siswa dari luar kota/daerah bisa mendaftar?",
-        a: "Tentu saja. Telkom Schools menerima siswa dari seluruh wilayah Indonesia. Seleksi dan tes potensi dapat dilakukan sepenuhnya secara online, dan beberapa unit sekolah menyediakan fasilitas asrama mitra.",
+        q: "Apakah siswa dari luar DKI Jakarta bisa mendaftar?",
+        a: "Tentu saja. SMK Telkom Jakarta menerima siswa dari seluruh wilayah Indonesia. Seluruh alur administrasi dan tes seleksi dapat diikuti secara daring.",
       },
     ],
   },
@@ -42,16 +42,16 @@ const faqCategories = [
     icon: BookOpen,
     items: [
       {
-        q: "Apa perbedaan kurikulum Telkom Schools dengan sekolah umum lainnya?",
-        a: "Telkom Schools mengintegrasikan Kurikulum Nasional dengan kurikulum industri teknologi terkini (Cisco, Microsoft, AWS). Siswa mempelajari coding, cloud, AI, dan multimedia terapan sejak dini dengan metode pembelajaran berbasis proyek riil.",
+        q: "Apa perbedaan kurikulum SMK Telkom Jakarta dengan sekolah umum lainnya?",
+        a: "SMK Telkom Jakarta mengintegrasikan Kurikulum Merdeka dengan kurikulum industri teknologi terkini (Cisco, Microsoft, Oracle). Siswa mempelajari software engineering, cloud, cybersecurity, dan multimedia terapan sejak dini dengan metode pembelajaran berbasis proyek riil.",
       },
       {
-        q: "Apa saja pilihan jurusan di jenjang SMK Telkom?",
-        a: "SMK Telkom memiliki 3 jurusan favorit: Rekayasa Perangkat Lunak (RPL), Teknik Komputer dan Jaringan (TKJ), serta Desain Komunikasi Visual (DKV). Seluruh jurusan memiliki akreditasi A Unggul.",
+        q: "Apa saja pilihan jurusan di SMK Telkom Jakarta?",
+        a: "SMK Telkom Jakarta memiliki 3 jurusan favorit: Rekayasa Perangkat Lunak (RPL), Teknik Komputer dan Jaringan (TKJ), serta Desain Komunikasi Visual (DKV). Seluruh jurusan memiliki akreditasi A Unggul.",
       },
       {
-        q: "Apakah lulusan SMK Telkom bisa langsung lanjut kuliah ke PTN?",
-        a: "Sangat bisa. Kami memiliki program kelas akselerasi persiapan UTBK-SNBT dan bimbingan tembus perguruan tinggi negeri (ITB, UI, UGM, ITS, Telkom University) dengan tingkat kelulusan di atas 90%.",
+        q: "Apakah lulusan SMK Telkom Jakarta bisa langsung lanjut kuliah ke PTN?",
+        a: "Sangat bisa. Kami memiliki program kelas bimbingan tembus perguruan tinggi negeri (UI, ITB, UGM, ITS, Telkom University) dengan tingkat kelulusan tinggi bagi siswa yang ingin melanjutkan studi.",
       },
     ],
   },

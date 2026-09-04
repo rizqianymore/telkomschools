@@ -9,19 +9,19 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { ArrowRight, Building2 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Testimoni & Cerita Sukses - Telkom Schools",
-  description: "Ulasan jujur siswa, apresiasi orang tua, dan jejak karier alumni Telkom Schools di perusahaan teknologi dunia.",
+  title: "Testimoni & Cerita Sukses - SMK Telkom Jakarta",
+  description: "Ulasan jujur siswa, apresiasi orang tua, dan jejak karier alumni SMK Telkom Jakarta di perusahaan teknologi dunia.",
 }
 
 const studentTestimonials = [
   {
     name: "Rizky Ramadhan",
     role: "Senior Frontend Engineer di Unicorn Tech",
-    grad: "Alumni SMK Telkom Angkatan 2019",
+    grad: "Alumni SMK Telkom Jakarta Angkatan 2019",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop",
     fallback: "RR",
     quote:
-      "Telkom Schools memberikan bekal kejuruan IT dan kedisiplinan yang sangat nyata. Saat pertama kali masuk dunia industri, tools dan teknologi yang digunakan sudah tidak asing lagi bagi saya.",
+      "SMK Telkom Jakarta memberikan bekal kejuruan IT dan kedisiplinan yang sangat nyata. Saat pertama kali masuk dunia industri, tools dan teknologi yang digunakan sudah tidak asing lagi bagi saya.",
   },
   {
     name: "Farhan Maulana",
@@ -97,7 +97,7 @@ export default function TestimoniPage() {
               Testimoni & <span className="text-primary">Cerita Sukses</span>
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-base sm:text-lg text-neutral-600 leading-relaxed">
-              Dengarkan langsung penuturan siswa, orang tua, dan alumni mengenai pengalaman berharga menimba ilmu di lingkungan Telkom Schools.
+              Dengarkan langsung penuturan siswa, orang tua, dan alumni mengenai pengalaman berharga menimba ilmu di lingkungan SMK Telkom Jakarta.
             </p>
           </div>
         </section>
@@ -113,7 +113,7 @@ export default function TestimoniPage() {
                 Suara dari Para Generasi Juara
               </h2>
               <p className="mt-4 text-base text-neutral-600 leading-relaxed">
-                Bagaimana pengalaman belajar di Telkom Schools mengantarkan mereka menuju karier impian.
+                Bagaimana pengalaman belajar di SMK Telkom Jakarta mengantarkan mereka menuju karier impian.
               </p>
             </div>
 
