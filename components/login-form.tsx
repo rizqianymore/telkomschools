@@ -92,6 +92,8 @@ export function LoginForm({
             router.push(redirectUrl)
           } else if (data.user?.role === "guru") {
             router.push("/dashboard/guru")
+          } else if (data.user?.role === "staff") {
+            router.push("/dashboard/staff")
           } else {
             router.push("/")
           }
