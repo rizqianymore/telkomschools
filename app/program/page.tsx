@@ -16,6 +16,7 @@ import {
   ArrowRight,
   Clock
 } from "lucide-react"
+import { ScrollReveal } from "@/components/ui/scroll-reveal"
 
 export const metadata: Metadata = {
   title: "Program Keahlian & Jurusan - SMK Telkom Jakarta",
@@ -156,52 +157,54 @@ export default function ProgramPage() {
               {detailedPrograms.map((prog, idx) => {
                 const Icon = prog.icon
                 return (
-                  <Card key={idx} className="flex h-full flex-col justify-between border-neutral-200/90 bg-white p-6 shadow-sm hover:border-red-200 hover:shadow">
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-50 text-primary">
-                          <Icon className="h-5 w-5" />
+                  <ScrollReveal key={idx} delay={(idx % 3) * 0.1}>
+                    <Card className="flex h-full flex-col justify-between border-neutral-200/90 bg-white p-6 shadow-sm hover:border-red-200 hover:shadow">
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-50 text-primary">
+                            <Icon className="h-5 w-5" />
+                          </div>
+                          <Badge variant="secondary" className="text-xs font-medium text-neutral-700 bg-neutral-100">
+                            {prog.badge}
+                          </Badge>
                         </div>
-                        <Badge variant="secondary" className="text-xs font-medium text-neutral-700 bg-neutral-100">
-                          {prog.badge}
-                        </Badge>
-                      </div>
 
-                      <h3 className="mt-5 text-xl font-bold text-neutral-900 leading-snug">{prog.title}</h3>
-                      <p className="mt-2.5 text-sm text-neutral-600 leading-relaxed">{prog.desc}</p>
+                        <h3 className="mt-5 text-xl font-bold text-neutral-900 leading-snug">{prog.title}</h3>
+                        <p className="mt-2.5 text-sm text-neutral-600 leading-relaxed">{prog.desc}</p>
 
-                      <div className="mt-5 border-t border-neutral-100 pt-4">
-                        <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2.5">
-                          Materi & Fokus Unggulan:
+                        <div className="mt-5 border-t border-neutral-100 pt-4">
+                          <div className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2.5">
+                            Materi & Fokus Unggulan:
+                          </div>
+                          <ul className="space-y-1.5 text-xs text-neutral-700">
+                            {prog.curriculum.map((c, cIdx) => (
+                              <li key={cIdx} className="flex items-start gap-2">
+                                <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                                <span>{c}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <ul className="space-y-1.5 text-xs text-neutral-700">
-                          {prog.curriculum.map((c, cIdx) => (
-                            <li key={cIdx} className="flex items-start gap-2">
-                              <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
-                              <span>{c}</span>
-                            </li>
-                          ))}
-                        </ul>
                       </div>
-                    </div>
 
-                    <div className="mt-6 border-t border-neutral-100 pt-4">
-                      <div className="flex items-center justify-between text-xs text-neutral-500 mb-4">
-                        <span className="flex items-center gap-1.5">
-                          <Clock className="h-3.5 w-3.5 text-primary" />
-                          <span>Masa Studi: {prog.duration}</span>
-                        </span>
+                      <div className="mt-6 border-t border-neutral-100 pt-4">
+                        <div className="flex items-center justify-between text-xs text-neutral-500 mb-4">
+                          <span className="flex items-center gap-1.5">
+                            <Clock className="h-3.5 w-3.5 text-primary" />
+                            <span>Masa Studi: {prog.duration}</span>
+                          </span>
+                        </div>
+                        <Button
+                          size="default"
+                          render={<Link href="/kontak" />}
+                          className="w-full text-xs font-semibold"
+                        >
+                          <span>Daftar Jenjang Ini</span>
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </Button>
                       </div>
-                      <Button
-                        size="default"
-                        render={<Link href="/kontak" />}
-                        className="w-full text-xs font-semibold"
-                      >
-                        <span>Daftar Jenjang Ini</span>
-                        <ArrowRight className="h-3.5 w-3.5" />
-                      </Button>
-                    </div>
-                  </Card>
+                    </Card>
+                  </ScrollReveal>
                 )
               })}
             </div>
@@ -209,43 +212,47 @@ export default function ProgramPage() {
         </section>
 
         {/* Admission Steps */}
-        <section className="bg-neutral-50/60 py-20 border-y border-neutral-200/80">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl text-center">
-              <Badge
-                variant="outline"
-                className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
-              >
-                Proses Admisi
-              </Badge>
-              <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
-                Alur Pendaftaran Peserta Didik Baru (PPDB)
-              </h2>
-              <p className="mt-4 text-base text-neutral-600 leading-relaxed">
-                Empat tahap pendaftaran praktis dan transparan dari pendaftaran online hingga penetapan kelulusan.
-              </p>
-            </div>
+        <ScrollReveal>
+          <section className="bg-neutral-50/60 py-20 border-y border-neutral-200/80">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-3xl text-center">
+                <Badge
+                  variant="outline"
+                  className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+                >
+                  Proses Admisi
+                </Badge>
+                <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
+                  Alur Pendaftaran Peserta Didik Baru (PPDB)
+                </h2>
+                <p className="mt-4 text-base text-neutral-600 leading-relaxed">
+                  Empat tahap pendaftaran praktis dan transparan dari pendaftaran online hingga penetapan kelulusan.
+                </p>
+              </div>
 
-            <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {admissionSteps.map((step, idx) => (
-                <Card key={idx} className="border-neutral-200/90 bg-white p-6 shadow-sm hover:border-red-200 hover:shadow">
-                  <CardContent className="p-0">
-                    <span className="text-3xl font-extrabold text-primary">{step.num}</span>
-                    <h3 className="mt-3 text-base font-bold text-neutral-900">{step.title}</h3>
-                    <p className="mt-2 text-sm text-neutral-600 leading-relaxed">{step.desc}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+              <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {admissionSteps.map((step, idx) => (
+                  <ScrollReveal key={idx} delay={idx * 0.1}>
+                    <Card className="border-neutral-200/90 bg-white p-6 shadow-sm hover:border-red-200 hover:shadow">
+                      <CardContent className="p-0">
+                        <span className="text-3xl font-extrabold text-primary">{step.num}</span>
+                        <h3 className="mt-3 text-base font-bold text-neutral-900">{step.title}</h3>
+                        <p className="mt-2 text-sm text-neutral-600 leading-relaxed">{step.desc}</p>
+                      </CardContent>
+                    </Card>
+                  </ScrollReveal>
+                ))}
+              </div>
 
-            <div className="mt-12 text-center">
-              <Button size="lg" render={<Link href="/kontak" />} className="text-sm font-semibold">
-                <span>Buka Formulir Pendaftaran</span>
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <div className="mt-12 text-center">
+                <Button size="lg" render={<Link href="/kontak" />} className="text-sm font-semibold">
+                  <span>Buka Formulir Pendaftaran</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </ScrollReveal>
       </main>
       <Footer />
     </div>

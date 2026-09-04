@@ -19,12 +19,8 @@ import {
   Briefcase,
   GraduationCap,
   Award,
-  Lock,
-  LogIn,
   LogOut,
-  UserCheck,
-  X,
-  AlertTriangle
+  UserCheck
 } from "lucide-react"
 import { QuizResult, QuizQuestion } from "@/lib/quiz-data"
 import { getStoredUser, removeStoredUser, AuthUser } from "@/lib/auth"
@@ -38,7 +34,6 @@ export default function QuizPage() {
   const [studentName, setStudentName] = React.useState("")
   const [loadingQuestions, setLoadingQuestions] = React.useState(false)
   const [currentUser, setCurrentUser] = React.useState<AuthUser | null>(null)
-  const [showAuthModal, setShowAuthModal] = React.useState(false)
 
   // Cek status autentikasi pengguna dari storage
   React.useEffect(() => {
@@ -84,14 +79,6 @@ export default function QuizPage() {
       ...prev,
       [questionId]: optionId
     }))
-  }
-
-  const handleInitiateQuiz = () => {
-    if (!currentUser) {
-      setShowAuthModal(true)
-      return
-    }
-    handleStartQuiz()
   }
 
   const handleNext = () => {
@@ -198,8 +185,8 @@ export default function QuizPage() {
                 </div>
 
                 <div className="space-y-4 max-w-md mx-auto">
-                  {/* Status Login Pengguna */}
-                  {currentUser ? (
+                  {/* Status Login Pengguna (Opsional jika sudah login) */}
+                  {currentUser && (
                     <div className="flex items-center justify-between p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-xs">
                       <div className="flex items-center gap-2 text-emerald-900">
                         <UserCheck className="h-4 w-4 text-emerald-600 shrink-0" />
@@ -224,16 +211,11 @@ export default function QuizPage() {
                         <span>Keluar</span>
                       </button>
                     </div>
-                  ) : (
-                    <div className="flex items-center gap-2.5 p-3 rounded-xl bg-amber-50/80 border border-amber-200/80 text-xs text-amber-900">
-                      <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
-                      <span>Anda belum masuk ke akun. Silakan masuk terlebih dahulu untuk memulai kuis.</span>
-                    </div>
                   )}
 
                   <div>
                     <label className="block text-xs font-semibold text-neutral-700 mb-1.5">
-                      Nama Peserta Kuis
+                      Nama Kamu (Opsional)
                     </label>
                     <input
                       type="text"
@@ -246,7 +228,7 @@ export default function QuizPage() {
 
                   <Button
                     size="lg"
-                    onClick={handleInitiateQuiz}
+                    onClick={handleStartQuiz}
                     disabled={loadingQuestions}
                     className="w-full text-sm font-semibold h-11"
                   >
@@ -255,79 +237,6 @@ export default function QuizPage() {
                   </Button>
                 </div>
               </Card>
-
-              {/* Modal Pop-up Wajib Login */}
-              {showAuthModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                    className="relative w-full max-w-md rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-2xl text-center"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setShowAuthModal(false)}
-                      className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 rounded-lg p-1 hover:bg-neutral-100 transition-colors cursor-pointer"
-                      aria-label="Tutup"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-
-                    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-primary mb-4 shadow-inner">
-                      <Lock className="h-7 w-7" />
-                    </div>
-
-                    <Badge variant="outline" className="mb-2 text-[11px] font-semibold border-red-200 bg-red-50 text-primary">
-                      Akses Terbatas
-                    </Badge>
-
-                    <h3 className="text-xl font-extrabold text-neutral-900 tracking-tight">
-                      Wajib Masuk ke Akun
-                    </h3>
-
-                    <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
-                      Untuk dapat mengikuti Quiz Rekomendasi Jurusan dan menyimpan hasil analisis minat bakatmu, silakan masuk ke <strong>Portal Terpadu SMK Telkom Jakarta</strong> terlebih dahulu.
-                    </p>
-
-                    {/* Informasi Akun Demo */}
-                    <div className="my-5 rounded-xl border border-neutral-200/90 bg-neutral-50/70 p-3.5 text-left text-xs text-neutral-600 space-y-1.5">
-                      <div className="font-semibold text-neutral-800 flex items-center gap-1.5">
-                        <GraduationCap className="h-3.5 w-3.5 text-primary" />
-                        <span>Akun Demo Siswa Tersedia:</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span>NIS / Email:</span>
-                        <code className="font-mono bg-white px-2 py-0.5 rounded border border-neutral-200 text-neutral-900 font-bold">10214055</code>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span>Kata Sandi:</span>
-                        <code className="font-mono bg-white px-2 py-0.5 rounded border border-neutral-200 text-neutral-900 font-bold">siswa123</code>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2.5">
-                      <Button
-                        size="lg"
-                        render={<Link href="/login?redirect=/quiz" />}
-                        className="w-full text-sm font-semibold rounded-xl bg-primary hover:bg-red-700"
-                      >
-                        <LogIn className="h-4 w-4 mr-2" />
-                        <span>Masuk ke Portal Terpadu</span>
-                        <ArrowRight className="h-4 w-4 ml-auto" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="default"
-                        onClick={() => setShowAuthModal(false)}
-                        className="w-full text-xs font-medium text-neutral-500 hover:text-neutral-800 rounded-xl"
-                      >
-                        Nanti Saja
-                      </Button>
-                    </div>
-                  </motion.div>
-                </div>
-              )}
 
               {/* Jurusan Overview Banner */}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

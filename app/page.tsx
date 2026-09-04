@@ -8,6 +8,7 @@ import { Programs } from "@/components/sections/Programs"
 import { Testimonials } from "@/components/sections/Testimonial"
 import { FAQ } from "@/components/sections/FAQ"
 import { CTA } from "@/components/sections/CTA"
+import { ScrollReveal } from "@/components/ui/scroll-reveal"
 
 export default function Home() {
   return (
@@ -15,13 +16,27 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
-        <Stats />
-        <About />
-        <Features />
-        <Programs />
-        <Testimonials />
-        <FAQ />
-        <CTA />
+        <ScrollReveal>
+          <Stats />
+        </ScrollReveal>
+        <ScrollReveal>
+          <About />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Features />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Programs />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Testimonials />
+        </ScrollReveal>
+        <ScrollReveal>
+          <FAQ />
+        </ScrollReveal>
+        <ScrollReveal>
+          <CTA />
+        </ScrollReveal>
       </main>
       <Footer />
     </div>
