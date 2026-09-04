@@ -1,28 +1,94 @@
+"use client"
+
+import { useEffect, useRef } from "react"
+import { useInView, useMotionValue, useTransform, animate } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Users, Award, BookOpen, GraduationCap } from "lucide-react"
+
+interface CountUpProps {
+  target: number
+  prefix?: string
+  suffix?: string
+  duration?: number
+  delay?: number
+  formatIndonesian?: boolean
+}
+
+function CountUp({
+  target,
+  prefix = "",
+  suffix = "",
+  duration = 2,
+  delay = 0,
+  formatIndonesian = true,
+}: CountUpProps) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const count = useMotionValue(0)
+
+  // Format angka ke format ribuan titik (.) misal: 1000 -> 1.000
+  const rounded = useTransform(count, (latest) => {
+    const val = Math.round(latest)
+    if (formatIndonesian) {
+      return val.toLocaleString("id-ID")
+    }
+    return val.toString()
+  })
+
+  const isInView = useInView(ref, { once: true, margin: "-50px" })
+
+  useEffect(() => {
+    if (isInView) {
+      const controls = animate(count, target, {
+        duration,
+        delay,
+        ease: [0.16, 1, 0.3, 1], // Custom smooth ease-out curve
+      })
+      return () => controls.stop()
+    }
+  }, [isInView, count, target, duration, delay])
+
+  useEffect(() => {
+    const unsubscribe = rounded.on("change", (latest) => {
+      if (ref.current) {
+        ref.current.textContent = `${prefix}${latest}${suffix}`
+      }
+    })
+    return () => unsubscribe()
+  }, [rounded, prefix, suffix])
+
+  return (
+    <span ref={ref}>
+      {prefix}0{suffix}
+    </span>
+  )
+}
 
 const stats = [
   {
     icon: Users,
-    value: "1.000+",
+    target: 1000,
+    suffix: "+",
     label: "Siswa Aktif",
     desc: "Belajar & berkarya setiap hari",
   },
   {
     icon: Award,
-    value: "50+",
+    target: 50,
+    suffix: "+",
     label: "Guru Profesional",
     desc: "Tersertifikasi & berpengalaman",
   },
   {
     icon: BookOpen,
-    value: "20+",
+    target: 20,
+    suffix: "+",
     label: "Program Unggulan",
     desc: "Akademik & vokasi terpadu",
   },
   {
     icon: GraduationCap,
-    value: "95%",
+    target: 95,
+    suffix: "%",
     label: "Tingkat Kelulusan",
     desc: "Diterima di PTN & industri top",
   },
@@ -46,7 +112,12 @@ export function Stats() {
                   </div>
                   <div>
                     <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">
-                      {item.value}
+                      <CountUp
+                        target={item.target}
+                        suffix={item.suffix}
+                        delay={idx * 0.15}
+                        duration={1.8}
+                      />
                     </div>
                     <div className="text-sm font-semibold text-neutral-800">
                       {item.label}
