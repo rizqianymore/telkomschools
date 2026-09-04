@@ -38,23 +38,22 @@ export function Navbar() {
     <header className="sticky top-0 z-40 w-full border-b border-neutral-200/80 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-3 shrink-0">
+        <Link
+          href="/"
+          className="flex items-center gap-3 shrink-0 cursor-pointer group focus:outline-none"
+          title="Kembali ke Halaman Utama"
+        >
           <Image
             src="/img/image.png"
             alt="Logo SMK Telkom"
             width={40}
             height={40}
-            className="h-10 w-10 object-contain"
+            className="h-10 w-10 object-contain transition-transform group-hover:scale-105"
             priority
           />
-          <div className="flex flex-col">
-            <span className="text-lg font-bold tracking-tight text-neutral-900 leading-none">
-              SMK Telkom <span className="text-primary">Jakarta</span>
-            </span>
-            <span className="text-[11px] font-medium text-neutral-500 tracking-wider uppercase mt-1">
-              Pelopor Pendidikan Vokasi Digital
-            </span>
-          </div>
+          <span className="text-lg font-bold tracking-tight text-neutral-900 leading-none">
+            SMK Telkom <span className="text-primary">Jakarta</span>
+          </span>
         </Link>
 
         {/* Desktop Links */}
@@ -124,15 +123,17 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[360px] p-6 bg-white">
               <SheetHeader className="p-0 text-left">
-                <SheetTitle className="flex items-center gap-2.5 text-base font-bold text-neutral-900">
-                  <Image
-                    src="/img/image.png"
-                    alt="Logo SMK Telkom"
-                    width={36}
-                    height={36}
-                    className="h-9 w-9 object-contain"
-                  />
-                  <span>SMK Telkom Jakarta</span>
+                <SheetTitle className="p-0 text-base font-bold text-neutral-900">
+                  <Link href="/" className="flex items-center gap-2.5 cursor-pointer">
+                    <Image
+                      src="/img/image.png"
+                      alt="Logo SMK Telkom"
+                      width={36}
+                      height={36}
+                      className="h-9 w-9 object-contain"
+                    />
+                    <span>SMK Telkom Jakarta</span>
+                  </Link>
                 </SheetTitle>
               </SheetHeader>
 
