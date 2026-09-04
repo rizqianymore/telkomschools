@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { LoginForm } from "@/components/login-form"
-import { ArrowLeft, ShieldCheck, CheckCircle2 } from "lucide-react"
+import { ArrowLeft, CheckCircle2 } from "lucide-react"
 
 export default function LoginPage() {
   return (
@@ -42,12 +42,8 @@ export default function LoginPage() {
           <LoginForm />
         </div>
 
-        <div className="flex items-center justify-between text-xs text-neutral-400 border-t border-neutral-100 pt-4">
-          <span>© {new Date().getFullYear()} SMK Telkom Jakarta</span>
-          <div className="flex items-center gap-1 text-neutral-500">
-            <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-            <span>Sistem Terenkripsi & Terverifikasi</span>
-          </div>
+        <div className="text-center text-xs text-neutral-400 border-t border-neutral-100 pt-4">
+          <span>© {new Date().getFullYear()} SMK Telkom Jakarta. All rights reserved.</span>
         </div>
       </div>
 
