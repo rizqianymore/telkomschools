@@ -6,7 +6,10 @@ export type UserRole = "siswa" | "ortu" | "guru" | "admin"
 
 export interface UserRecord {
   id: number
+  identifier: string // email / NIS / NIP
   email: string
+  nis?: string
+  nip?: string
   name: string
   password_hash: string
   role: UserRole
@@ -17,7 +20,9 @@ export interface UserRecord {
 export const MOCK_MYSQL_USERS: UserRecord[] = [
   {
     id: 1,
+    identifier: "siswa@smktelkom-jkt.sch.id",
     email: "siswa@smktelkom-jkt.sch.id",
+    nis: "10214055",
     name: "Muhammad Fadhil",
     password_hash: "siswa123",
     role: "siswa",
@@ -25,6 +30,7 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
   },
   {
     id: 2,
+    identifier: "ortu@smktelkom-jkt.sch.id",
     email: "ortu@smktelkom-jkt.sch.id",
     name: "Bambang Prasetyo",
     password_hash: "ortu123",
@@ -33,7 +39,9 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
   },
   {
     id: 3,
+    identifier: "guru@smktelkom-jkt.sch.id",
     email: "guru@smktelkom-jkt.sch.id",
+    nip: "198504122010011002",
     name: "Siti Rahmawati, M.Kom.",
     password_hash: "guru123",
     role: "guru",
@@ -41,6 +49,7 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
   },
   {
     id: 4,
+    identifier: "admin@smktelkom-jkt.sch.id",
     email: "admin@smktelkom-jkt.sch.id",
     name: "Administrator Sistem",
     password_hash: "admin123",
@@ -50,19 +59,35 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
 ]
 
 /**
- * Query pencarian user berdasarkan email dan role (jika ditentukan)
- * Ekuivalen query MySQL:
- * SELECT id, email, name, password_hash, role, role_label FROM users WHERE email = ? AND role = ? LIMIT 1
+ * Otomatis mendeteksi role atau mencari user berdasarkan identifier:
+ * - Siswa: NIS atau Email
+ * - Guru: NIP atau Email
+ * - Orang Tua: Email
+ * - Admin: Email
+ *
+ * Query MySQL ekuivalen:
+ * SELECT * FROM users
+ * WHERE (email = ? OR nis = ? OR nip = ?)
+ * LIMIT 1;
  */
-export async function findUserByEmailAndRole(
-  email: string,
-  role?: UserRole
+export async function findUserByIdentifier(
+  identifier: string,
+  explicitRole?: UserRole
 ): Promise<UserRecord | null> {
-  const normalizedEmail = email.trim().toLowerCase()
+  const cleanId = identifier.trim().toLowerCase()
+
   const user = MOCK_MYSQL_USERS.find((u) => {
-    const emailMatches = u.email.toLowerCase() === normalizedEmail
-    if (!emailMatches) return false
-    if (role && u.role !== role) return false
+    // Cek kecocokan identifier
+    const emailMatches = u.email.toLowerCase() === cleanId
+    const nisMatches = u.nis && u.nis.toLowerCase() === cleanId
+    const nipMatches = u.nip && u.nip.toLowerCase() === cleanId
+
+    const matched = emailMatches || nisMatches || nipMatches
+    if (!matched) return false
+
+    // Jika user memilih tab role secara manual, pastikan role sesuai
+    if (explicitRole && u.role !== explicitRole) return false
+
     return true
   })
 

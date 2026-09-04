@@ -13,11 +13,48 @@ import { Input } from "@/components/ui/input"
 import { CheckCircle2, AlertCircle, Loader2, GraduationCap, Users, BookOpen, Shield } from "lucide-react"
 import type { UserRole } from "@/lib/db"
 
-const roles: { key: UserRole; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { key: "siswa", label: "Siswa", icon: GraduationCap },
-  { key: "ortu", label: "Orang Tua", icon: Users },
-  { key: "guru", label: "Guru", icon: BookOpen },
-  { key: "admin", label: "Admin", icon: Shield },
+interface RoleConfig {
+  key: UserRole
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  identifierLabel: string
+  placeholder: string
+  helperText: string
+}
+
+const roleConfigs: RoleConfig[] = [
+  {
+    key: "siswa",
+    label: "Siswa",
+    icon: GraduationCap,
+    identifierLabel: "Nomor Induk Siswa (NIS) atau Email",
+    placeholder: "Contoh: 10214055 atau nama@smktelkom-jkt.sch.id",
+    helperText: "Gunakan NIS resmi atau email siswa yang terdaftar",
+  },
+  {
+    key: "ortu",
+    label: "Orang Tua",
+    icon: Users,
+    identifierLabel: "Alamat Email Orang Tua",
+    placeholder: "nama@smktelkom-jkt.sch.id",
+    helperText: "Email yang didaftarkan saat registrasi PPDB",
+  },
+  {
+    key: "guru",
+    label: "Guru",
+    icon: BookOpen,
+    identifierLabel: "NIP atau Email Pendidik",
+    placeholder: "Contoh: 19850412... atau guru@smktelkom-jkt.sch.id",
+    helperText: "Gunakan NIP resmi atau email kedinasan SMK Telkom",
+  },
+  {
+    key: "admin",
+    label: "Admin",
+    icon: Shield,
+    identifierLabel: "Email Administrator",
+    placeholder: "admin@smktelkom-jkt.sch.id",
+    helperText: "Akses khusus pengelola sistem dan PPDB",
+  },
 ]
 
 export function LoginForm({
@@ -25,11 +62,28 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
   const [selectedRole, setSelectedRole] = React.useState<UserRole>("siswa")
-  const [email, setEmail] = React.useState("")
+  const [identifier, setIdentifier] = React.useState("")
   const [password, setPassword] = React.useState("")
   const [loading, setLoading] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
   const [successMessage, setSuccessMessage] = React.useState<string | null>(null)
+
+  const activeConfig = roleConfigs.find((r) => r.key === selectedRole) || roleConfigs[0]
+
+  // Otomatis mengenali input identifier jika pengguna mengetik NIP / NIS
+  const handleIdentifierChange = (val: string) => {
+    setIdentifier(val)
+    const trimmed = val.trim()
+
+    // Jika berupa angka 18 digit -> otomatis ganti ke Guru (format NIP)
+    if (/^\d{16,18}$/.test(trimmed)) {
+      if (selectedRole !== "guru") setSelectedRole("guru")
+    }
+    // Jika berupa angka 8 digit -> otomatis ganti ke Siswa (format NIS)
+    else if (/^\d{7,10}$/.test(trimmed)) {
+      if (selectedRole !== "siswa") setSelectedRole("siswa")
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -41,7 +95,7 @@ export function LoginForm({
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, role: selectedRole }),
+        body: JSON.stringify({ identifier, password, role: selectedRole }),
       })
 
       const data = await res.json()
@@ -72,7 +126,7 @@ export function LoginForm({
 
         {/* Role Selector Tabs */}
         <div className="grid grid-cols-4 gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50/80 p-1">
-          {roles.map((r) => {
+          {roleConfigs.map((r) => {
             const Icon = r.icon
             const isActive = selectedRole === r.key
             return (
@@ -113,19 +167,23 @@ export function LoginForm({
           </div>
         )}
 
+        {/* Dynamic Identifier Field (NIS/Email for Siswa, NIP/Email for Guru, Email for Ortu/Admin) */}
         <Field>
-          <FieldLabel htmlFor="email" className="text-xs font-semibold text-neutral-700">
-            Alamat Email ({roles.find((r) => r.key === selectedRole)?.label})
+          <FieldLabel htmlFor="identifier" className="text-xs font-semibold text-neutral-700">
+            {activeConfig.identifierLabel}
           </FieldLabel>
           <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={`nama@smktelkom-jkt.sch.id`}
+            id="identifier"
+            type="text"
+            value={identifier}
+            onChange={(e) => handleIdentifierChange(e.target.value)}
+            placeholder={activeConfig.placeholder}
             className="rounded-xl border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
             required
           />
+          <span className="text-[11px] text-neutral-400 mt-0.5">
+            {activeConfig.helperText}
+          </span>
         </Field>
 
         <Field>
@@ -163,7 +221,7 @@ export function LoginForm({
                 Memverifikasi...
               </span>
             ) : (
-              `Masuk sebagai ${roles.find((r) => r.key === selectedRole)?.label}`
+              `Masuk sebagai ${activeConfig.label}`
             )}
           </Button>
         </Field>

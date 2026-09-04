@@ -1,53 +1,55 @@
 import { NextResponse } from "next/server"
-import { findUserByEmailAndRole, type UserRole } from "@/lib/db"
+import { findUserByIdentifier, type UserRole } from "@/lib/db"
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { email, password, role } = body as {
-      email?: string
+    const { identifier, password, role } = body as {
+      identifier?: string
       password?: string
       role?: UserRole
     }
 
-    if (!email || !password) {
+    if (!identifier || !password) {
       return NextResponse.json(
-        { success: false, message: "Alamat email dan kata sandi wajib diisi." },
+        { success: false, message: "Identitas akun (NIS / NIP / Email) dan kata sandi wajib diisi." },
         { status: 400 }
       )
     }
 
-    // Query ke MySQL terfilter berdasarkan email & role yang dipilih
-    const user = await findUserByEmailAndRole(email, role)
+    // Cari user di database MySQL berdasarkan identifier yang fleksibel (NIS/NIP/Email)
+    const user = await findUserByIdentifier(identifier, role)
 
     if (!user) {
-      const roleText = role ? ` untuk portal ${role}` : ""
       return NextResponse.json(
         {
           success: false,
-          message: `Akun dengan email tersebut tidak terdaftar${roleText}.`,
+          message: "Akun tidak ditemukan. Periksa kembali NIS/NIP/Email atau pilihan peran Anda.",
         },
         { status: 401 }
       )
     }
 
-    // Verifikasi kecocokan password
+    // Verifikasi kata sandi
     const isPasswordValid = user.password_hash === password
 
     if (!isPasswordValid) {
       return NextResponse.json(
-        { success: false, message: "Kata sandi yang Anda masukkan salah." },
+        { success: false, message: "Kata sandi yang Anda masukkan tidak sesuai." },
         { status: 401 }
       )
     }
 
-    // Berhasil Login
+    // Kembalikan data profil dan role
     return NextResponse.json({
       success: true,
-      message: `Login berhasil sebagai ${user.role_label}! Selamat datang di Portal SMK Telkom Jakarta.`,
+      message: `Login berhasil sebagai ${user.role_label}! Selamat datang, ${user.name}.`,
       user: {
         id: user.id,
+        identifier: user.identifier,
         email: user.email,
+        nis: user.nis,
+        nip: user.nip,
         name: user.name,
         role: user.role,
         role_label: user.role_label,
@@ -56,7 +58,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Login API Error:", error)
     return NextResponse.json(
-      { success: false, message: "Terjadi gangguan saat memproses database." },
+      { success: false, message: "Terjadi gangguan saat memproses data akun." },
       { status: 500 }
     )
   }
