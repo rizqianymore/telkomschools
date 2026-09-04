@@ -69,6 +69,9 @@ export function Navbar() {
           ))}
         </nav>
 
+        {/* Pembatas Vertikal antara Navigasi & Tombol Masuk/Daftar */}
+        <div className="hidden lg:block h-6 w-px bg-neutral-200" />
+
         {/* CTA Button with standard button size */}
         <div className="hidden lg:flex items-center gap-2.5 shrink-0">
           {currentUser ? (

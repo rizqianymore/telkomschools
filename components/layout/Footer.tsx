@@ -105,24 +105,24 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Program List */}
+          {/* Program List - 4 Jurusan SMK Telkom Jakarta */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider text-neutral-900">Program</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider text-neutral-900">Program Keahlian</h4>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <Link href="/program" className="transition-colors hover:text-primary">TK & PAUD</Link>
+                <Link href="/program" className="transition-colors hover:text-primary">Rekayasa Perangkat Lunak (RPL)</Link>
               </li>
               <li>
-                <Link href="/program" className="transition-colors hover:text-primary">Sekolah Dasar (SD)</Link>
+                <Link href="/program" className="transition-colors hover:text-primary">Teknik Komputer & Jaringan (TKJ)</Link>
               </li>
               <li>
-                <Link href="/program" className="transition-colors hover:text-primary">SMP Telkom</Link>
+                <Link href="/program" className="transition-colors hover:text-primary">Desain Komunikasi Visual (DKV)</Link>
               </li>
               <li>
-                <Link href="/program" className="transition-colors hover:text-primary">SMK / SMA Telkom</Link>
+                <Link href="/program" className="transition-colors hover:text-primary">Teknik Jaringan Akses (TJA)</Link>
               </li>
               <li>
-                <Link href="/program" className="transition-colors hover:text-primary">Kursus & Pelatihan</Link>
+                <Link href="/quiz" className="transition-colors text-primary font-medium hover:underline">Quiz Minat Jurusan →</Link>
               </li>
             </ul>
           </div>
@@ -153,9 +153,15 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-4 text-xs text-neutral-500 sm:flex-row">
           <p>© {new Date().getFullYear()} SMK Telkom Jakarta. Hak Cipta Dilindungi.</p>
           <div className="flex space-x-6">
-            <a href="#" className="hover:text-primary transition-colors">Kebijakan Privasi</a>
-            <a href="#" className="hover:text-primary transition-colors">Syarat & Ketentuan</a>
-            <a href="#" className="hover:text-primary transition-colors">Pusat Bantuan</a>
+            <Link href="/kebijakan-privasi" className="hover:text-primary transition-colors">
+              Kebijakan Privasi
+            </Link>
+            <Link href="/syarat-ketentuan" className="hover:text-primary transition-colors">
+              Syarat & Ketentuan
+            </Link>
+            <Link href="/faq" className="hover:text-primary transition-colors">
+              Pusat Bantuan
+            </Link>
           </div>
         </div>
       </div>
