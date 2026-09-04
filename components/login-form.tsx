@@ -85,10 +85,17 @@ export function LoginForm({
         }
         const search = typeof window !== "undefined" ? window.location.search : ""
         const params = new URLSearchParams(search)
-        const redirectUrl = params.get("redirect") || "/"
+        const redirectUrl = params.get("redirect")
+
         setTimeout(() => {
-          router.push(redirectUrl)
-        }, 700)
+          if (redirectUrl) {
+            router.push(redirectUrl)
+          } else if (data.user?.role === "guru") {
+            router.push("/dashboard/guru")
+          } else {
+            router.push("/")
+          }
+        }, 750)
       }
     } catch {
       setErrorMessage("Gagal terhubung ke server. Periksa koneksi internet Anda.")

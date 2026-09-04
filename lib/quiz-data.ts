@@ -85,11 +85,11 @@ export const MAJORS_INFO: Record<MajorKey, MajorInfo> = {
       "IT Technical Support Specialist"
     ],
     color: {
-      badge: "bg-blue-50 text-blue-600 border-blue-200",
-      accent: "text-blue-600",
-      bg: "from-blue-50 to-white",
-      border: "border-blue-200",
-      progress: "bg-blue-600"
+      badge: "bg-neutral-100 text-neutral-800 border-neutral-200",
+      accent: "text-neutral-900",
+      bg: "from-neutral-50 to-white",
+      border: "border-neutral-200",
+      progress: "bg-neutral-800"
     }
   },
   TJA: {
@@ -107,11 +107,11 @@ export const MAJORS_INFO: Record<MajorKey, MajorInfo> = {
       "Broadband Access Network Administrator"
     ],
     color: {
-      badge: "bg-emerald-50 text-emerald-600 border-emerald-200",
-      accent: "text-emerald-600",
-      bg: "from-emerald-50 to-white",
-      border: "border-emerald-200",
-      progress: "bg-emerald-600"
+      badge: "bg-red-50 text-red-700 border-red-200",
+      accent: "text-red-700",
+      bg: "from-red-50 to-white",
+      border: "border-red-200",
+      progress: "bg-red-700"
     }
   },
   DKV: {
@@ -129,16 +129,17 @@ export const MAJORS_INFO: Record<MajorKey, MajorInfo> = {
       "3D Modeler & Digital Animator"
     ],
     color: {
-      badge: "bg-amber-50 text-amber-600 border-amber-200",
-      accent: "text-amber-600",
-      bg: "from-amber-50 to-white",
-      border: "border-amber-200",
-      progress: "bg-amber-600"
+      badge: "bg-neutral-100 text-neutral-800 border-neutral-200",
+      accent: "text-neutral-900",
+      bg: "from-neutral-50 to-white",
+      border: "border-neutral-200",
+      progress: "bg-neutral-800"
     }
   }
 }
 
-export const QUIZ_QUESTIONS: QuizQuestion[] = [
+// In-Memory mutable quiz questions store (managed by Guru)
+export let QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     id: 1,
     question: "Kalau ada waktu luang, kamu lebih suka ngapain?",
@@ -241,6 +242,71 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   }
 ]
 
+// Log penyerahan kuis siswa (untuk dipantau Guru di dashboard)
+export interface QuizSubmissionLog {
+  id: string
+  studentName: string
+  submittedAt: string
+  primaryMajor: string
+  score: number
+  percentage: number
+  allScores: { major: string; score: number; percentage: number }[]
+}
+
+export const QUIZ_SUBMISSIONS: QuizSubmissionLog[] = [
+  {
+    id: "sub-1",
+    studentName: "Ahmad Rizky",
+    submittedAt: "2026-09-04 14:10",
+    primaryMajor: "RPL",
+    score: 18,
+    percentage: 60,
+    allScores: [
+      { major: "RPL", score: 18, percentage: 60 },
+      { major: "TKJ", score: 6, percentage: 20 },
+      { major: "DKV", score: 4, percentage: 13 },
+      { major: "TJA", score: 2, percentage: 7 },
+    ]
+  },
+  {
+    id: "sub-2",
+    studentName: "Dewi Lestari",
+    submittedAt: "2026-09-04 15:02",
+    primaryMajor: "DKV",
+    score: 16,
+    percentage: 55,
+    allScores: [
+      { major: "DKV", score: 16, percentage: 55 },
+      { major: "RPL", score: 6, percentage: 21 },
+      { major: "TKJ", score: 4, percentage: 14 },
+      { major: "TJA", score: 3, percentage: 10 },
+    ]
+  },
+]
+
+// CRUD Helper Functions untuk Guru
+export function updateQuestion(id: number, updatedText: string, options: QuizOption[]) {
+  const index = QUIZ_QUESTIONS.findIndex(q => q.id === id)
+  if (index !== -1) {
+    QUIZ_QUESTIONS[index] = { id, question: updatedText, options }
+    return QUIZ_QUESTIONS[index]
+  }
+  return null
+}
+
+export function addQuestion(question: string, options: QuizOption[]) {
+  const nextId = QUIZ_QUESTIONS.length > 0 ? Math.max(...QUIZ_QUESTIONS.map(q => q.id)) + 1 : 1
+  const newQ: QuizQuestion = { id: nextId, question, options }
+  QUIZ_QUESTIONS.push(newQ)
+  return newQ
+}
+
+export function deleteQuestion(id: number) {
+  const initialLength = QUIZ_QUESTIONS.length
+  QUIZ_QUESTIONS = QUIZ_QUESTIONS.filter(q => q.id !== id)
+  return QUIZ_QUESTIONS.length < initialLength
+}
+
 export function calculateQuizRecommendation(answers: Record<number, string>): QuizResult {
   const scores: Record<MajorKey, number> = {
     RPL: 0,
@@ -292,7 +358,6 @@ export function calculateQuizRecommendation(answers: Record<number, string>): Qu
     totalAnswered
   }
 
-  // Sesuai aturan: jika selisih skor <= 3 poin dan runnerUp punya skor > 0, tampilkan alternatif
   if (runnerUp && highest.score - runnerUp.score <= 3 && runnerUp.score > 0) {
     result.alternative = {
       major: runnerUp.major,
