@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { LoginForm } from "@/components/login-form"
-import { GraduationCap, ArrowLeft, ShieldCheck, CheckCircle2 } from "lucide-react"
+import { ArrowLeft, ShieldCheck, CheckCircle2 } from "lucide-react"
 
 export default function LoginPage() {
   return (
@@ -10,18 +11,22 @@ export default function LoginPage() {
       {/* Left Column: Form & Header */}
       <div className="flex flex-col justify-between p-6 sm:p-10 lg:p-12">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-              <GraduationCap className="h-5 w-5" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-base font-bold tracking-tight text-neutral-900 leading-none">
-                SMK Telkom <span className="text-primary">Jakarta</span>
-              </span>
-              <span className="text-[10px] font-medium text-neutral-500 uppercase tracking-wider mt-1">
-                Sistem Informasi Terpadu
-              </span>
-            </div>
+          <Link
+            href="/"
+            className="flex items-center gap-3 cursor-pointer group focus:outline-none"
+            title="Kembali ke Halaman Utama"
+          >
+            <Image
+              src="/img/image.png"
+              alt="Logo SMK Telkom"
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain transition-transform group-hover:scale-105"
+              priority
+            />
+            <span className="text-lg font-bold tracking-tight text-neutral-900 leading-none">
+              SMK Telkom <span className="text-primary">Jakarta</span>
+            </span>
           </Link>
 
           <Link
