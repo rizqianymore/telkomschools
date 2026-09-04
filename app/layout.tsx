@@ -9,15 +9,18 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Telkom Schools - Membangun Generasi Unggul & Berkarakter Digital",
+  title: "SMK Telkom Jakarta - Pelopor Pendidikan Vokasi Digital Unggul",
   description:
-    "Portal resmi pendaftaran dan informasi Telkom Schools. Lembaga pendidikan berkualitas berstandar nasional dengan keunggulan akademik, teknologi digital, dan karakter integritas.",
+    "Portal resmi pendaftaran dan informasi SMK Telkom Jakarta. Sekolah kejuruan teknologi berkualitas berstandar nasional dan industri dengan keunggulan akademik, teknologi digital, dan karakter integritas.",
   keywords: [
-    "Telkom Schools",
+    "SMK Telkom Jakarta",
+    "Telkom Jakarta",
     "Sekolah Telkom",
     "Pendidikan Vokasi",
     "SMK Telkom",
-    "SMP Telkom",
+    "Rekayasa Perangkat Lunak",
+    "Teknik Komputer dan Jaringan",
+    "Desain Komunikasi Visual",
     "Pendidikan Digital",
   ],
 };

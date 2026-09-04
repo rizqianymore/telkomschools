@@ -73,7 +73,7 @@ export function Hero() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop"
-                    alt="Siswa Telkom Schools"
+                    alt="Siswa SMK Telkom Jakarta"
                     className="h-full w-full object-cover opacity-90"
                   />
                   <div className="absolute inset-0 bg-neutral-950/20" />

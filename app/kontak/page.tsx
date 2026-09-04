@@ -85,9 +85,9 @@ export default function KontakPage() {
                         <MapPin className="h-5 w-5" />
                       </div>
                       <div>
-                        <div className="text-sm font-bold text-neutral-900">Alamat Kampus Pusat</div>
+                        <div className="text-sm font-bold text-neutral-900">Alamat Kampus Utama</div>
                         <div className="text-xs text-neutral-600 mt-0.5">
-                          Jl. Telekomunikasi No. 1, Terusan Buahbatu, Bandung, Jawa Barat 40257
+                          Jl. Daan Mogot KM. 11, Cengkareng Timur, Jakarta Barat, DKI Jakarta 11730
                         </div>
                       </div>
                     </CardContent>
@@ -101,7 +101,7 @@ export default function KontakPage() {
                       <div>
                         <div className="text-sm font-bold text-neutral-900">Telepon & WhatsApp Admisi</div>
                         <div className="text-xs text-neutral-600 mt-0.5">
-                          (021) 1234-5678 / +62 812-3456-7890
+                          (021) 5451-697 / +62 812-3456-7890
                         </div>
                       </div>
                     </CardContent>
@@ -115,7 +115,7 @@ export default function KontakPage() {
                       <div>
                         <div className="text-sm font-bold text-neutral-900">Surat Elektronik (Email)</div>
                         <div className="text-xs text-neutral-600 mt-0.5">
-                          admissions@telkomschools.sch.id
+                          info@smktelkom-jkt.sch.id
                         </div>
                       </div>
                     </CardContent>

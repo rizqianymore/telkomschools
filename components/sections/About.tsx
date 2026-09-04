@@ -22,11 +22,11 @@ export function About() {
             Tentang Kami
           </Badge>
           <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
-            Mewujudkan Pendidikan Berkualitas Dunia
+            Mewujudkan Pendidikan Vokasi Kelas Dunia
           </h2>
           <p className="mt-4 text-base sm:text-lg text-neutral-600 leading-relaxed">
-            Telkom Schools berdedikasi menciptakan generasi muda yang memiliki kecakapan akademis,
-            keahlian praktis dalam ranah teknologi, serta integritas moral yang kokoh.
+            SMK Telkom Jakarta berdedikasi menciptakan generasi muda yang memiliki kecakapan kejuruan,
+            keahlian praktis dalam ranah teknologi informasi, serta integritas moral yang kokoh.
           </p>
         </div>
 

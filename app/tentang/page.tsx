@@ -18,25 +18,25 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Tentang Kami - Telkom Schools",
-  description: "Sejarah, visi, misi, nilai-nilai budaya, dan kepemimpinan Yayasan Pendidikan Telkom.",
+  title: "Tentang Kami - SMK Telkom Jakarta",
+  description: "Sejarah, visi, misi, nilai-nilai budaya, dan kepemimpinan SMK Telkom Jakarta di bawah naungan Yayasan Pendidikan Telkom.",
 }
 
 const timelines = [
   {
     year: "1992",
     title: "Pendirian Sekolah Kejuruan Pertama",
-    desc: "Diawali dengan berdirinya SMK Telekomunikasi Telkom di Bandung dan Purwokerto untuk memenuhi kebutuhan talenta teknis telekomunikasi nasional.",
+    desc: "Diawali dengan berdirinya sekolah telekomunikasi pertama untuk memenuhi kebutuhan talenta teknis telekomunikasi nasional.",
   },
   {
     year: "2005",
-    title: "Ekspansi Nasional & Transformasi IT",
-    desc: "Membuka unit-unit pendidikan di kota-kota besar Indonesia seperti Jakarta, Malang, Makassar, dan Medan dengan kurikulum berbasis informatika.",
+    title: "Ekspansi Kampus SMK Telkom Jakarta",
+    desc: "Mendirikan kampus terpadu di Daan Mogot Jakarta Barat dengan fokus kejuruan informatika dan jaringan komputer modern.",
   },
   {
     year: "2015",
-    title: "Satu Payung Telkom Schools",
-    desc: "Konsolidasi seluruh unit TK, SD, SMP, SMA, dan SMK di bawah naungan Yayasan Pendidikan Telkom (YPT) berstandar mutu internasional.",
+    title: "Integrasi Standar Mutu Telkom Schools",
+    desc: "Seluruh unit kejuruan terakreditasi A Unggul di bawah naungan Yayasan Pendidikan Telkom (YPT) berstandar industri internasional.",
   },
   {
     year: "2026",
@@ -218,10 +218,10 @@ export default function TentangPage() {
                 Jejak Langkah
               </Badge>
               <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
-                Sejarah Perjalanan Telkom Schools
+                Sejarah Perjalanan SMK Telkom Jakarta
               </h2>
               <p className="mt-4 text-base text-neutral-600 leading-relaxed">
-                Transformasi panjang dari sekolah kejuruan telekomunikasi perintis hingga menjadi ekosistem pendidikan digital terlengkap di Indonesia.
+                Transformasi panjang dari sekolah kejuruan telekomunikasi perintis hingga menjadi institusi pendidikan vokasi digital terdepan di Jakarta.
               </p>
             </div>
 

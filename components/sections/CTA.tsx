@@ -17,11 +17,11 @@ export function CTA() {
             </Badge>
 
             <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl md:text-5xl md:leading-tight">
-              Siap Memulai Perjalanan Prestasi Bersama Telkom Schools?
+              Siap Memulai Perjalanan Prestasi Bersama SMK Telkom Jakarta?
             </h2>
 
             <p className="mt-6 text-base sm:text-lg text-neutral-600 leading-relaxed">
-              Bergabunglah dengan ribuan siswa berprestasi lainnya. Dapatkan pendidikan berkualitas dengan fasilitas terbaik dan kurikulum berstandar internasional.
+              Bergabunglah dengan ribuan talenta muda berprestasi lainnya. Dapatkan pendidikan vokasi berkualitas dengan fasilitas laboratorium mutakhir dan kurikulum berstandar industri global.
             </p>
 
             {/* CTA Buttons with normalized sizes */}
@@ -37,7 +37,7 @@ export function CTA() {
               <Button
                 size="lg"
                 variant="outline"
-                render={<a href="tel:+622112345678" />}
+                render={<a href="tel:+62215451697" />}
                 className="w-full sm:w-auto border-neutral-300 bg-white text-sm font-medium text-neutral-800 hover:bg-neutral-50 hover:text-neutral-900"
               >
                 <PhoneCall className="h-4 w-4" />
@@ -49,11 +49,11 @@ export function CTA() {
             <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-neutral-500">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
-                <span>info@telkomschools.sch.id</span>
+                <span>info@smktelkom-jkt.sch.id</span>
               </div>
               <div className="flex items-center gap-2">
                 <PhoneCall className="h-4 w-4 text-primary" />
-                <span>(021) 1234-5678 / +62 812-3456-7890</span>
+                <span>(021) 5451-697 / +62 812-3456-7890</span>
               </div>
             </div>
           </div>

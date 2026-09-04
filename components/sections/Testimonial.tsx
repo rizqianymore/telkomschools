@@ -5,15 +5,15 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 const testimonials = [
   {
     name: "Rizky Ramadhan",
-    role: "Alumni Telkom Schools (Software Engineer)",
+    role: "Alumni SMK Telkom Jakarta (Software Engineer)",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop",
     fallback: "RR",
     content:
-      "Telkom Schools memberikan pondasi kejuruan IT dan kedisiplinan yang sangat kuat. Kurikulum berbasis industri membuat saya langsung siap bersaing di dunia kerja setelah lulus.",
+      "SMK Telkom Jakarta memberikan pondasi kejuruan IT dan kedisiplinan yang sangat kuat. Kurikulum berbasis industri membuat saya langsung siap bersaing di dunia kerja setelah lulus.",
   },
   {
     name: "Dr. Hendra Wijaya",
-    role: "Orang Tua Siswa (Kelas XI)",
+    role: "Orang Tua Siswa (Kelas XI RPL)",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
     fallback: "HW",
     content:
@@ -21,7 +21,7 @@ const testimonials = [
   },
   {
     name: "Amanda Putri",
-    role: "Siswa Berprestasi (Juara Olimpiade Informatika)",
+    role: "Siswa Berprestasi (Juara LKS Web Technologies)",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop",
     fallback: "AP",
     content:
@@ -45,7 +45,7 @@ export function Testimonials() {
             Apa Kata Mereka Tentang Kami?
           </h2>
           <p className="mt-4 text-base sm:text-lg text-neutral-600 leading-relaxed">
-            Kisah nyata dari para siswa, orang tua, dan alumni yang telah menjadi bagian dari keluarga besar Telkom Schools.
+            Kisah nyata dari para siswa, orang tua, dan alumni yang telah menjadi bagian dari keluarga besar SMK Telkom Jakarta.
           </p>
         </div>
 

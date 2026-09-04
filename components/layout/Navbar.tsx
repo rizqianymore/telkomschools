@@ -32,10 +32,10 @@ export function Navbar() {
           </div>
           <div className="flex flex-col">
             <span className="text-lg font-bold tracking-tight text-neutral-900 leading-none">
-              Telkom<span className="text-primary">Schools</span>
+              SMK Telkom <span className="text-primary">Jakarta</span>
             </span>
             <span className="text-[11px] font-medium text-neutral-500 tracking-wider uppercase mt-1">
-              Yayasan Pendidikan
+              Pelopor Pendidikan Vokasi Digital
             </span>
           </div>
         </Link>
@@ -85,7 +85,7 @@ export function Navbar() {
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                     <GraduationCap className="h-4 w-4" />
                   </div>
-                  <span>TelkomSchools</span>
+                  <span>SMK Telkom Jakarta</span>
                 </SheetTitle>
               </SheetHeader>
 

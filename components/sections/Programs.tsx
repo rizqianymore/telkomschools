@@ -59,14 +59,13 @@ export function Programs() {
             variant="outline"
             className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/60 text-primary font-semibold"
           >
-            Jenjang Pendidikan
+            Konsentrasi & Program
           </Badge>
           <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
-            Program Pendidikan Terpadu
+            Program Keahlian & Ekstrakurikuler
           </h2>
           <p className="mt-4 text-base sm:text-lg text-neutral-600 leading-relaxed">
-            Menyediakan jalur pendidikan lengkap dari usia dini hingga jenjang kejuruan 
-            serta program sertifikasi keahlian.
+            Kurikulum kejuruan unggulan di SMK Telkom Jakarta dirancang terintegrasi dengan kebutuhan industri teknologi digital modern.
           </p>
         </div>
 
