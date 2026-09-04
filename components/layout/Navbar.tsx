@@ -71,22 +71,21 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* CTA Button with standard shadcn button size */}
+        {/* CTA Button with standard button size */}
         <div className="hidden lg:flex items-center gap-2.5 shrink-0">
           {currentUser ? (
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-100 text-sm font-semibold text-neutral-800">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-neutral-100 text-sm font-medium text-neutral-800 border border-neutral-200/70">
                 <UserCheck className="h-4 w-4 text-primary" />
                 <span className="max-w-[130px] truncate">{currentUser.name}</span>
               </div>
               <Button
                 variant="ghost"
-                size="default"
                 onClick={() => {
                   removeStoredUser()
                   setCurrentUser(null)
                 }}
-                className="text-neutral-500 hover:text-red-600 px-3"
+                className="h-9 px-2.5 text-neutral-500 hover:text-red-600 rounded-md"
                 title="Keluar"
               >
                 <LogOut className="h-4 w-4" />
@@ -95,16 +94,15 @@ export function Navbar() {
           ) : (
             <Button
               variant="ghost"
-              size="default"
               render={<Link href="/login" />}
-              className="text-neutral-700 hover:text-primary hover:bg-neutral-50"
+              className="h-9 px-4 text-sm font-medium text-neutral-700 hover:text-primary hover:bg-neutral-100 rounded-md"
             >
               Masuk
             </Button>
           )}
           <Button
-            size="default"
             render={<Link href="/kontak" />}
+            className="h-9 px-4 text-sm font-medium rounded-md shadow-sm"
           >
             Daftar Sekarang
           </Button>
@@ -155,9 +153,9 @@ export function Navbar() {
 
               <div className="mt-8 flex flex-col gap-2.5">
                 {currentUser ? (
-                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs flex items-center justify-between">
+                  <div className="p-3.5 rounded-md bg-neutral-50 border border-neutral-200 text-xs flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 text-primary">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-primary">
                         <UserCheck className="h-4 w-4" />
                       </div>
                       <div>
@@ -181,14 +179,14 @@ export function Navbar() {
                   <Button
                     variant="outline"
                     render={<Link href="/login" />}
-                    className="w-full rounded-xl py-2.5 text-sm font-medium border-neutral-200 text-neutral-800"
+                    className="w-full h-10 rounded-md text-sm font-medium border-neutral-200 text-neutral-800"
                   >
                     Masuk ke Akun
                   </Button>
                 )}
                 <Button
                   render={<Link href="/kontak" />}
-                  className="w-full rounded-xl py-2.5 text-sm font-medium"
+                  className="w-full h-10 rounded-md text-sm font-medium"
                 >
                   Daftar Sekarang
                 </Button>
