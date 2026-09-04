@@ -4,7 +4,7 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { 
   Baby, 
   BookOpenCheck, 
@@ -14,10 +14,7 @@ import {
   Palette,
   CheckCircle2, 
   ArrowRight,
-  Calendar,
-  FileCheck2,
-  Clock,
-  Briefcase
+  Clock
 } from "lucide-react"
 
 export const metadata: Metadata = {

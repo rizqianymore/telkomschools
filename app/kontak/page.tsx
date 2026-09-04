@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { MapPin, Phone, Mail, Clock, Send, ShieldCheck } from "lucide-react"
+import { MapPin, Phone, Mail, Clock, Send } from "lucide-react"
 
 
 

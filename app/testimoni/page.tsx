@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { ArrowRight, Quote, Building2, Briefcase, GraduationCap, Trophy } from "lucide-react"
+import { ArrowRight, Building2 } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Testimoni & Cerita Sukses - Telkom Schools",

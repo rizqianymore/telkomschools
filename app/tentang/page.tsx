@@ -13,7 +13,6 @@ import {
   HeartHandshake, 
   Sparkles,
   Users2,
-  BookCheck,
   CheckCircle2,
   ArrowRight
 } from "lucide-react"

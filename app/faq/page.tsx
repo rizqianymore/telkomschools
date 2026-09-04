@@ -11,7 +11,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion"
-import { HelpCircle, MessageSquare, PhoneCall, Mail, ArrowRight, BookOpen, GraduationCap, DollarSign, Shield } from "lucide-react"
+import { MessageSquare, PhoneCall, Mail, ArrowRight, BookOpen, GraduationCap, DollarSign } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Pusat Bantuan & FAQ - Telkom Schools",
