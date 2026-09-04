@@ -111,27 +111,27 @@ export function AiSupportWidget() {
       {isOpen && (
         <div
           className={cn(
-            "mb-3.5 flex flex-col w-[350px] sm:w-[390px] h-[520px] max-h-[80vh] rounded-2xl border border-neutral-200 bg-white shadow-xl overflow-hidden animate-in slide-in-from-bottom-5 duration-200"
+            "mb-3 flex flex-col w-[350px] sm:w-[385px] h-[520px] max-h-[80vh] rounded-2xl border border-neutral-200/90 bg-white shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-200"
           )}
         >
-          {/* Header */}
-          <div className="flex items-center justify-between bg-neutral-900 text-white px-4 py-3.5 border-b border-neutral-800">
+          {/* Header - Bersih dengan warna merah primer Telkom & kontras teks putih */}
+          <div className="flex items-center justify-between bg-primary text-white px-4 py-3.5 border-b border-red-700/60 shadow-xs">
             <div className="flex items-center gap-2.5">
-              <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-white">
-                <Bot className="h-4 w-4" />
+              <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-white text-primary shadow-xs">
+                <Bot className="h-4 w-4 text-primary" />
                 <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 ring-2 ring-white"></span>
                 </span>
               </div>
               <div className="flex flex-col text-left">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-bold leading-tight">AI Support Telkom</span>
-                  <span className="rounded bg-red-600/30 text-red-300 px-1 py-0.2 text-[9px] font-semibold uppercase">
-                    Online
+                  <span className="text-xs font-bold leading-tight text-white">AI Support Online</span>
+                  <span className="rounded-full bg-white/20 text-white px-1.5 py-0.2 text-[9px] font-medium tracking-wide">
+                    Aktif
                   </span>
                 </div>
-                <span className="text-[10px] text-neutral-400 leading-tight">SMK Telkom Jakarta</span>
+                <span className="text-[10px] text-white/80 leading-tight">SMK Telkom Jakarta</span>
               </div>
             </div>
 
@@ -139,7 +139,7 @@ export function AiSupportWidget() {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1.5 text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
+                className="rounded-lg p-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
                 aria-label="Tutup Chat"
               >
                 <ChevronDown className="h-4 w-4" />
@@ -150,7 +150,7 @@ export function AiSupportWidget() {
           {/* Messages Container */}
           <div
             ref={chatContainerRef}
-            className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-neutral-50/50 text-xs"
+            className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-neutral-50/60 text-xs"
           >
             {messages.map((m) => (
               <div
@@ -162,10 +162,10 @@ export function AiSupportWidget() {
               >
                 <div
                   className={cn(
-                    "rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed whitespace-pre-wrap shadow-xs",
+                    "rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed whitespace-pre-wrap",
                     m.role === "user"
-                      ? "bg-primary text-white rounded-br-xs"
-                      : "bg-white border border-neutral-200/90 text-neutral-800 rounded-bl-xs"
+                      ? "bg-primary text-white rounded-br-xs shadow-xs"
+                      : "bg-white border border-neutral-200 text-neutral-800 rounded-bl-xs shadow-xs"
                   )}
                 >
                   {m.text}
@@ -175,7 +175,7 @@ export function AiSupportWidget() {
             ))}
 
             {loading && (
-              <div className="flex items-center gap-2 text-xs text-neutral-500 bg-white border border-neutral-200 rounded-xl px-3 py-2 w-fit">
+              <div className="flex items-center gap-2 text-xs text-neutral-600 bg-white border border-neutral-200 rounded-xl px-3.5 py-2 w-fit shadow-xs">
                 <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
                 <span>AI sedang mengetik jawaban...</span>
               </div>
@@ -209,13 +209,13 @@ export function AiSupportWidget() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Tanyakan seputar sekolah..."
               disabled={loading}
-              className="flex-1 rounded-xl text-xs h-9 border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
+              className="flex-1 rounded-xl text-xs h-9 border-neutral-200 bg-white text-neutral-900 focus-visible:border-primary focus-visible:ring-primary/20"
             />
             <Button
               type="submit"
               disabled={loading || !input.trim()}
               size="icon"
-              className="h-9 w-9 rounded-xl bg-primary text-white shrink-0 hover:bg-red-700"
+              className="h-9 w-9 rounded-xl bg-primary text-white shrink-0 hover:bg-red-700 shadow-xs"
               aria-label="Kirim Pesan"
             >
               <Send className="h-3.5 w-3.5" />
@@ -224,30 +224,30 @@ export function AiSupportWidget() {
         </div>
       )}
 
-      {/* Floating Toggle Button */}
+      {/* Floating Toggle Button: Merah Primer dengan Border & Aksen Putih yang Pas */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "group flex items-center gap-2 rounded-full py-2.5 px-4 shadow-lg transition-all focus:outline-hidden",
+          "group flex items-center gap-2 rounded-full py-2.5 px-4.5 border border-white/40 shadow-lg ring-2 ring-primary/20 transition-all focus:outline-hidden",
           isOpen
-            ? "bg-neutral-900 text-white hover:bg-neutral-800"
-            : "bg-primary text-white hover:bg-red-700 hover:scale-105"
+            ? "bg-neutral-900 text-white border-neutral-700 hover:bg-neutral-800"
+            : "bg-primary text-white hover:bg-red-700 hover:shadow-xl hover:scale-105"
         )}
         aria-label="Buka Asisten AI"
       >
         {isOpen ? (
           <>
-            <X className="h-4 w-4" />
-            <span className="text-xs font-semibold">Tutup</span>
+            <X className="h-4 w-4 text-white" />
+            <span className="text-xs font-semibold tracking-wide text-white">Tutup</span>
           </>
         ) : (
           <>
             <div className="relative flex items-center justify-center">
-              <Bot className="h-4 w-4" />
-              <Sparkles className="h-2.5 w-2.5 absolute -top-1.5 -right-1.5 text-amber-300 animate-pulse" />
+              <Bot className="h-4 w-4 text-white" />
+              <Sparkles className="h-2.5 w-2.5 absolute -top-1.5 -right-1.5 text-white animate-pulse" />
             </div>
-            <span className="text-xs font-semibold tracking-wide">AI Support Online</span>
+            <span className="text-xs font-semibold tracking-wide text-white">AI Support Online</span>
           </>
         )}
       </button>
