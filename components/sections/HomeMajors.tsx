@@ -50,22 +50,22 @@ export function HomeMajors() {
               Dirancang dengan kurikulum berbasis proyek nyata dan sertifikasi internasional untuk melahirkan talenta digital siap bersaing.
             </p>
           </div>
-          <Button
-            variant="outline"
+              <Button
+                variant="outline"
             render={<Link href="/program" />}
             className="w-full md:w-auto"
           >
-            <span>Lihat Detail Kurikulum</span>
-            <ArrowRight className="h-4 w-4" />
+              <span>Lihat Detail Kurikulum</span>
+              <ArrowRight className="h-4 w-4" />
           </Button>
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {majors.map((major) => {
             const Icon = major.icon
-            return (
+              return (
               <div
-                key={major.code}
+                  key={major.code}
                 className="flex flex-col justify-between rounded-xl border border-neutral-200 bg-white p-6 transition-colors hover:border-red-300"
               >
                 <div>
@@ -88,9 +88,9 @@ export function HomeMajors() {
                         <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
                         <span>{skill}</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
+              ))}
+            </div>
+          </div>
 
                 <div className="pt-4 border-t border-neutral-100">
                   <p className="text-xs text-neutral-500">

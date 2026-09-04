@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { useInView, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { useInView, animate } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Users, Award, BookOpen, GraduationCap } from "lucide-react"
 
@@ -9,63 +9,44 @@ interface CountUpProps {
   target: number
   prefix?: string
   suffix?: string
+  duration?: number
   delay?: number
   formatIndonesian?: boolean
-  decimals?: number
 }
 
 function CountUp({
   target,
   prefix = "",
   suffix = "",
+  duration = 2,
   delay = 0,
   formatIndonesian = true,
-  decimals = 0,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const isInView = useInView(ref, { once: true, amount: 0.3 })
-
-  // motion value mentah, dianimasikan lewat spring biar terasa "hidup"
-  const motionValue = useMotionValue(0)
-
-  // spring lebih smooth daripada tween biasa: stiffness rendah = gerakan lembut,
-  // damping tinggi = tidak overshoot/bouncy, mass memberi efek "berat" yang natural
-  const springValue = useSpring(motionValue, {
-    stiffness: 60,
-    damping: 20,
-    mass: 1,
-  })
-
-  const rounded = useTransform(springValue, (v) => {
-    const factor = Math.pow(10, decimals)
-    const num = Math.round(v * factor) / factor
-    const formatted = formatIndonesian
-      ? num.toLocaleString("id-ID", {
-          minimumFractionDigits: decimals,
-          maximumFractionDigits: decimals,
-        })
-      : num.toFixed(decimals)
-    return `${prefix}${formatted}${suffix}`
-  })
+  // Gunakan amount 0.1 tanpa margin negatif agar terpicu begitu card terlihat di viewport
+  const isInView = useInView(ref, { once: true, amount: 0.1 })
 
   useEffect(() => {
     if (!isInView) return
 
-    const timeout = setTimeout(() => {
-      motionValue.set(target)
-    }, delay * 1000)
+    const formatNumber = (val: number) => {
+      const rounded = Math.round(val)
+      return formatIndonesian ? rounded.toLocaleString("id-ID") : rounded.toString()
+    }
 
-    return () => clearTimeout(timeout)
-  }, [isInView, target, delay, motionValue])
-
-  useEffect(() => {
-    const unsubscribe = rounded.on("change", (latest) => {
-      if (ref.current) {
-        ref.current.textContent = latest
-      }
+    const controls = animate(0, target, {
+      duration,
+      delay,
+      ease: [0.16, 1, 0.3, 1], // Kurva ease-out smooth
+      onUpdate(value) {
+        if (ref.current) {
+          ref.current.textContent = `${prefix}${formatNumber(value)}${suffix}`
+        }
+      },
     })
-    return unsubscribe
-  }, [rounded])
+
+    return () => controls.stop()
+  }, [isInView, target, duration, delay, prefix, suffix, formatIndonesian])
 
   return (
     <span ref={ref}>
@@ -97,13 +78,16 @@ const stats = [
     desc: "Akademik & vokasi terpadu",
   },
   {
-    icon: GraduationCap,
+    icon: BookOpen, // fallback / icons
     target: 95,
     suffix: "%",
     label: "Tingkat Kelulusan",
     desc: "Diterima di PTN & industri top",
   },
 ]
+
+// Re-assign icon correctly
+stats[3].icon = GraduationCap
 
 export function Stats() {
   return (
@@ -127,6 +111,7 @@ export function Stats() {
                         target={item.target}
                         suffix={item.suffix}
                         delay={idx * 0.15}
+                        duration={1.8}
                       />
                     </div>
                     <div className="text-sm font-semibold text-neutral-800">
