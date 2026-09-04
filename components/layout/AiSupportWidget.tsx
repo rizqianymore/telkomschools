@@ -20,6 +20,69 @@ interface MessageItem {
   time: string
 }
 
+// Helper untuk merender teks markdown ringan (bold, link, bullet point) agar rapi di UI
+function FormattedMessageText({ text }: { text: string }) {
+  const lines = text.split("\n")
+
+  return (
+    <div className="space-y-1.5 leading-relaxed">
+      {lines.map((line, idx) => {
+        const trimmed = line.trim()
+        if (!trimmed) {
+          return <div key={idx} className="h-1" />
+        }
+
+        // Parse format bold **teks** dan links [teks](url)
+        const renderFormattedLine = (str: string) => {
+          // Replace link markdown: [text](url) -> <a>
+          const parts = str.split(/(\*\*.*?\*\*|\[.*?\]\(.*?\))/g)
+          return parts.map((part, pIdx) => {
+            if (part.startsWith("**") && part.endsWith("**")) {
+              return (
+                <strong key={pIdx} className="font-semibold text-neutral-900">
+                  {part.slice(2, -2)}
+                </strong>
+              )
+            }
+            const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/)
+            if (linkMatch) {
+              return (
+                <a
+                  key={pIdx}
+                  href={linkMatch[2]}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium text-primary hover:underline underline-offset-2"
+                >
+                  {linkMatch[1]}
+                </a>
+              )
+            }
+            return part
+          })
+        }
+
+        // Jika diawali angka list: 1. atau bullet • / -
+        const listMatch = trimmed.match(/^(\d+\.|\•|\-)\s+(.*)/)
+        if (listMatch) {
+          const marker = listMatch[1]
+          const content = listMatch[2]
+          return (
+            <div key={idx} className="flex items-start gap-1.5 pl-0.5">
+              <span className="font-semibold text-primary shrink-0 text-[11px] mt-0.5">
+                {marker}
+              </span>
+              <span className="flex-1">{renderFormattedLine(content)}</span>
+            </div>
+          )
+        }
+
+        return <div key={idx}>{renderFormattedLine(line)}</div>
+      })}
+    </div>
+  )
+}
+
 export function AiSupportWidget() {
   const [isOpen, setIsOpen] = React.useState(false)
   const [input, setInput] = React.useState("")
@@ -28,7 +91,7 @@ export function AiSupportWidget() {
     {
       id: "welcome",
       role: "assistant",
-      text: "Halo! Saya Asisten AI SMK Telkom Jakarta. Ada yang bisa saya bantu terkait jurusan, PPDB pendaftaran, kurikulum, atau fasilitas sekolah?",
+      text: "Halo! Saya Asisten AI SMK Telkom Jakarta.\nAda yang bisa saya bantu seputar pendaftaran PPDB, jurusan RPL/TKJ/DKV, kurikulum, atau fasilitas sekolah?",
       time: "Baru saja",
     },
   ])
@@ -101,7 +164,7 @@ export function AiSupportWidget() {
 
   const quickQuestions = [
     "Apa saja jurusan di SMK Telkom?",
-    "Bagaimana cara daftar PPDB?",
+    "Bagaimana alur daftar PPDB?",
     "Di mana alamat kampus Jakarta?",
   ]
 
@@ -111,10 +174,10 @@ export function AiSupportWidget() {
       {isOpen && (
         <div
           className={cn(
-            "mb-3 flex flex-col w-[350px] sm:w-[385px] h-[520px] max-h-[80vh] rounded-2xl bg-white shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-200"
+            "mb-3 flex flex-col w-[350px] sm:w-[390px] h-[530px] max-h-[82vh] rounded-2xl bg-white shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-200"
           )}
         >
-          {/* Header - Bersih menyatu dengan sudut rounded tanpa border putih luar */}
+          {/* Header */}
           <div className="flex items-center justify-between bg-primary text-white px-4 py-3.5 shadow-xs">
             <div className="flex items-center gap-2.5">
               <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-white text-primary shadow-xs">
@@ -156,19 +219,23 @@ export function AiSupportWidget() {
               <div
                 key={m.id}
                 className={cn(
-                  "flex flex-col max-w-[85%]",
+                  "flex flex-col max-w-[90%]",
                   m.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
                 )}
               >
                 <div
                   className={cn(
-                    "rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed whitespace-pre-wrap",
+                    "rounded-2xl px-3.5 py-2.5 text-xs shadow-xs",
                     m.role === "user"
-                      ? "bg-primary text-white rounded-br-xs shadow-xs"
-                      : "bg-white border border-neutral-200/80 text-neutral-800 rounded-bl-xs shadow-xs"
+                      ? "bg-primary text-white rounded-br-xs"
+                      : "bg-white border border-neutral-200/80 text-neutral-800 rounded-bl-xs"
                   )}
                 >
-                  {m.text}
+                  {m.role === "user" ? (
+                    <div className="whitespace-pre-wrap">{m.text}</div>
+                  ) : (
+                    <FormattedMessageText text={m.text} />
+                  )}
                 </div>
                 <span className="text-[10px] text-neutral-400 mt-1 px-1">{m.time}</span>
               </div>

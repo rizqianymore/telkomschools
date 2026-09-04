@@ -1,6 +1,7 @@
 import * as React from "react"
 import Link from "next/link"
-import { GraduationCap, Menu } from "lucide-react"
+import Image from "next/image"
+import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -28,9 +29,13 @@ export function Navbar() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <GraduationCap className="h-5 w-5" />
-          </div>
+          <Image
+            src="/img/telkom.jpeg"
+            alt="Logo SMK Telkom"
+            width={40}
+            height={40}
+            className="h-10 w-auto object-contain rounded-md"
+          />
           <div className="flex flex-col">
             <span className="text-lg font-bold tracking-tight text-neutral-900 leading-none">
               SMK Telkom <span className="text-primary">Jakarta</span>
@@ -91,9 +96,13 @@ export function Navbar() {
             <SheetContent side="right" className="w-[300px] sm:w-[360px] p-6 bg-white">
               <SheetHeader className="p-0 text-left">
                 <SheetTitle className="flex items-center gap-2.5 text-base font-bold text-neutral-900">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                    <GraduationCap className="h-4 w-4" />
-                  </div>
+                  <Image
+                    src="/img/telkom.jpeg"
+                    alt="Logo SMK Telkom"
+                    width={32}
+                    height={32}
+                    className="h-8 w-auto object-contain rounded-md"
+                  />
                   <span>SMK Telkom Jakarta</span>
                 </SheetTitle>
               </SheetHeader>
