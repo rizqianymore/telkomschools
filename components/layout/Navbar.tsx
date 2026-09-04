@@ -16,6 +16,7 @@ const navLinks = [
   { name: "Tentang", href: "/tentang" },
   { name: "Keunggulan", href: "/keunggulan" },
   { name: "Program", href: "/program" },
+  { name: "Quiz Jurusan", href: "/quiz" },
   { name: "Testimoni", href: "/testimoni" },
   { name: "FAQ", href: "/faq" },
   { name: "Kontak", href: "/kontak" },
