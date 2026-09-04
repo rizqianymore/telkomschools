@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { useInView, useMotionValue, useTransform, animate } from "framer-motion"
+import { useInView, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Users, Award, BookOpen, GraduationCap } from "lucide-react"
 
@@ -9,52 +9,63 @@ interface CountUpProps {
   target: number
   prefix?: string
   suffix?: string
-  duration?: number
   delay?: number
   formatIndonesian?: boolean
+  decimals?: number
 }
 
 function CountUp({
   target,
   prefix = "",
   suffix = "",
-  duration = 2,
   delay = 0,
   formatIndonesian = true,
+  decimals = 0,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const count = useMotionValue(0)
+  const isInView = useInView(ref, { once: true, amount: 0.3 })
 
-  // Format angka ke format ribuan titik (.) misal: 1000 -> 1.000
-  const rounded = useTransform(count, (latest) => {
-    const val = Math.round(latest)
-    if (formatIndonesian) {
-      return val.toLocaleString("id-ID")
-    }
-    return val.toString()
+  // motion value mentah, dianimasikan lewat spring biar terasa "hidup"
+  const motionValue = useMotionValue(0)
+
+  // spring lebih smooth daripada tween biasa: stiffness rendah = gerakan lembut,
+  // damping tinggi = tidak overshoot/bouncy, mass memberi efek "berat" yang natural
+  const springValue = useSpring(motionValue, {
+    stiffness: 60,
+    damping: 20,
+    mass: 1,
   })
 
-  const isInView = useInView(ref, { once: true, margin: "-50px" })
+  const rounded = useTransform(springValue, (v) => {
+    const factor = Math.pow(10, decimals)
+    const num = Math.round(v * factor) / factor
+    const formatted = formatIndonesian
+      ? num.toLocaleString("id-ID", {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        })
+      : num.toFixed(decimals)
+    return `${prefix}${formatted}${suffix}`
+  })
 
   useEffect(() => {
-    if (isInView) {
-      const controls = animate(count, target, {
-        duration,
-        delay,
-        ease: [0.16, 1, 0.3, 1], // Custom smooth ease-out curve
-      })
-      return () => controls.stop()
-    }
-  }, [isInView, count, target, duration, delay])
+    if (!isInView) return
+
+    const timeout = setTimeout(() => {
+      motionValue.set(target)
+    }, delay * 1000)
+
+    return () => clearTimeout(timeout)
+  }, [isInView, target, delay, motionValue])
 
   useEffect(() => {
     const unsubscribe = rounded.on("change", (latest) => {
       if (ref.current) {
-        ref.current.textContent = `${prefix}${latest}${suffix}`
+        ref.current.textContent = latest
       }
     })
-    return () => unsubscribe()
-  }, [rounded, prefix, suffix])
+    return unsubscribe
+  }, [rounded])
 
   return (
     <span ref={ref}>
@@ -116,7 +127,6 @@ export function Stats() {
                         target={item.target}
                         suffix={item.suffix}
                         delay={idx * 0.15}
-                        duration={1.8}
                       />
                     </div>
                     <div className="text-sm font-semibold text-neutral-800">
