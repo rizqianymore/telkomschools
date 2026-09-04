@@ -21,6 +21,7 @@ import {
   ArrowRight,
   TrendingUp,
 } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 import { QuizQuestion, QuizOption, QuizSubmissionLog } from "@/lib/quiz-data"
 
 export default function GuruDashboardPage() {
@@ -353,104 +354,119 @@ export default function GuruDashboardPage() {
             </button>
           </div>
 
-          {/* Konten Tab: Kelola Soal */}
-          {activeTab === "soal" && (
-            <div className="mt-6 space-y-4">
-              {loading ? (
-                <div className="py-12 text-center text-xs text-neutral-500">Memuat daftar soal...</div>
-              ) : questions.length === 0 ? (
-                <div className="py-12 text-center text-xs text-neutral-500">Belum ada soal kuis yang terdaftar.</div>
-              ) : (
-                questions.map((q, idx) => (
-                  <Card key={q.id} className="border-neutral-200/90 bg-white p-5 shadow-xs hover:border-neutral-300">
-                    <CardContent className="p-0">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-start gap-3">
-                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-red-50 text-primary font-bold text-xs">
-                            {idx + 1}
-                          </span>
-                          <div>
-                            <h3 className="text-sm font-bold text-neutral-900 leading-snug">{q.question}</h3>
-                            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-neutral-600">
-                              {q.options.map((opt) => (
-                                <div key={opt.id} className="rounded-lg border border-neutral-100 bg-neutral-50/60 px-3 py-2">
-                                  <span className="font-semibold text-primary mr-1.5">{opt.id}.</span>
-                                  <span>{opt.text}</span>
-                                </div>
-                              ))}
+          {/* Konten Tab dengan Animasi Perpindahan Tab */}
+          <AnimatePresence mode="wait">
+            {activeTab === "soal" && (
+              <motion.div
+                key="tab-soal"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25 }}
+                className="mt-6 space-y-4"
+              >
+                {loading ? (
+                  <div className="py-12 text-center text-xs text-neutral-500">Memuat daftar soal...</div>
+                ) : questions.length === 0 ? (
+                  <div className="py-12 text-center text-xs text-neutral-500">Belum ada soal kuis yang terdaftar.</div>
+                ) : (
+                  questions.map((q, idx) => (
+                    <Card key={q.id} className="border-neutral-200/90 bg-white p-5 shadow-xs hover:border-neutral-300">
+                      <CardContent className="p-0">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start gap-3">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-red-50 text-primary font-bold text-xs">
+                              {idx + 1}
+                            </span>
+                            <div>
+                              <h3 className="text-sm font-bold text-neutral-900 leading-snug">{q.question}</h3>
+                              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-neutral-600">
+                                {q.options.map((opt) => (
+                                  <div key={opt.id} className="rounded-lg border border-neutral-100 bg-neutral-50/60 px-3 py-2">
+                                    <span className="font-semibold text-primary mr-1.5">{opt.id}.</span>
+                                    <span>{opt.text}</span>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           </div>
+
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDeleteQuestion(q.id)}
+                            className="text-neutral-400 hover:text-red-600 hover:bg-red-50 rounded-lg shrink-0"
+                            title="Hapus Soal"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </motion.div>
+            )}
 
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDeleteQuestion(q.id)}
-                          className="text-neutral-400 hover:text-red-600 hover:bg-red-50 rounded-lg shrink-0"
-                          title="Hapus Soal"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              )}
-            </div>
-          )}
-
-          {/* Konten Tab: Hasil Siswa */}
-          {activeTab === "hasil" && (
-            <div className="mt-6">
-              <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
-                <table className="w-full text-left text-xs">
-                  <thead className="border-b border-neutral-200 bg-neutral-50 text-neutral-600 font-semibold">
-                    <tr>
-                      <th className="p-3.5">Nama Siswa</th>
-                      <th className="p-3.5">Waktu Selesai</th>
-                      <th className="p-3.5">Rekomendasi Utama</th>
-                      <th className="p-3.5">Skor Kecocokan</th>
-                      <th className="p-3.5">Detail Nilai Jurusan</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-neutral-100">
-                    {submissions.length === 0 ? (
+            {activeTab === "hasil" && (
+              <motion.div
+                key="tab-hasil"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25 }}
+                className="mt-6"
+              >
+                <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
+                  <table className="w-full text-left text-xs">
+                    <thead className="border-b border-neutral-200 bg-neutral-50 text-neutral-600 font-semibold">
                       <tr>
-                        <td colSpan={5} className="p-8 text-center text-neutral-400">
-                          Belum ada data pengerjaan kuis siswa.
-                        </td>
+                        <th className="p-3.5">Nama Siswa</th>
+                        <th className="p-3.5">Waktu Selesai</th>
+                        <th className="p-3.5">Rekomendasi Utama</th>
+                        <th className="p-3.5">Skor Kecocokan</th>
+                        <th className="p-3.5">Detail Nilai Jurusan</th>
                       </tr>
-                    ) : (
-                      submissions.map((sub) => (
-                        <tr key={sub.id} className="hover:bg-neutral-50/50">
-                          <td className="p-3.5 font-bold text-neutral-900">{sub.studentName}</td>
-                          <td className="p-3.5 text-neutral-500">{sub.submittedAt}</td>
-                          <td className="p-3.5">
-                            <Badge className="bg-red-50 text-primary border-red-200 font-bold">
-                              {sub.primaryMajor}
-                            </Badge>
-                          </td>
-                          <td className="p-3.5">
-                            <span className="font-semibold text-neutral-800">{sub.percentage}%</span>
-                            <span className="text-neutral-400 ml-1">({sub.score} poin)</span>
-                          </td>
-                          <td className="p-3.5">
-                            <div className="flex flex-wrap gap-1.5 text-[10px]">
-                              {sub.allScores.map((s, sIdx) => (
-                                <span key={sIdx} className="rounded bg-neutral-100 px-1.5 py-0.5 text-neutral-700">
-                                  {s.major}: {s.score}pt ({s.percentage}%)
-                                </span>
-                              ))}
-                            </div>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-100">
+                      {submissions.length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="p-8 text-center text-neutral-400">
+                            Belum ada data pengerjaan kuis siswa.
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
+                      ) : (
+                        submissions.map((sub) => (
+                          <tr key={sub.id} className="hover:bg-neutral-50/50">
+                            <td className="p-3.5 font-bold text-neutral-900">{sub.studentName}</td>
+                            <td className="p-3.5 text-neutral-500">{sub.submittedAt}</td>
+                            <td className="p-3.5">
+                              <Badge className="bg-red-50 text-primary border-red-200 font-bold">
+                                {sub.primaryMajor}
+                              </Badge>
+                            </td>
+                            <td className="p-3.5">
+                              <span className="font-semibold text-neutral-800">{sub.percentage}%</span>
+                              <span className="text-neutral-400 ml-1">({sub.score} poin)</span>
+                            </td>
+                            <td className="p-3.5">
+                              <div className="flex flex-wrap gap-1.5 text-[10px]">
+                                {sub.allScores.map((s, sIdx) => (
+                                  <span key={sIdx} className="rounded bg-neutral-100 px-1.5 py-0.5 text-neutral-700">
+                                    {s.major}: {s.score}pt ({s.percentage}%)
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
 
