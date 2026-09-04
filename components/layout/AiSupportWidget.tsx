@@ -218,7 +218,7 @@ export function AiSupportWidget() {
               <button
                 type="button"
                 onClick={handleResetChat}
-                className="rounded-md p-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                className="rounded-md p-1.5 cursor-pointer text-white/80 hover:text-white hover:bg-white/10 transition-colors"
                 title="Mulai Ulang Percakapan"
                 aria-label="Reset Chat"
               >
@@ -227,7 +227,7 @@ export function AiSupportWidget() {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="rounded-md p-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                className="rounded-md p-1.5 cursor-pointer text-white/80 hover:text-white hover:bg-white/10 transition-colors"
                 title="Tutup"
                 aria-label="Tutup Chat"
               >
@@ -344,7 +344,7 @@ export function AiSupportWidget() {
                 onClick={() => {
                   setInput(q)
                 }}
-                className="shrink-0 rounded-md border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[10px] font-medium text-neutral-600 hover:border-red-300 hover:text-primary transition-colors disabled:opacity-50"
+                className="shrink-0 rounded-md border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[10px] font-medium text-neutral-600 hover:border-red-300 hover:text-primary transition-colors disabled:opacity-50 cursor-pointer min-w-[44px]"
               >
                 {q}
               </button>
@@ -366,7 +366,7 @@ export function AiSupportWidget() {
             <Button
               type="submit"
               disabled={loading || !input.trim()}
-              className="h-10 px-4 rounded-md shrink-0 gap-1.5 font-medium text-xs"
+              className="h-10 px-4 rounded-md shrink-0 gap-1.5 font-medium text-xs cursor-pointer"
               aria-label="Kirim Pesan"
             >
               {loading ? (
@@ -387,7 +387,7 @@ export function AiSupportWidget() {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "flex items-center gap-2 rounded-md py-2.5 px-4 shadow-sm border transition-colors focus:outline-none",
+          "flex items-center gap-2 rounded-md py-2.5 px-4 shadow-sm border transition-colors focus:outline-none cursor-pointer",
           isOpen
             ? "bg-neutral-900 border-neutral-800 text-white hover:bg-neutral-800"
             : "bg-primary border-transparent text-white hover:bg-primary/90"

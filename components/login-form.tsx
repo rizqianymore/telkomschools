@@ -186,20 +186,20 @@ export function LoginForm({
 
         {/* Submit Button */}
         <Field className="mt-1">
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full"
-          >
-            {loading ? (
-              <span className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Memverifikasi Akun...
-              </span>
-            ) : (
-              "Masuk ke Portal"
-            )}
-          </Button>
+            <button
+              type="submit"
+              disabled={loading}
+              className={cn("w-full h-10 px-5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:pointer-events-none cursor-pointer", loading && "flex items-center justify-center gap-2")}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  Memverifikasi Akun...
+                </>
+              ) : (
+                "Masuk ke Portal"
+              )}
+            </button>
         </Field>
 
         <FieldDescription className="text-center text-xs text-neutral-500">

@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from "next/server";
+import { runRateLimit } from "@/lib/rateLimit";
 import { findUserByAnyIdentifier } from "@/lib/db"
 import {
   checkLoginRateLimit,
@@ -8,6 +9,12 @@ import {
 } from "@/lib/security"
 
 export async function POST(request: Request) {
+  // Apply generic rate limiting (60 req/min per IP)
+  await runRateLimit(request);
+
+  // Apply generic rate limiting (60 req/min per IP)
+
+
   try {
     const body = await request.json()
     const { identifier, password } = body as {
