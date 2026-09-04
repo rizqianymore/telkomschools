@@ -16,7 +16,7 @@ export interface UserRecord {
   role_label: string
 }
 
-// Data pengguna untuk verifikasi & demo
+// Data pengguna untuk verifikasi & demo dengan hash scrypt standar OWASP
 export const MOCK_MYSQL_USERS: UserRecord[] = [
   {
     id: 1,
@@ -24,7 +24,8 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
     email: "siswa@smktelkom-jkt.sch.id",
     nis: "10214055",
     name: "Muhammad Fadhil",
-    password_hash: "siswa123",
+    // Salt:Key scrypt hash for "siswa123"
+    password_hash: "765b5154f2f5826d476706314a6641ad:10cab641d7b697817a11022ea96ce8bebb690f73498203a0939c1385c80aea831f8c800e808829a49e21fa9d025a405bbf7fe9fc08532b46cecdf718bd3319fe",
     role: "siswa",
     role_label: "Siswa",
   },
@@ -33,7 +34,8 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
     identifier: "ortu@smktelkom-jkt.sch.id",
     email: "ortu@smktelkom-jkt.sch.id",
     name: "Bambang Prasetyo",
-    password_hash: "ortu123",
+    // Salt:Key scrypt hash for "ortu123"
+    password_hash: "1480fd47682ff1c483974506e7b347b7:0702c39b246ea916be0af084793bc8dd73b1f325851651239110fa3cf8e1387e8a3f4eda09c4a00ad4e4bbac314e6d16b99cf89c59e52322c2cbb451ddf92a11",
     role: "ortu",
     role_label: "Orang Tua",
   },
@@ -43,7 +45,8 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
     email: "guru@smktelkom-jkt.sch.id",
     nip: "198504122010011002",
     name: "Siti Rahmawati, M.Kom.",
-    password_hash: "guru123",
+    // Salt:Key scrypt hash for "guru123"
+    password_hash: "f3c6380ead0f513f541bbdf59bf80e56:340d6fed528ea176a8b3bee48c6374c7ec6d3f21a39376523b0513d0ac07d72c88a56d137ba9ac9cb7684b1dba47e3b8a8787ff1f1ba8a87ffd76861d2543bef",
     role: "guru",
     role_label: "Guru",
   },
@@ -52,7 +55,8 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
     identifier: "staff@smktelkom-jkt.sch.id",
     email: "staff@smktelkom-jkt.sch.id",
     name: "Staff Administrasi & IT",
-    password_hash: "staff123",
+    // Salt:Key scrypt hash for "staff123"
+    password_hash: "3e514c3b590c0a452e30c4b8e4e7d2fb:058c4602fe7f7eb09e7316757efa5b1a4813548daf5c85db63c899893c37d7954b730ce24a14010636e9f28dca333733823f2ec3940beaddb12eb11c03c50238",
     role: "staff",
     role_label: "Staff",
   },

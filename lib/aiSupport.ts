@@ -171,7 +171,9 @@ export async function askSchoolAI(
         const json = JSON.parse(data)
         const content = json.choices?.[0]?.delta?.content
         if (typeof content === "string") answer += content
-      } catch (_) {}
+      } catch {
+        // Abaikan parse error baris streaming
+      }
     }
   }
 

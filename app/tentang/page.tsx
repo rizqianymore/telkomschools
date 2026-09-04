@@ -96,9 +96,10 @@ export default function TentangPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <Badge
               variant="outline"
-              className="mb-4 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+              className="mb-4 inline-flex items-center gap-2 rounded-md border-red-200 bg-red-50/70 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-primary shadow-none"
             >
-              Profil & Sejarah
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Profil & Sejarah Institusi</span>
             </Badge>
             <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl">
               Tentang <span className="text-primary">Telkom Schools</span>
@@ -176,7 +177,7 @@ export default function TentangPage() {
             <div className="mx-auto max-w-3xl text-center">
               <Badge
                 variant="outline"
-                className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+                className="mb-3 text-xs border-red-200 bg-red-50/70 text-primary font-medium"
               >
                 Nilai Budaya
               </Badge>
@@ -213,7 +214,7 @@ export default function TentangPage() {
             <div className="mx-auto max-w-3xl text-center">
               <Badge
                 variant="outline"
-                className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+                className="mb-3 text-xs border-red-200 bg-red-50/70 text-primary font-medium"
               >
                 Jejak Langkah
               </Badge>
@@ -245,7 +246,7 @@ export default function TentangPage() {
             <div className="mx-auto max-w-3xl text-center">
               <Badge
                 variant="outline"
-                className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+                className="mb-3 text-xs border-red-200 bg-red-50/70 text-primary font-medium"
               >
                 Kepemimpinan
               </Badge>

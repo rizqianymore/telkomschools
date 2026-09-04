@@ -29,6 +29,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "eslint-plugin-security": "^1.7.1",
     "shadcn": "^4.19.1",
     "tailwindcss": "^4",
     "typescript": "^5"

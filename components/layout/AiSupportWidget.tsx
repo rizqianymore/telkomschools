@@ -5,12 +5,15 @@ import { cn } from "cn"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
-  Bot,
   X,
   Send,
   Loader2,
-  Sparkles,
   ChevronDown,
+  Headphones,
+  User,
+  MessageCircle,
+  ExternalLink,
+  RotateCcw,
 } from "lucide-react"
 
 interface MessageItem {
@@ -18,9 +21,10 @@ interface MessageItem {
   role: "user" | "assistant"
   text: string
   time: string
+  showActionButtons?: boolean
 }
 
-// Helper untuk merender teks markdown ringan (bold, link, bullet point) agar rapi di UI
+// Helper untuk merender teks markdown ringan (bold, link, bullet point)
 function FormattedMessageText({ text }: { text: string }) {
   const lines = text.split("\n")
 
@@ -32,9 +36,7 @@ function FormattedMessageText({ text }: { text: string }) {
           return <div key={idx} className="h-1" />
         }
 
-        // Parse format bold **teks** dan links [teks](url)
         const renderFormattedLine = (str: string) => {
-          // Replace link markdown: [text](url) -> <a>
           const parts = str.split(/(\*\*.*?\*\*|\[.*?\]\(.*?\))/g)
           return parts.map((part, pIdx) => {
             if (part.startsWith("**") && part.endsWith("**")) {
@@ -62,7 +64,6 @@ function FormattedMessageText({ text }: { text: string }) {
           })
         }
 
-        // Jika diawali angka list: 1. atau bullet • / -
         const listMatch = trimmed.match(/^(\d+\.|\•|\-)\s+(.*)/)
         if (listMatch) {
           const marker = listMatch[1]
@@ -91,8 +92,9 @@ export function AiSupportWidget() {
     {
       id: "welcome",
       role: "assistant",
-      text: "Halo! Saya Asisten AI SMK Telkom Jakarta.\nAda yang bisa saya bantu seputar pendaftaran PPDB, jurusan RPL/TKJ/DKV, kurikulum, atau fasilitas sekolah?",
+      text: "Halo! Saya CS Virtual SMK Telkom Jakarta.\nAda yang bisa kami bantu seputar pendaftaran PPDB, jurusan RPL/TKJ/DKV, atau informasi sekolah?",
       time: "Baru saja",
+      showActionButtons: true,
     },
   ])
 
@@ -144,6 +146,7 @@ export function AiSupportWidget() {
           ? data.answer
           : data.message || "Mohon maaf, terjadi kendala teknis sementara.",
         time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        showActionButtons: true,
       }
 
       setMessages((prev) => [...prev, botMessage])
@@ -153,8 +156,9 @@ export function AiSupportWidget() {
         {
           id: `bot-err-${Date.now()}`,
           role: "assistant",
-          text: "Koneksi internet bermasalah. Silakan coba kirim ulang pertanyaan Anda.",
+          text: "Koneksi terputus. Silakan periksa jaringan Anda atau hubungi kami langsung via WhatsApp.",
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          showActionButtons: true,
         },
       ])
     } finally {
@@ -168,41 +172,63 @@ export function AiSupportWidget() {
     "Di mana alamat kampus Jakarta?",
   ]
 
+  const handleResetChat = () => {
+    setMessages([
+      {
+        id: "welcome",
+        role: "assistant",
+        text: "Halo! Saya CS Virtual SMK Telkom Jakarta.\nAda yang bisa kami bantu seputar pendaftaran PPDB, jurusan RPL/TKJ/DKV, atau informasi sekolah?",
+        time: "Baru saja",
+        showActionButtons: true,
+      },
+    ])
+  }
+
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-      {/* Floating Chat Window */}
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+      {/* Floating Chat Window - Bersih total tanpa border putih/garis tepi aneh */}
       {isOpen && (
         <div
           className={cn(
-            "mb-3 flex flex-col w-[350px] sm:w-[390px] h-[530px] max-h-[82vh] rounded-2xl bg-white shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-200"
+            "mb-3 flex flex-col w-[360px] sm:w-[410px] h-[550px] max-h-[85vh] rounded-xl bg-white shadow-2xl overflow-hidden border-0 ring-1 ring-black/5"
           )}
         >
-          {/* Header */}
-          <div className="flex items-center justify-between bg-primary text-white px-4 py-3.5 shadow-xs">
+          {/* CS Header - Warna solid alami tanpa garis tepi */}
+          <div className="flex items-center justify-between bg-primary text-white px-4 py-3 border-0">
             <div className="flex items-center gap-2.5">
-              <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-white text-primary shadow-xs">
-                <Bot className="h-4 w-4 text-primary" />
-                <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 ring-2 ring-white"></span>
+              {/* CS Avatar */}
+              <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white shrink-0">
+                <Headphones className="h-4 w-4 text-white" />
+                <span className="absolute bottom-0 right-0 flex h-2 w-2">
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
                 </span>
               </div>
               <div className="flex flex-col text-left">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-bold leading-tight text-white">AI Support Online</span>
-                  <span className="rounded-full bg-white/20 text-white px-1.5 py-0.2 text-[9px] font-medium tracking-wide">
-                    Aktif
+                  <span className="text-sm font-semibold leading-tight text-white">Customer Support AI</span>
+                  <span className="rounded bg-white/20 text-white px-1.5 py-0.2 text-[10px] font-medium">
+                    Online
                   </span>
                 </div>
-                <span className="text-[10px] text-white/80 leading-tight">SMK Telkom Jakarta</span>
+                <span className="text-[11px] text-red-100 leading-tight">SMK Telkom Jakarta</span>
               </div>
             </div>
 
             <div className="flex items-center gap-1">
               <button
                 type="button"
+                onClick={handleResetChat}
+                className="rounded-md p-1.5 cursor-pointer text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                title="Mulai Ulang Percakapan"
+                aria-label="Reset Chat"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1.5 text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                className="rounded-md p-1.5 cursor-pointer text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                title="Tutup"
                 aria-label="Tutup Chat"
               >
                 <ChevronDown className="h-4 w-4" />
@@ -213,44 +239,103 @@ export function AiSupportWidget() {
           {/* Messages Container */}
           <div
             ref={chatContainerRef}
-            className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-neutral-50/70 text-xs"
+            className="flex-1 overflow-y-auto p-4 space-y-4 bg-neutral-50 text-xs"
           >
             {messages.map((m) => (
               <div
                 key={m.id}
                 className={cn(
-                  "flex flex-col max-w-[90%]",
-                  m.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
+                  "flex items-start gap-2 max-w-[90%]",
+                  m.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
                 )}
               >
+                {/* Profile Avatar Icon - Tanpa border putih tebal */}
                 <div
                   className={cn(
-                    "rounded-2xl px-3.5 py-2.5 text-xs shadow-xs",
+                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold mt-0.5",
                     m.role === "user"
-                      ? "bg-primary text-white rounded-br-xs"
-                      : "bg-white border border-neutral-200/80 text-neutral-800 rounded-bl-xs"
+                      ? "bg-primary text-white"
+                      : "bg-red-50 text-primary"
                   )}
                 >
                   {m.role === "user" ? (
-                    <div className="whitespace-pre-wrap">{m.text}</div>
+                    <User className="h-3.5 w-3.5 text-white" />
                   ) : (
-                    <FormattedMessageText text={m.text} />
+                    <Headphones className="h-3.5 w-3.5 text-primary" />
                   )}
                 </div>
-                <span className="text-[10px] text-neutral-400 mt-1 px-1">{m.time}</span>
+
+                {/* Message Bubble */}
+                <div
+                  className={cn(
+                    "flex flex-col space-y-2",
+                    m.role === "user" ? "items-end" : "items-start"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "rounded-lg px-3.5 py-2.5 text-xs leading-relaxed",
+                      m.role === "user"
+                        ? "bg-primary text-white"
+                        : "bg-white text-neutral-800 border border-neutral-200"
+                    )}
+                  >
+                    {m.role === "user" ? (
+                      <div className="whitespace-pre-wrap">{m.text}</div>
+                    ) : (
+                      <FormattedMessageText text={m.text} />
+                    )}
+                  </div>
+
+                  {/* 2 Tombol Terintegrasi Langsung di Dalam Chat Balasan CS */}
+                  {m.role === "assistant" && m.showActionButtons && (
+                    <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                      <a
+                        href="https://wa.me/6281234567890?text=Halo%20Admin%20SMK%20Telkom%20Jakarta,%20saya%20ingin%20bertanya%20seputar%20pendaftaran"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 rounded-md bg-emerald-600 px-2.5 py-1.5 text-[11px] font-medium text-white hover:bg-emerald-700 transition-colors"
+                      >
+                        <MessageCircle className="h-3.5 w-3.5" />
+                        <span>Chat WhatsApp Admin</span>
+                      </a>
+                      <a
+                        href="https://smktelkom-jkt.sch.id"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 rounded-md bg-white border border-neutral-300 px-2.5 py-1.5 text-[11px] font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
+                      >
+                        <span>Website Resmi</span>
+                        <ExternalLink className="h-3 w-3 text-neutral-500" />
+                      </a>
+                    </div>
+                  )}
+
+                  <span className="text-[10px] text-neutral-400 px-0.5">{m.time}</span>
+                </div>
               </div>
             ))}
 
+            {/* Claude-like thinking / processing state */}
             {loading && (
-              <div className="flex items-center gap-2 text-xs text-neutral-600 bg-white border border-neutral-200/80 rounded-xl px-3.5 py-2 w-fit shadow-xs">
-                <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
-                <span>AI sedang mengetik jawaban...</span>
+              <div className="flex items-start gap-2 max-w-[90%] mr-auto">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-50 text-primary mt-0.5">
+                  <Headphones className="h-3.5 w-3.5 text-primary" />
+                </div>
+                <div className="flex items-center gap-2 text-xs text-neutral-600 bg-white border border-neutral-200 rounded-lg px-3.5 py-2">
+                  <span className="flex items-center gap-1 text-primary">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce"></span>
+                  </span>
+                  <span className="text-[11px] text-neutral-500">Menganalisis pertanyaan...</span>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Quick Question Chips */}
-          <div className="px-3 py-2 border-t border-neutral-100 bg-white flex gap-1.5 overflow-x-auto no-scrollbar">
+          {/* Quick Question Chips - Alami tanpa border tebal */}
+          <div className="px-3 py-1.5 border-t border-neutral-200 bg-white flex gap-1.5 overflow-x-auto no-scrollbar">
             {quickQuestions.map((q, idx) => (
               <button
                 key={idx}
@@ -259,62 +344,70 @@ export function AiSupportWidget() {
                 onClick={() => {
                   setInput(q)
                 }}
-                className="shrink-0 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[10px] font-medium text-neutral-600 hover:border-red-300 hover:bg-red-50 hover:text-primary transition-colors disabled:opacity-50"
+                className="shrink-0 rounded-md border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[10px] font-medium text-neutral-600 hover:border-red-300 hover:text-primary transition-colors disabled:opacity-50 cursor-pointer min-w-[44px]"
               >
                 {q}
               </button>
             ))}
           </div>
 
-          {/* Input Form */}
+          {/* Input Form with Send Button */}
           <form
             onSubmit={handleSend}
-            className="flex items-center gap-2 p-3 bg-white border-t border-neutral-100"
+            className="flex items-center gap-2 p-3 bg-white border-t border-neutral-200"
           >
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Tanyakan seputar sekolah..."
+              placeholder="Tanyakan sesuatu ke CS..."
               disabled={loading}
-              className="flex-1 rounded-xl text-xs h-9 border-neutral-200 bg-neutral-50/50 text-neutral-900 focus-visible:bg-white focus-visible:border-primary focus-visible:ring-primary/20"
+              className="flex-1 rounded-md text-xs h-10 border-neutral-300 bg-white text-neutral-900 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
             />
             <Button
               type="submit"
               disabled={loading || !input.trim()}
-              size="icon"
-              className="h-9 w-9 rounded-xl bg-primary text-white shrink-0 hover:bg-red-700 shadow-xs"
+              className="h-10 px-4 rounded-md shrink-0 gap-1.5 font-medium text-xs cursor-pointer"
               aria-label="Kirim Pesan"
             >
-              <Send className="h-3.5 w-3.5" />
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  <span>Kirim</span>
+                  <Send className="h-3.5 w-3.5" />
+                </>
+              )}
             </Button>
           </form>
         </div>
       )}
 
-      {/* Floating Toggle Button */}
+      {/* Floating Launcher Button */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "group flex items-center gap-2 rounded-full py-2.5 px-4.5 shadow-lg transition-all focus:outline-hidden",
+          "flex items-center gap-2 rounded-md py-2.5 px-4 shadow-sm border transition-colors focus:outline-none cursor-pointer",
           isOpen
-            ? "bg-neutral-900 text-white hover:bg-neutral-800"
-            : "bg-primary text-white hover:bg-red-700 hover:shadow-xl hover:scale-105"
+            ? "bg-neutral-900 border-neutral-800 text-white hover:bg-neutral-800"
+            : "bg-primary border-transparent text-white hover:bg-primary/90"
         )}
-        aria-label="Buka Asisten AI"
+        aria-label="Buka Customer Support"
       >
         {isOpen ? (
           <>
             <X className="h-4 w-4 text-white" />
-            <span className="text-xs font-semibold tracking-wide text-white">Tutup</span>
+            <span className="text-xs font-medium text-white">Tutup CS</span>
           </>
         ) : (
           <>
             <div className="relative flex items-center justify-center">
-              <Bot className="h-4 w-4 text-white" />
-              <Sparkles className="h-2.5 w-2.5 absolute -top-1.5 -right-1.5 text-white animate-pulse" />
+              <Headphones className="h-4 w-4 text-white" />
+              <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              </span>
             </div>
-            <span className="text-xs font-semibold tracking-wide text-white">AI Support Online</span>
+            <span className="text-xs font-medium text-white">Customer Service AI</span>
           </>
         )}
       </button>

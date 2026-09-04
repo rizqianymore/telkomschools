@@ -2,12 +2,12 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { Hero } from "@/components/sections/Hero"
 import { Stats } from "@/components/sections/Stats"
-import { About } from "@/components/sections/About"
-import { Features } from "@/components/sections/Features"
-import { Programs } from "@/components/sections/Programs"
+import { HomeMajors } from "@/components/sections/HomeMajors"
+import { HomeAdmissionFlow } from "@/components/sections/HomeAdmissionFlow"
 import { Testimonials } from "@/components/sections/Testimonial"
 import { FAQ } from "@/components/sections/FAQ"
 import { CTA } from "@/components/sections/CTA"
+import { ScrollReveal } from "@/components/ui/scroll-reveal"
 
 export default function Home() {
   return (
@@ -15,13 +15,24 @@ export default function Home() {
       <Navbar />
       <main className="flex-1">
         <Hero />
-        <Stats />
-        <About />
-        <Features />
-        <Programs />
-        <Testimonials />
-        <FAQ />
-        <CTA />
+        <ScrollReveal>
+          <Stats />
+        </ScrollReveal>
+        <ScrollReveal>
+          <HomeMajors />
+        </ScrollReveal>
+        <ScrollReveal>
+          <HomeAdmissionFlow />
+        </ScrollReveal>
+        <ScrollReveal>
+          <Testimonials />
+        </ScrollReveal>
+        <ScrollReveal>
+          <FAQ />
+        </ScrollReveal>
+        <ScrollReveal>
+          <CTA />
+        </ScrollReveal>
       </main>
       <Footer />
     </div>
