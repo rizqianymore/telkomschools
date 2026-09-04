@@ -37,86 +37,74 @@ export function Navbar() {
   }, [])
   return (
     <header className="sticky top-0 z-40 w-full border-b border-neutral-200/80 bg-white/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 shrink-0">
           <Image
-            src="/img/telkom.jpeg"
+            src="/img/image.png"
             alt="Logo SMK Telkom"
-            width={38}
-            height={38}
-            className="h-9 w-auto object-contain rounded-md"
+            width={44}
+            height={44}
+            className="h-11 w-auto object-contain rounded-md"
+            priority
           />
           <div className="flex flex-col">
-            <span className="text-base sm:text-lg font-bold tracking-tight text-neutral-900 leading-none">
+            <span className="text-lg font-bold tracking-tight text-neutral-900 leading-none">
               SMK Telkom <span className="text-primary">Jakarta</span>
             </span>
-            <span className="text-[10px] font-medium text-neutral-500 tracking-wider uppercase mt-1">
+            <span className="text-[11px] font-medium text-neutral-500 tracking-wider uppercase mt-1">
               Pelopor Pendidikan Vokasi Digital
             </span>
           </div>
         </Link>
 
         {/* Desktop Links */}
-        <nav className="hidden xl:flex items-center gap-0.5">
+        <nav className="hidden lg:flex items-center gap-1">
           {navLinks.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="px-2.5 py-1.5 text-xs font-medium text-neutral-600 hover:text-primary rounded-md hover:bg-neutral-50 transition-colors whitespace-nowrap"
+              className="px-3 py-2 text-sm font-medium text-neutral-600 hover:text-primary rounded-lg hover:bg-neutral-50 transition-colors whitespace-nowrap"
             >
               {item.name}
             </Link>
           ))}
         </nav>
 
-        <nav className="hidden lg:flex xl:hidden items-center gap-0.5">
-          {navLinks.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="px-2 py-1.5 text-[11px] font-medium text-neutral-600 hover:text-primary rounded-md hover:bg-neutral-50 transition-colors whitespace-nowrap"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-
-        {/* CTA Button */}
-        <div className="hidden lg:flex items-center gap-2 shrink-0">
+        {/* CTA Button with standard shadcn button size */}
+        <div className="hidden lg:flex items-center gap-2.5 shrink-0">
           {currentUser ? (
-            <div className="flex items-center gap-1.5">
-              <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-neutral-100 text-xs font-semibold text-neutral-800">
-                <UserCheck className="h-3.5 w-3.5 text-primary" />
-                <span className="max-w-[110px] truncate">{currentUser.name}</span>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-100 text-sm font-semibold text-neutral-800">
+                <UserCheck className="h-4 w-4 text-primary" />
+                <span className="max-w-[130px] truncate">{currentUser.name}</span>
               </div>
               <Button
                 variant="ghost"
-                size="sm"
+                size="default"
                 onClick={() => {
                   removeStoredUser()
                   setCurrentUser(null)
                 }}
-                className="text-xs text-neutral-500 hover:text-red-600 px-2 h-8"
+                className="text-neutral-500 hover:text-red-600 px-3"
                 title="Keluar"
               >
-                <LogOut className="h-3.5 w-3.5" />
+                <LogOut className="h-4 w-4" />
               </Button>
             </div>
           ) : (
             <Button
               variant="ghost"
-              size="sm"
+              size="default"
               render={<Link href="/login" />}
-              className="rounded-lg px-3 text-xs font-medium text-neutral-700 hover:text-primary hover:bg-neutral-50"
+              className="text-neutral-700 hover:text-primary hover:bg-neutral-50"
             >
               Masuk
             </Button>
           )}
           <Button
-            size="sm"
+            size="default"
             render={<Link href="/kontak" />}
-            className="rounded-lg px-3.5 text-xs font-medium whitespace-nowrap"
           >
             Daftar Sekarang
           </Button>
@@ -141,11 +129,11 @@ export function Navbar() {
               <SheetHeader className="p-0 text-left">
                 <SheetTitle className="flex items-center gap-2.5 text-base font-bold text-neutral-900">
                   <Image
-                    src="/img/telkom.jpeg"
+                    src="/img/image.png"
                     alt="Logo SMK Telkom"
-                    width={32}
-                    height={32}
-                    className="h-8 w-auto object-contain rounded-md"
+                    width={36}
+                    height={36}
+                    className="h-9 w-auto object-contain rounded-md"
                   />
                   <span>SMK Telkom Jakarta</span>
                 </SheetTitle>
