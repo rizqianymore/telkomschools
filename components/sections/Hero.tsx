@@ -76,11 +76,11 @@ export function Hero() {
                     alt="Siswa SMK Telkom Jakarta"
                     className="h-full w-full object-cover opacity-90"
                   />
-                  <div className="absolute inset-0 bg-neutral-950/20" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/70 via-neutral-950/20 to-transparent" />
                   
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <div className="absolute top-4 left-4 right-4 text-white">
                     <p className="text-xs uppercase tracking-wider text-red-300 font-semibold">Lingkungan Inspiratif</p>
-                    <p className="text-sm font-medium mt-0.5 text-neutral-100">
+                    <p className="text-sm font-medium mt-0.5 text-neutral-100 leading-snug">
                       Mempersiapkan talenta terdepan di era revolusi kecerdasan buatan dan teknologi digital.
                     </p>
                   </div>
