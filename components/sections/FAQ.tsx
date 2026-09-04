@@ -1,4 +1,7 @@
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Accordion,
   AccordionItem,
@@ -8,29 +11,24 @@ import {
 
 const faqs = [
   {
-    question: "Kapan periode pendaftaran siswa baru SMK Telkom Jakarta dibuka?",
+    question: "Kapan periode pendaftaran siswa baru (PPDB) dibuka?",
     answer:
-      "Pendaftaran siswa baru (PPDB) dibuka sepanjang tahun akademik secara bertahap dalam beberapa gelombang. Anda dapat mendaftar secara online melalui portal resmi kami atau langsung mengunjungi sekretariat pendaftaran di kampus SMK Telkom Jakarta.",
+      "Pendaftaran siswa baru dibuka secara bertahap dalam 3 gelombang setiap tahun ajaran (Jalur Prestasi, Reguler 1, dan Reguler 2). Calon siswa dapat mendaftar secara daring melalui portal resmi atau hadir langsung di kampus Cengkareng, Jakarta Barat.",
   },
   {
-    question: "Apa saja kurikulum dan konsentrasi keahlian yang ditawarkan?",
+    question: "Apakah lulusan SMK Telkom Jakarta bisa langsung kuliah di PTN?",
     answer:
-      "Kami menerapkan Kurikulum Merdeka yang diperkaya dengan kurikulum vokasi berbasis teknologi informasi dan industri. Jurusan unggulan meliputi Rekayasa Perangkat Lunak (RPL), Teknik Komputer dan Jaringan (TKJ), serta Desain Komunikasi Visual (DKV).",
+      "Tentu saja. Selain dipersiapkan kompetensi kerja industri, kami menyediakan kelas bimbingan intensif persiapan UTBK-SNBT sehingga puluhan lulusan kami rutin diterima di PTN favorit (UI, ITB, UGM, ITS, hingga Telkom University).",
   },
   {
-    question: "Apakah tersedia program beasiswa untuk siswa berprestasi?",
+    question: "Apa saja dokumen yang wajib disiapkan saat mendaftar?",
     answer:
-      "Ya, SMK Telkom Jakarta menyediakan berbagai skema beasiswa, mulai dari beasiswa prestasi akademik, beasiswa kejuaraan sains/teknologi/olahraga, hingga program bantuan pendidikan dari Yayasan Pendidikan Telkom.",
+      "Persyaratan administrasi awal meliputi salinan rapor 2 semester terakhir, Akta Kelahiran, Kartu Keluarga (KK), pas foto berwarna, dan sertifikat prestasi kejuaraan bagi pendaftar jalur prestasi.",
   },
   {
-    question: "Bagaimana dengan fasilitas laboratorium dan teknologi pendukung?",
+    question: "Bagaimana proses penyaluran kerja untuk lulusan?",
     answer:
-      "Sekolah kami dilengkapi dengan laboratorium komputer mutakhir, studio multimedia, lab Cisco networking, akses internet fiber optic berkecepatan tinggi, perpustakaan digital, serta ruang kelas interaktif modern.",
-  },
-  {
-    question: "Apakah lulusan SMK Telkom Jakarta dibantu dalam penyaluran kerja dan kuliah?",
-    answer:
-      "Benar. Kami memiliki unit Bursa Kerja Khusus (BKK) yang bermitra dengan lebih dari 100 perusahaan teknologi skala nasional dan multinasional, serta program pembinaan akselerasi tembus perguruan tinggi negeri (PTN) dan perguruan tinggi kedinasan.",
+      "Melalui unit Bursa Kerja Khusus (BKK) dan ekosistem Telkom Group, sekolah secara berkala menggelar campus recruitment bersama 50+ mitra industri teknologi nasional maupun multinasional.",
   },
 ]
 
@@ -42,36 +40,51 @@ export function FAQ() {
         <div className="text-center">
           <Badge
             variant="outline"
-            className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/60 text-primary font-semibold"
+            className="mb-4 inline-flex items-center gap-2 rounded-md border-red-200 bg-red-50/70 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-primary shadow-none"
           >
-            Pertanyaan Umum
+            <span className="inline-block h-2 w-2 rounded-full bg-primary" />
+            <span>Pertanyaan yang Sering Diajukan</span>
           </Badge>
           <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">
-            Frequently Asked Questions
+            Pusat Informasi & Jawaban Cepat
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-neutral-600 leading-relaxed">
-            Informasi penting seputar pendaftaran, kurikulum kejuruan, fasilitas, dan prospek kelulusan di SMK Telkom Jakarta.
+          <p className="mt-3 text-base text-neutral-600 max-w-2xl mx-auto leading-relaxed">
+            Ringkasan informasi praktis yang paling sering ditanyakan oleh calon siswa dan orang tua.
           </p>
         </div>
 
-        {/* Accordion Component */}
-        <div className="mt-12 rounded-2xl border border-neutral-200/90 bg-white p-6 sm:p-8 shadow-sm">
+        {/* Accordion Component - Standard shadcn style */}
+        <div className="mt-10">
           <Accordion defaultValue={["item-0"]}>
             {faqs.map((faq, idx) => (
               <AccordionItem
                 key={idx}
                 value={`item-${idx}`}
-                className="border-b border-neutral-100 py-3 last:border-b-0"
+                className="border-b border-neutral-200 py-1"
               >
-                <AccordionTrigger className="text-left text-base font-semibold text-neutral-900 hover:text-primary py-2">
+                <AccordionTrigger className="text-left text-base font-semibold text-neutral-900 hover:no-underline hover:text-primary py-4">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm text-neutral-600 leading-relaxed pt-1 pb-3">
+                <AccordionContent className="text-sm text-neutral-600 leading-relaxed pb-4">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-lg bg-neutral-50 p-4 border border-neutral-200">
+            <p className="text-xs sm:text-sm text-neutral-600">
+              Punya pertanyaan lain seputar beasiswa, rincian biaya, atau jadwal tes?
+            </p>
+            <Button
+              variant="outline"
+              render={<Link href="/faq" />}
+              className="w-full sm:w-auto text-xs"
+            >
+              <span>Lihat Semua FAQ</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </div>
         </div>
       </div>
     </section>

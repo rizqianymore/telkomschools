@@ -2,9 +2,8 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { Hero } from "@/components/sections/Hero"
 import { Stats } from "@/components/sections/Stats"
-import { About } from "@/components/sections/About"
-import { Features } from "@/components/sections/Features"
-import { Programs } from "@/components/sections/Programs"
+import { HomeMajors } from "@/components/sections/HomeMajors"
+import { HomeAdmissionFlow } from "@/components/sections/HomeAdmissionFlow"
 import { Testimonials } from "@/components/sections/Testimonial"
 import { FAQ } from "@/components/sections/FAQ"
 import { CTA } from "@/components/sections/CTA"
@@ -20,13 +19,10 @@ export default function Home() {
           <Stats />
         </ScrollReveal>
         <ScrollReveal>
-          <About />
+          <HomeMajors />
         </ScrollReveal>
         <ScrollReveal>
-          <Features />
-        </ScrollReveal>
-        <ScrollReveal>
-          <Programs />
+          <HomeAdmissionFlow />
         </ScrollReveal>
         <ScrollReveal>
           <Testimonials />

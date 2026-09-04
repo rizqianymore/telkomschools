@@ -52,9 +52,10 @@ export default function KontakPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <Badge
               variant="outline"
-              className="mb-4 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+              className="mb-4 inline-flex items-center gap-2 rounded-md border-red-200 bg-red-50/70 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-primary shadow-none"
             >
-              Hubungi Kami
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Kontak & Layanan Informasi</span>
             </Badge>
             <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl">
               Kontak & Layanan <span className="text-primary">Pendaftaran</span>
@@ -155,7 +156,7 @@ export default function KontakPage() {
                           type="text"
                           required
                           placeholder="cth. Budi Santoso"
-                          className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-3.5 py-2.5 text-sm text-neutral-900 outline-none focus:border-primary focus:bg-white transition-colors"
+                          className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
                         />
                       </div>
                       <div>
@@ -166,7 +167,7 @@ export default function KontakPage() {
                           type="tel"
                           required
                           placeholder="cth. 081234567890"
-                          className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-3.5 py-2.5 text-sm text-neutral-900 outline-none focus:border-primary focus:bg-white transition-colors"
+                          className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
                         />
                       </div>
                     </div>
@@ -180,14 +181,14 @@ export default function KontakPage() {
                           type="email"
                           required
                           placeholder="cth. nama@domain.com"
-                          className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-3.5 py-2.5 text-sm text-neutral-900 outline-none focus:border-primary focus:bg-white transition-colors"
+                          className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
                         />
                       </div>
                       <div>
                         <label className="block text-xs font-semibold text-neutral-700 mb-1.5">
                           Pilihan Jenjang
                         </label>
-                        <select className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 px-3.5 py-2.5 text-sm text-neutral-900 outline-none focus:border-primary focus:bg-white transition-colors">
+                        <select className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors">
                           <option value="tk">TK & PAUD</option>
                           <option value="sd">Sekolah Dasar (SD)</option>
                           <option value="smp">SMP Telkom</option>
@@ -206,11 +207,11 @@ export default function KontakPage() {
                         rows={4}
                         required
                         placeholder="Tuliskan pertanyaan Anda mengenai pendaftaran, biaya, atau fasilitas..."
-                        className="w-full rounded-xl border border-neutral-200 bg-neutral-50/50 p-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:bg-white transition-colors"
+                        className="w-full rounded-md border border-neutral-300 bg-white p-3 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
                       />
                     </div>
 
-                    <Button type="submit" size="lg" className="w-full sm:w-auto text-sm font-semibold">
+                    <Button type="submit" className="w-full sm:w-auto">
                       <span>Kirim Pesan</span>
                       <Send className="h-4 w-4" />
                     </Button>
@@ -227,7 +228,7 @@ export default function KontakPage() {
             <div className="mx-auto max-w-3xl text-center">
               <Badge
                 variant="outline"
-                className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+                className="mb-3 text-xs border-red-200 bg-red-50/70 text-primary font-medium"
               >
                 Jaringan Kampus
               </Badge>

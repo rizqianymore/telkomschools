@@ -11,9 +11,10 @@ export function CTA() {
           <div className="relative mx-auto max-w-3xl text-center">
             <Badge
               variant="outline"
-              className="mb-6 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+              className="mb-6 inline-flex items-center gap-2 rounded-md border-red-200 bg-red-50/70 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-primary shadow-none"
             >
-              Pendaftaran Siswa Baru
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Pendaftaran Siswa Baru TA 2026/2027</span>
             </Badge>
 
             <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl md:text-5xl md:leading-tight">

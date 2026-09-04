@@ -276,13 +276,13 @@ export function AiSupportWidget() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Tanyakan seputar sekolah..."
               disabled={loading}
-              className="flex-1 rounded-xl text-xs h-9 border-neutral-200 bg-neutral-50/50 text-neutral-900 focus-visible:bg-white focus-visible:border-primary focus-visible:ring-primary/20"
+              className="flex-1 rounded-md text-xs h-9 border-neutral-300 bg-white text-neutral-900 focus-visible:border-primary focus-visible:ring-primary/20"
             />
             <Button
               type="submit"
               disabled={loading || !input.trim()}
               size="icon"
-              className="h-9 w-9 rounded-xl bg-primary text-white shrink-0 hover:bg-red-700 shadow-xs"
+              className="h-9 w-9 rounded-md bg-primary text-white shrink-0 hover:bg-primary/90"
               aria-label="Kirim Pesan"
             >
               <Send className="h-3.5 w-3.5" />

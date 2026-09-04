@@ -140,10 +140,10 @@ export default function QuizPage() {
               <div className="text-center">
                 <Badge
                   variant="outline"
-                  className="mb-4 uppercase tracking-wider text-xs border-red-200 bg-red-50/80 text-primary font-semibold py-1 px-3"
+                  className="mb-4 inline-flex items-center gap-2 rounded-md border-red-200 bg-red-50/70 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-primary shadow-none"
                 >
-                  <Sparkles className="mr-1.5 h-3.5 w-3.5 inline text-primary" />
-                  Tes Minat & Bakat Siswa
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+                  <span>Tes Minat & Bakat Siswa</span>
                 </Badge>
                 <h1 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl">
                   Quiz Rekomendasi <span className="text-primary">Jurusan</span>
@@ -382,7 +382,7 @@ export default function QuizPage() {
               <div className="text-center">
                 <Badge
                   variant="outline"
-                  className="mb-3 uppercase tracking-wider text-xs border-emerald-200 bg-emerald-50/80 text-emerald-700 font-semibold py-1 px-3"
+                  className="mb-3 text-xs border-emerald-200 bg-emerald-50/80 text-emerald-700 font-medium py-1 px-3"
                 >
                   <CheckCircle2 className="mr-1.5 h-3.5 w-3.5 inline text-emerald-600" />
                   Analisis Minat Selesai

@@ -102,9 +102,10 @@ export default function FAQPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <Badge
               variant="outline"
-              className="mb-4 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold"
+              className="mb-4 inline-flex items-center gap-2 rounded-md border-red-200 bg-red-50/70 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-primary shadow-none"
             >
-              Pusat Bantuan & FAQ
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+              <span>Pusat Bantuan & Tanya Jawab</span>
             </Badge>
             <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl">
               Pertanyaan yang <span className="text-primary">Sering Diajukan</span>
@@ -155,7 +156,7 @@ export default function FAQPage() {
         <section className="bg-neutral-50/60 py-20 border-t border-neutral-200/80">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-3xl text-center">
-              <Badge variant="outline" className="mb-3 uppercase tracking-wider text-xs border-red-200 bg-red-50/70 text-primary font-semibold">
+              <Badge variant="outline" className="mb-3 text-xs border-red-200 bg-red-50/70 text-primary font-medium">
                 Konsultasi Langsung
               </Badge>
               <h2 className="text-3xl font-extrabold tracking-tight text-neutral-900 sm:text-4xl">

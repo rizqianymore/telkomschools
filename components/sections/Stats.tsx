@@ -4,27 +4,27 @@ import { Users, Award, BookOpen, GraduationCap } from "lucide-react"
 const stats = [
   {
     icon: Users,
-    value: "1.000+",
+    value: "1.200+",
     label: "Siswa Aktif",
-    desc: "Belajar & berkarya setiap hari",
+    desc: "Jurusan RPL, TKJ, dan DKV",
   },
   {
     icon: Award,
     value: "50+",
-    label: "Guru Profesional",
-    desc: "Tersertifikasi & berpengalaman",
+    label: "Mitra Industri & BUMN",
+    desc: "Penyaluran PKL & Rekrutmen",
   },
   {
     icon: BookOpen,
-    value: "20+",
-    label: "Program Unggulan",
-    desc: "Akademik & vokasi terpadu",
+    value: "100%",
+    label: "Sertifikasi Profesi",
+    desc: "Standar BNSP & Industri Global",
   },
   {
     icon: GraduationCap,
-    value: "95%",
-    label: "Tingkat Kelulusan",
-    desc: "Diterima di PTN & industri top",
+    value: "94%",
+    label: "Tingkat Serapan",
+    desc: "Bekerja di Industri & Kuliah di PTN",
   },
 ]
 

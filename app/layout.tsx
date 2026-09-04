@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { AiSupportWidget } from "@/components/layout/AiSupportWidget";
-import { ScrollProgressBar } from "@/components/ui/scroll-progress";
 import { PageTransition } from "@/components/layout/PageTransition";
 import "./globals.css";
 
@@ -36,7 +35,6 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${plusJakartaSans.variable} scroll-smooth`}>
       <body className="min-h-screen bg-white font-sans text-neutral-900 antialiased">
-        <ScrollProgressBar />
         <PageTransition>{children}</PageTransition>
         <AiSupportWidget />
       </body>

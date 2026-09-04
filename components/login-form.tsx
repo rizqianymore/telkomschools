@@ -120,7 +120,7 @@ export function LoginForm({
 
         {/* Notifikasi Alert Error Otomatis */}
         {errorMessage && (
-          <div className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-3 text-xs font-medium text-red-700 animate-in fade-in duration-200">
+          <div className="flex items-start gap-2.5 rounded-md border border-red-200 bg-red-50 p-3 text-xs font-medium text-red-700">
             <AlertCircle className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
             <div className="leading-snug">{errorMessage}</div>
           </div>
@@ -128,7 +128,7 @@ export function LoginForm({
 
         {/* Notifikasi Alert Sukses */}
         {successMessage && (
-          <div className="flex items-start gap-2.5 rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-xs font-medium text-neutral-900 animate-in fade-in duration-200">
+          <div className="flex items-start gap-2.5 rounded-md border border-neutral-200 bg-neutral-50 p-3 text-xs font-medium text-neutral-900">
             <CheckCircle2 className="h-4 w-4 shrink-0 text-primary mt-0.5" />
             <div className="leading-snug">{successMessage}</div>
           </div>
@@ -147,10 +147,9 @@ export function LoginForm({
             placeholder="Masukkan NIS / NIP / Email"
             autoComplete="username"
             className={cn(
-              "rounded-xl transition-colors",
               errorField === "identifier"
                 ? "border-red-500 ring-2 ring-red-500/10 focus-visible:border-red-500 focus-visible:ring-red-500/20"
-                : "border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
+                : "border-neutral-300 focus-visible:border-primary focus-visible:ring-primary/20"
             )}
             required
           />
@@ -177,10 +176,9 @@ export function LoginForm({
             placeholder="••••••••"
             autoComplete="current-password"
             className={cn(
-              "rounded-xl transition-colors",
               errorField === "password"
                 ? "border-red-500 ring-2 ring-red-500/10 focus-visible:border-red-500 focus-visible:ring-red-500/20"
-                : "border-neutral-200 focus-visible:border-primary focus-visible:ring-primary/20"
+                : "border-neutral-300 focus-visible:border-primary focus-visible:ring-primary/20"
             )}
             required
           />
@@ -191,7 +189,7 @@ export function LoginForm({
           <Button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl py-2.5 text-sm font-semibold bg-primary text-white hover:bg-red-700 shadow-sm transition-all"
+            className="w-full"
           >
             {loading ? (
               <span className="flex items-center gap-2">
