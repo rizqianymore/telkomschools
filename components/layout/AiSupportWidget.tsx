@@ -186,15 +186,15 @@ export function AiSupportWidget() {
 
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
-      {/* Floating Chat Window - Tanpa border putih tebal, menyatu alami */}
+      {/* Floating Chat Window - Bersih total tanpa border putih/garis tepi aneh */}
       {isOpen && (
         <div
           className={cn(
-            "mb-3 flex flex-col w-[360px] sm:w-[410px] h-[550px] max-h-[85vh] rounded-xl bg-white shadow-2xl overflow-hidden border border-neutral-200"
+            "mb-3 flex flex-col w-[360px] sm:w-[410px] h-[550px] max-h-[85vh] rounded-xl bg-white shadow-2xl overflow-hidden border-0 ring-1 ring-black/5"
           )}
         >
-          {/* CS Header - Warna solid alami tanpa aksen mencolok */}
-          <div className="flex items-center justify-between bg-primary text-white px-4 py-3">
+          {/* CS Header - Warna solid alami tanpa garis tepi */}
+          <div className="flex items-center justify-between bg-primary text-white px-4 py-3 border-0">
             <div className="flex items-center gap-2.5">
               {/* CS Avatar */}
               <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white shrink-0">
