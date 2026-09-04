@@ -111,11 +111,11 @@ export function AiSupportWidget() {
       {isOpen && (
         <div
           className={cn(
-            "mb-3 flex flex-col w-[350px] sm:w-[385px] h-[520px] max-h-[80vh] rounded-2xl border border-neutral-200/90 bg-white shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-200"
+            "mb-3 flex flex-col w-[350px] sm:w-[385px] h-[520px] max-h-[80vh] rounded-2xl bg-white shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-200"
           )}
         >
-          {/* Header - Bersih dengan warna merah primer Telkom & kontras teks putih */}
-          <div className="flex items-center justify-between bg-primary text-white px-4 py-3.5 border-b border-red-700/60 shadow-xs">
+          {/* Header - Bersih menyatu dengan sudut rounded tanpa border putih luar */}
+          <div className="flex items-center justify-between bg-primary text-white px-4 py-3.5 shadow-xs">
             <div className="flex items-center gap-2.5">
               <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-white text-primary shadow-xs">
                 <Bot className="h-4 w-4 text-primary" />
@@ -150,7 +150,7 @@ export function AiSupportWidget() {
           {/* Messages Container */}
           <div
             ref={chatContainerRef}
-            className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-neutral-50/60 text-xs"
+            className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-neutral-50/70 text-xs"
           >
             {messages.map((m) => (
               <div
@@ -165,7 +165,7 @@ export function AiSupportWidget() {
                     "rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed whitespace-pre-wrap",
                     m.role === "user"
                       ? "bg-primary text-white rounded-br-xs shadow-xs"
-                      : "bg-white border border-neutral-200 text-neutral-800 rounded-bl-xs shadow-xs"
+                      : "bg-white border border-neutral-200/80 text-neutral-800 rounded-bl-xs shadow-xs"
                   )}
                 >
                   {m.text}
@@ -175,7 +175,7 @@ export function AiSupportWidget() {
             ))}
 
             {loading && (
-              <div className="flex items-center gap-2 text-xs text-neutral-600 bg-white border border-neutral-200 rounded-xl px-3.5 py-2 w-fit shadow-xs">
+              <div className="flex items-center gap-2 text-xs text-neutral-600 bg-white border border-neutral-200/80 rounded-xl px-3.5 py-2 w-fit shadow-xs">
                 <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
                 <span>AI sedang mengetik jawaban...</span>
               </div>
@@ -202,14 +202,14 @@ export function AiSupportWidget() {
           {/* Input Form */}
           <form
             onSubmit={handleSend}
-            className="flex items-center gap-2 p-3 bg-white border-t border-neutral-200"
+            className="flex items-center gap-2 p-3 bg-white border-t border-neutral-100"
           >
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Tanyakan seputar sekolah..."
               disabled={loading}
-              className="flex-1 rounded-xl text-xs h-9 border-neutral-200 bg-white text-neutral-900 focus-visible:border-primary focus-visible:ring-primary/20"
+              className="flex-1 rounded-xl text-xs h-9 border-neutral-200 bg-neutral-50/50 text-neutral-900 focus-visible:bg-white focus-visible:border-primary focus-visible:ring-primary/20"
             />
             <Button
               type="submit"
@@ -224,14 +224,14 @@ export function AiSupportWidget() {
         </div>
       )}
 
-      {/* Floating Toggle Button: Merah Primer dengan Border & Aksen Putih yang Pas */}
+      {/* Floating Toggle Button */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "group flex items-center gap-2 rounded-full py-2.5 px-4.5 border border-white/40 shadow-lg ring-2 ring-primary/20 transition-all focus:outline-hidden",
+          "group flex items-center gap-2 rounded-full py-2.5 px-4.5 shadow-lg transition-all focus:outline-hidden",
           isOpen
-            ? "bg-neutral-900 text-white border-neutral-700 hover:bg-neutral-800"
+            ? "bg-neutral-900 text-white hover:bg-neutral-800"
             : "bg-primary text-white hover:bg-red-700 hover:shadow-xl hover:scale-105"
         )}
         aria-label="Buka Asisten AI"
