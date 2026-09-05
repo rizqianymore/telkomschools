@@ -100,3 +100,51 @@ export async function updateUserPassword(email: string, newPasswordHash: string)
   return true
 }
 
+/**
+ * Mendaftarkan akun pengguna baru (Calon Siswa / Wali Murid / PPDB)
+ */
+export async function registerUser(data: {
+  name: string
+  email: string
+  password_hash: string
+  role?: UserRole
+  nis?: string
+  nip?: string
+}): Promise<UserRecord> {
+  const cleanEmail = data.email.trim().toLowerCase()
+  const newId = MOCK_MYSQL_USERS.length > 0 ? Math.max(...MOCK_MYSQL_USERS.map((u) => u.id)) + 1 : 1
+  const role: UserRole = data.role || "siswa"
+  const roleLabelMap: Record<UserRole, string> = {
+    siswa: "Siswa",
+    ortu: "Orang Tua",
+    guru: "Guru",
+    staff: "Staff",
+  }
+
+  const newUser: UserRecord = {
+    id: newId,
+    identifier: cleanEmail,
+    email: cleanEmail,
+    name: data.name.trim(),
+    password_hash: data.password_hash,
+    role,
+    role_label: roleLabelMap[role],
+    nis: data.nis?.trim(),
+    nip: data.nip?.trim(),
+  }
+
+  MOCK_MYSQL_USERS.push(newUser)
+  return newUser
+}
+
+/**
+ * Memperbarui profil akun (Nama, dsb.)
+ */
+export async function updateUserProfile(id: number, data: { name?: string }): Promise<UserRecord | null> {
+  const user = MOCK_MYSQL_USERS.find((u) => u.id === id)
+  if (!user) return null
+  if (data.name?.trim()) user.name = data.name.trim()
+  return user
+}
+
+

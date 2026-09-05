@@ -203,8 +203,8 @@ export function LoginForm({
 
         <FieldDescription className="text-center text-xs text-neutral-500">
           Belum terdaftar sebagai siswa baru?{" "}
-          <a href="/kontak" className="font-medium text-primary hover:underline underline-offset-4">
-            Daftar PPDB Di Sini
+          <a href="/daftar" className="font-medium text-primary hover:underline underline-offset-4">
+            Daftar Akun Baru Di Sini
           </a>
         </FieldDescription>
       </FieldGroup>
