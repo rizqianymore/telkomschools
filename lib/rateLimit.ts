@@ -17,7 +17,8 @@ const ipMap = new Map<string, RateInfo>();
  * Use in API routes: await runRateLimit(request);
  */
 export async function runRateLimit(req: Request) {
-  const ip = (req as any).socket?.remoteAddress || 'unknown';
+  const forwarded = req.headers.get("x-forwarded-for");
+  const ip = forwarded ? forwarded.split(",")[0].trim() : "127.0.0.1";
   const now = Date.now();
   let info = ipMap.get(ip);
   if (!info) {

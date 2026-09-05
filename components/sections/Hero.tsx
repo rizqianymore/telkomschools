@@ -74,8 +74,8 @@ export function Hero() {
                     alt="Siswa SMK Telkom Jakarta"
                     className="h-full w-full object-cover opacity-90"
                   />
-                  <div className="absolute bottom-3 left-3 right-3 rounded-md bg-neutral-950/75 px-3 py-2 text-white">
-                    <p className="text-xs text-neutral-200 font-medium">Kampus Cengkareng, Jakarta Barat</p>
+                  <div className="absolute top-3 left-3 right-3 rounded-md bg-neutral-950/80 backdrop-blur-sm px-3 py-2 text-white shadow-md">
+                    <p className="text-xs text-white font-medium">SMK Telkom Jakarta, Jakarta Barat</p>
                   </div>
                 </div>
               </div>

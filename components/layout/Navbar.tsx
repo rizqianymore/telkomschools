@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
 import { usePathname } from "next/navigation"
 import { Menu, UserCheck, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -31,7 +30,6 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname()
   const [currentUser, setCurrentUser] = React.useState<AuthUser | null>(() => getStoredUser())
-  const [hoveredPath, setHoveredPath] = React.useState<string | null>(null)
 
   React.useEffect(() => {
     const handleChange = () => setCurrentUser(getStoredUser())
@@ -60,11 +58,8 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Links with Apple-style Liquid Glass Floating Indicator */}
-        <nav
-          className="hidden lg:flex items-center p-1.5 rounded-full bg-neutral-100/70 backdrop-blur-md border border-neutral-200/50 shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] relative"
-          onMouseLeave={() => setHoveredPath(null)}
-        >
+        {/* Desktop Links - Simple, Clean & Responsive */}
+        <nav className="hidden lg:flex items-center gap-1">
           {navLinks.map((item) => {
             const isActive =
               item.href === "/"
@@ -75,50 +70,20 @@ export function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                onMouseEnter={() => setHoveredPath(item.href)}
-                className={`relative px-3.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap z-10 select-none ${
+                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors whitespace-nowrap select-none ${
                   isActive
-                    ? "text-red-700 font-bold"
-                    : "text-neutral-600 hover:text-neutral-950"
+                    ? "bg-red-50 text-primary font-semibold"
+                    : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
                 }`}
               >
-                {/* Sliding Liquid Glass Bubble on Active */}
-                {isActive && (
-                  <motion.div
-                    layoutId="active-glass-bubble"
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 30,
-                    }}
-                    className="absolute inset-0 rounded-full bg-white/90 backdrop-blur-xl border border-white/80 shadow-[0_2px_12px_rgba(239,68,68,0.12),0_1px_2px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,0.9)] -z-10"
-                  >
-                    {/* Subtle red tint glow at the bottom */}
-                    <span className="absolute inset-x-2 -bottom-px h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-80" />
-                  </motion.div>
-                )}
-
-                {/* Hover glass hover state (when not active) */}
-                {hoveredPath === item.href && !isActive && (
-                  <motion.div
-                    layoutId="hover-glass-pill"
-                    transition={{
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 30,
-                    }}
-                    className="absolute inset-0 rounded-full bg-white/50 backdrop-blur-sm -z-20 border border-white/40 shadow-[0_1px_4px_rgba(0,0,0,0.03)]"
-                  />
-                )}
-
-                <span>{item.name}</span>
+                {item.name}
               </Link>
             )
           })}
         </nav>
 
         {/* Pembatas Vertikal antara Navigasi & Tombol Masuk/Daftar */}
-        <div className="hidden lg:block h-6 w-px bg-neutral-200" />
+        <div className="hidden lg:block h-5 w-px bg-neutral-200" />
 
         {/* CTA Button with standard button size */}
         <div className="hidden lg:flex items-center gap-2.5 shrink-0">

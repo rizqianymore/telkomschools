@@ -3,9 +3,8 @@
 // Applies strict security headers to all dynamic routes while excluding static assets.
 
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
-export function proxy(request: NextRequest) {
+export function proxy() {
   const response = NextResponse.next();
 
   const isDev = process.env.NODE_ENV === 'development';
