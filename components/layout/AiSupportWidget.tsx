@@ -131,11 +131,14 @@ export function AiSupportWidget() {
         content: m.text,
       }))
 
+      const clientSignature =
+        process.env.NEXT_PUBLIC_AI_CLIENT_SIGNATURE || "telkom-schools-ai-client-v1"
+
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-client-signature": "telkom-schools-ai-client-v1",
+          "x-client-signature": clientSignature,
         },
         body: JSON.stringify({ prompt, history }),
       })

@@ -1,8 +1,9 @@
 import crypto from "node:crypto"
 
-const API = "https://api.overchat.ai/v1/chat/completions"
+const API = process.env.AI_API_ENDPOINT || "https://api.overchat.ai/v1/chat/completions"
 
 const USER_AGENT =
+  process.env.AI_USER_AGENT ||
   "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Mobile Safari/537.36"
 
 // Prompt ketat dengan format jawaban yang sangat rapi, bersih, dan berstruktur

@@ -4,7 +4,10 @@ import { runRateLimit } from "@/lib/rateLimit"
 import { checkLoginRateLimit } from "@/lib/security"
 
 // Header token rahasia internal agar hanya widget UI kita yang bisa memanggil endpoint
-export const AI_CLIENT_TOKEN = "telkom-schools-ai-client-v1"
+export const AI_CLIENT_TOKEN =
+  process.env.NEXT_PUBLIC_AI_CLIENT_SIGNATURE ||
+  process.env.AI_CLIENT_SIGNATURE ||
+  "telkom-schools-ai-client-v1"
 
 // Daftar User-Agent bot scraping atau crawling yang dilarang mengakses AI
 const SCRAPER_BOT_REGEX = /(python-requests|aiohttp|curl|wget|scrapy|playwright|puppeteer|selenium|postmanruntime|insomnia|go-http-client|apache-httpclient|headlesschrome|axios|httpclient)/i
