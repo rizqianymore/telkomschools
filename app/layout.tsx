@@ -27,16 +27,20 @@ export const metadata: Metadata = {
   ],
 };
 
+import { TooltipProvider } from "@/components/ui/tooltip";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${plusJakartaSans.variable} scroll-smooth`}>
+    <html lang="id" className={`${plusJakartaSans.variable} scroll-smooth`} data-scroll-behavior="smooth">
       <body className="min-h-screen bg-white font-sans text-neutral-900 antialiased">
-        <PageTransition>{children}</PageTransition>
-        <AiSupportWidget />
+        <TooltipProvider>
+          <PageTransition>{children}</PageTransition>
+          <AiSupportWidget />
+        </TooltipProvider>
       </body>
     </html>
   );

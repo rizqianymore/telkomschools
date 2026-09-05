@@ -84,7 +84,12 @@ function FormattedMessageText({ text }: { text: string }) {
   )
 }
 
+import { usePathname } from "next/navigation"
+
 export function AiSupportWidget() {
+  const pathname = usePathname()
+  const isDashboard = pathname?.startsWith("/dashboard")
+
   const [isOpen, setIsOpen] = React.useState(false)
   const [input, setInput] = React.useState("")
   const [loading, setLoading] = React.useState(false)
@@ -106,70 +111,73 @@ export function AiSupportWidget() {
     }
   }, [messages, loading])
 
-  const handleSend = async (e?: React.FormEvent, customPrompt?: string) => {
-    if (e) e.preventDefault()
-    const prompt = (customPrompt || input).trim()
-    if (!prompt || loading) return
+  const handleSend = React.useCallback(
+    async (e?: React.FormEvent, customPrompt?: string) => {
+      if (e) e.preventDefault()
+      const prompt = (customPrompt || input).trim()
+      if (!prompt || loading) return
 
-    const now = new Date()
-    const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      const now = new Date()
+      const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
 
-    const userMessage: MessageItem = {
-      id: `user-${Date.now()}`,
-      role: "user",
-      text: prompt,
-      time: timeStr,
-    }
-
-    setMessages((prev) => [...prev, userMessage])
-    setInput("")
-    setLoading(true)
-
-    try {
-      const history = messages.slice(-5).map((m) => ({
-        role: m.role,
-        content: m.text,
-      }))
-
-      const clientSignature = process.env.NEXT_PUBLIC_AI_CLIENT_SIGNATURE!
-
-      const res = await fetch("/api/ai/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-client-signature": clientSignature,
-        },
-        body: JSON.stringify({ prompt, history }),
-      })
-
-      const data = await res.json()
-
-      const botMessage: MessageItem = {
-        id: `bot-${Date.now()}`,
-        role: "assistant",
-        text: data.success
-          ? data.answer
-          : data.message || "Mohon maaf, terjadi kendala teknis sementara.",
-        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        showActionButtons: true,
+      const userMessage: MessageItem = {
+        id: `user-${Date.now()}`,
+        role: "user",
+        text: prompt,
+        time: timeStr,
       }
 
-      setMessages((prev) => [...prev, botMessage])
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `bot-err-${Date.now()}`,
+      setMessages((prev) => [...prev, userMessage])
+      setInput("")
+      setLoading(true)
+
+      try {
+        const history = messages.slice(-5).map((m) => ({
+          role: m.role,
+          content: m.text,
+        }))
+
+        const clientSignature = process.env.NEXT_PUBLIC_AI_CLIENT_SIGNATURE!
+
+        const res = await fetch("/api/ai/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-client-signature": clientSignature,
+          },
+          body: JSON.stringify({ prompt, history }),
+        })
+
+        const data = await res.json()
+
+        const botMessage: MessageItem = {
+          id: `bot-${Date.now()}`,
           role: "assistant",
-          text: "Koneksi terputus. Silakan periksa jaringan Anda atau hubungi kami langsung via WhatsApp.",
+          text: data.success
+            ? data.answer
+            : data.message || "Mohon maaf, terjadi kendala teknis sementara.",
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           showActionButtons: true,
-        },
-      ])
-    } finally {
-      setLoading(false)
-    }
-  }
+        }
+
+        setMessages((prev) => [...prev, botMessage])
+      } catch {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-err-${Date.now()}`,
+            role: "assistant",
+            text: "Koneksi terputus. Silakan periksa jaringan Anda atau hubungi kami langsung via WhatsApp.",
+            time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            showActionButtons: true,
+          },
+        ])
+      } finally {
+        setLoading(false)
+      }
+    },
+    [input, loading, messages]
+  )
 
   const quickQuestions = [
     "Apa saja jurusan di SMK Telkom?",
@@ -187,6 +195,10 @@ export function AiSupportWidget() {
         showActionButtons: true,
       },
     ])
+  }
+
+  if (isDashboard) {
+    return null
   }
 
   return (

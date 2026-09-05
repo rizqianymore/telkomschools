@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
+import { cookies } from "next/headers"
+import { verifySessionToken } from "@/lib/security"
 import { calculateQuizRecommendation, QUIZ_SUBMISSIONS, QuizSubmissionLog } from "@/lib/quiz-data"
 
 export async function POST(req: NextRequest) {
@@ -16,12 +18,17 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const cookieStore = await cookies()
+    const token = cookieStore.get("telkom_auth_session")?.value
+    const session = token ? verifySessionToken(token) : null
+
     const result = calculateQuizRecommendation(answers)
-    const cleanStudentName = studentName?.trim() || "Calon Siswa"
+    const cleanStudentName = studentName?.trim() || session?.name || "Calon Siswa"
 
     // Simpan ke log submission agar Guru bisa melihat di Dashboard
     const submissionLog: QuizSubmissionLog = {
       id: `sub-${Date.now()}`,
+      userId: session?.userId,
       studentName: cleanStudentName,
       submittedAt: new Date().toISOString().replace("T", " ").substring(0, 16),
       primaryMajor: result.primary.major.code,

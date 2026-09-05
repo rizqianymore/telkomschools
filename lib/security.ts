@@ -9,7 +9,7 @@ export interface AuthSessionPayload {
   identifier: string
   email: string
   name: string
-  role: "siswa" | "ortu" | "guru" | "staff"
+  role: "siswa" | "guru" | "staff"
   role_label: string
   exp: number
   iat: number

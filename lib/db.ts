@@ -2,7 +2,7 @@
 // Arsitektur data koneksi MySQL untuk SMK Telkom Jakarta
 // Menggunakan pool koneksi MySQL produksi dan mock in-memory untuk demo instan.
 
-export type UserRole = "siswa" | "ortu" | "guru" | "staff"
+export type UserRole = "siswa" | "guru" | "staff"
 
 export interface UserRecord {
   id: number
@@ -14,9 +14,14 @@ export interface UserRecord {
   password_hash: string
   role: UserRole
   role_label: string
+  parentName?: string
+  parentPhone?: string
+  ppdbNo?: string
+  classCode?: string
+  major?: string
 }
 
-// Data pengguna untuk verifikasi & demo dengan hash scrypt standar OWASP
+// Data pengguna untuk verifikasi & demo dengan hash scrypt standar OWASP (3 Role Resmi)
 export const MOCK_MYSQL_USERS: UserRecord[] = [
   {
     id: 1,
@@ -27,20 +32,15 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
     // Salt:Key scrypt hash for "siswa123"
     password_hash: "765b5154f2f5826d476706314a6641ad:10cab641d7b697817a11022ea96ce8bebb690f73498203a0939c1385c80aea831f8c800e808829a49e21fa9d025a405bbf7fe9fc08532b46cecdf718bd3319fe",
     role: "siswa",
-    role_label: "Siswa",
+    role_label: "Siswa & Wali Murid",
+    parentName: "Bambang Prasetyo",
+    parentPhone: "081288990011",
+    ppdbNo: "PPDB-2026-0001",
+    classCode: "X-RPL-1",
+    major: "RPL",
   },
   {
     id: 2,
-    identifier: "ortu@smktelkom-jkt.sch.id",
-    email: "ortu@smktelkom-jkt.sch.id",
-    name: "Bambang Prasetyo",
-    // Salt:Key scrypt hash for "ortu123"
-    password_hash: "1480fd47682ff1c483974506e7b347b7:0702c39b246ea916be0af084793bc8dd73b1f325851651239110fa3cf8e1387e8a3f4eda09c4a00ad4e4bbac314e6d16b99cf89c59e52322c2cbb451ddf92a11",
-    role: "ortu",
-    role_label: "Orang Tua",
-  },
-  {
-    id: 3,
     identifier: "guru@smktelkom-jkt.sch.id",
     email: "guru@smktelkom-jkt.sch.id",
     nip: "198504122010011002",
@@ -51,14 +51,14 @@ export const MOCK_MYSQL_USERS: UserRecord[] = [
     role_label: "Guru",
   },
   {
-    id: 4,
+    id: 3,
     identifier: "staff@smktelkom-jkt.sch.id",
     email: "staff@smktelkom-jkt.sch.id",
     name: "Staff Administrasi & IT",
     // Salt:Key scrypt hash for "staff123"
     password_hash: "3e514c3b590c0a452e30c4b8e4e7d2fb:058c4602fe7f7eb09e7316757efa5b1a4813548daf5c85db63c899893c37d7954b730ce24a14010636e9f28dca333733823f2ec3940beaddb12eb11c03c50238",
     role: "staff",
-    role_label: "Staff",
+    role_label: "Staff Administrator",
   },
 ]
 
@@ -110,13 +110,17 @@ export async function registerUser(data: {
   role?: UserRole
   nis?: string
   nip?: string
+  parentName?: string
+  parentPhone?: string
+  ppdbNo?: string
+  classCode?: string
+  major?: string
 }): Promise<UserRecord> {
   const cleanEmail = data.email.trim().toLowerCase()
   const newId = MOCK_MYSQL_USERS.length > 0 ? Math.max(...MOCK_MYSQL_USERS.map((u) => u.id)) + 1 : 1
   const role: UserRole = data.role || "siswa"
   const roleLabelMap: Record<UserRole, string> = {
-    siswa: "Siswa",
-    ortu: "Orang Tua",
+    siswa: "Siswa & Wali Murid",
     guru: "Guru",
     staff: "Staff",
   }
@@ -131,6 +135,11 @@ export async function registerUser(data: {
     role_label: roleLabelMap[role],
     nis: data.nis?.trim(),
     nip: data.nip?.trim(),
+    parentName: data.parentName?.trim(),
+    parentPhone: data.parentPhone?.trim(),
+    ppdbNo: data.ppdbNo?.trim(),
+    classCode: data.classCode?.trim(),
+    major: data.major?.trim(),
   }
 
   MOCK_MYSQL_USERS.push(newUser)
@@ -138,12 +147,22 @@ export async function registerUser(data: {
 }
 
 /**
+ * Mendapatkan user berdasarkan ID
+ */
+export async function findUserById(id: number): Promise<UserRecord | null> {
+  return MOCK_MYSQL_USERS.find((u) => u.id === id) || null
+}
+
+/**
  * Memperbarui profil akun (Nama, dsb.)
  */
-export async function updateUserProfile(id: number, data: { name?: string }): Promise<UserRecord | null> {
+export async function updateUserProfile(id: number, data: { name?: string; parentName?: string; parentPhone?: string; classCode?: string }): Promise<UserRecord | null> {
   const user = MOCK_MYSQL_USERS.find((u) => u.id === id)
   if (!user) return null
   if (data.name?.trim()) user.name = data.name.trim()
+  if (data.parentName?.trim()) user.parentName = data.parentName.trim()
+  if (data.parentPhone?.trim()) user.parentPhone = data.parentPhone.trim()
+  if (data.classCode?.trim()) user.classCode = data.classCode.trim()
   return user
 }
 

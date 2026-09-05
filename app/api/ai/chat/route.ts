@@ -83,8 +83,8 @@ export async function POST(request: Request) {
       success: true,
       answer,
     })
-  } catch (error: any) {
-    if (error?.message === "Rate limit exceeded") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Rate limit exceeded") {
       return NextResponse.json(
         { success: false, message: "Batas permintaan per menit tercapai. Silakan tunggu sejenak." },
         { status: 429 }

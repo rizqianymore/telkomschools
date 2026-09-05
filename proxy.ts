@@ -20,7 +20,6 @@ export function proxy(request: NextRequest) {
 
   const response = NextResponse.next();
 
-  const isDev = process.env.NODE_ENV === 'development';
   // Content Security Policy
   const csp = [
     "default-src 'self'",

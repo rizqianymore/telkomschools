@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Menu, UserCheck, LogOut } from "lucide-react"
+import { Menu, UserCheck, LogOut, LayoutDashboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -14,7 +14,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
-import { getStoredUser, removeStoredUser, AuthUser } from "@/lib/auth"
+import { removeStoredUser, AuthUser } from "@/lib/auth"
 
 const navLinks = [
   { name: "Beranda", href: "/" },
@@ -27,15 +27,41 @@ const navLinks = [
   { name: "Kontak", href: "/kontak" },
 ]
 
+const emptySubscribe = () => () => {}
+
+const authStore = {
+  subscribe(callback: () => void) {
+    window.addEventListener("auth_state_changed", callback)
+    window.addEventListener("storage", callback)
+    return () => {
+      window.removeEventListener("auth_state_changed", callback)
+      window.removeEventListener("storage", callback)
+    }
+  },
+  getSnapshot() {
+    return localStorage.getItem("telkom_auth_user")
+  },
+  getServerSnapshot() {
+    return null
+  },
+}
+
 export function Navbar() {
   const pathname = usePathname()
-  const [currentUser, setCurrentUser] = React.useState<AuthUser | null>(() => getStoredUser())
-
-  React.useEffect(() => {
-    const handleChange = () => setCurrentUser(getStoredUser())
-    window.addEventListener("auth_state_changed", handleChange)
-    return () => window.removeEventListener("auth_state_changed", handleChange)
-  }, [])
+  const mounted = React.useSyncExternalStore(emptySubscribe, () => true, () => false)
+  const userJson = React.useSyncExternalStore(
+    authStore.subscribe,
+    authStore.getSnapshot,
+    authStore.getServerSnapshot
+  )
+  const currentUser = React.useMemo<AuthUser | null>(() => {
+    if (!userJson) return null
+    try {
+      return JSON.parse(userJson) as AuthUser
+    } catch {
+      return null
+    }
+  }, [userJson])
   return (
     <header className="sticky top-0 z-40 w-full border-b border-neutral-200/70 bg-white/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)]">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 gap-4">
@@ -87,39 +113,73 @@ export function Navbar() {
 
         {/* CTA Button with standard button size */}
         <div className="hidden lg:flex items-center gap-2.5 shrink-0">
-          {currentUser ? (
+          {mounted && currentUser ? (
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-neutral-100 text-sm font-medium text-neutral-800 border border-neutral-200/70">
+              <Button
+                variant="outline"
+                render={
+                  <Link
+                    href={
+                      currentUser.role === "guru"
+                        ? "/dashboard/guru"
+                        : currentUser.role === "staff"
+                        ? "/dashboard/staff"
+                        : "/dashboard/siswa"
+                    }
+                  />
+                }
+                className="h-9 px-3.5 text-sm font-medium rounded-md border-neutral-200 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 flex items-center gap-2"
+              >
                 <UserCheck className="h-4 w-4 text-primary" />
-                <span className="max-w-[130px] truncate">{currentUser.name}</span>
-              </div>
+                <span className="max-w-[120px] truncate">{currentUser.name}</span>
+              </Button>
+
+              <Button
+                render={
+                  <Link
+                    href={
+                      currentUser.role === "guru"
+                        ? "/dashboard/guru"
+                        : currentUser.role === "staff"
+                        ? "/dashboard/staff"
+                        : "/dashboard/siswa"
+                    }
+                  />
+                }
+                className="h-9 px-4 text-sm font-medium rounded-md shadow-sm gap-2"
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Button>
+
               <Button
                 variant="ghost"
                 onClick={() => {
                   removeStoredUser()
-                  setCurrentUser(null)
                 }}
-                className="h-9 px-2.5 text-neutral-500 hover:text-red-600 rounded-md"
+                className="h-9 px-2.5 text-neutral-400 hover:text-red-600 rounded-md"
                 title="Keluar"
               >
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
           ) : (
-            <Button
-              variant="ghost"
-              render={<Link href="/login" />}
-              className="h-9 px-4 text-sm font-medium text-neutral-700 hover:text-primary hover:bg-neutral-100 rounded-md"
-            >
-              Masuk
-            </Button>
+            <>
+              <Button
+                variant="ghost"
+                render={<Link href="/login" />}
+                className="h-9 px-4 text-sm font-medium text-neutral-700 hover:text-primary hover:bg-neutral-100 rounded-md"
+              >
+                Masuk
+              </Button>
+              <Button
+                render={<Link href="/kontak" />}
+                className="h-9 px-4 text-sm font-medium rounded-md shadow-sm"
+              >
+                Daftar Sekarang
+              </Button>
+            </>
           )}
-          <Button
-            render={<Link href="/kontak" />}
-            className="h-9 px-4 text-sm font-medium rounded-md shadow-sm"
-          >
-            Daftar Sekarang
-          </Button>
         </div>
 
         {/* Mobile Sheet Menu */}
@@ -180,44 +240,65 @@ export function Navbar() {
               </div>
 
               <div className="mt-8 flex flex-col gap-2.5">
-                {currentUser ? (
-                  <div className="p-3.5 rounded-md bg-neutral-50 border border-neutral-200 text-xs flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-primary">
-                        <UserCheck className="h-4 w-4" />
+                {mounted && currentUser ? (
+                  <>
+                    <div className="p-3.5 rounded-md bg-neutral-50 border border-neutral-200 text-xs flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-primary">
+                          <UserCheck className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-neutral-900 leading-tight">{currentUser.name}</div>
+                          <div className="text-[11px] text-neutral-500 mt-0.5">{currentUser.role_label}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-bold text-neutral-900 leading-tight">{currentUser.name}</div>
-                        <div className="text-[11px] text-neutral-500 mt-0.5">{currentUser.role_label}</div>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          removeStoredUser()
+                        }}
+                        className="text-red-600 hover:text-red-700 font-semibold text-xs flex items-center gap-1 cursor-pointer"
+                      >
+                        <LogOut className="h-3 w-3" />
+                        <span>Keluar</span>
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        removeStoredUser()
-                        setCurrentUser(null)
-                      }}
-                      className="text-red-600 hover:text-red-700 font-semibold text-xs flex items-center gap-1 cursor-pointer"
+
+                    <Button
+                      render={
+                        <Link
+                          href={
+                            currentUser.role === "guru"
+                              ? "/dashboard/guru"
+                              : currentUser.role === "staff"
+                              ? "/dashboard/staff"
+                              : "/dashboard/siswa"
+                          }
+                        />
+                      }
+                      className="w-full h-10 rounded-md text-sm font-medium shadow-sm gap-2"
                     >
-                      <LogOut className="h-3 w-3" />
-                      <span>Keluar</span>
-                    </button>
-                  </div>
+                      <LayoutDashboard className="h-4 w-4" />
+                      Buka Dashboard
+                    </Button>
+                  </>
                 ) : (
-                  <Button
-                    variant="outline"
-                    render={<Link href="/login" />}
-                    className="w-full h-10 rounded-md text-sm font-medium border-neutral-200 text-neutral-800"
-                  >
-                    Masuk ke Akun
-                  </Button>
+                  <>
+                    <Button
+                      variant="outline"
+                      render={<Link href="/login" />}
+                      className="w-full h-10 rounded-md text-sm font-medium border-neutral-200 text-neutral-800"
+                    >
+                      Masuk ke Akun
+                    </Button>
+                    <Button
+                      render={<Link href="/kontak" />}
+                      className="w-full h-10 rounded-md text-sm font-medium"
+                    >
+                      Daftar Sekarang
+                    </Button>
+                  </>
                 )}
-                <Button
-                  render={<Link href="/kontak" />}
-                  className="w-full h-10 rounded-md text-sm font-medium"
-                >
-                  Daftar Sekarang
-                </Button>
               </div>
             </SheetContent>
           </Sheet>

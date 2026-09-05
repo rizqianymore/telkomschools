@@ -31,7 +31,7 @@ export function Hero() {
             {/* CTA Buttons: Clean, basic, and balanced */}
             <div className="mt-8 flex flex-col w-full sm:w-auto sm:flex-row items-center gap-3">
               <Button
-                render={<Link href="/kontak" />}
+                render={<Link href="/daftar" />}
                 className="w-full sm:w-auto"
               >
                 <span>Daftar Sekarang</span>

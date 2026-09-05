@@ -1,10 +1,53 @@
 "use client"
 
+import * as React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react"
 
 export function ContactSection() {
+  const [formData, setFormData] = React.useState({
+    name: "",
+    phone: "",
+    email: "",
+    majorInterest: "Rekayasa Perangkat Lunak (RPL)",
+    message: "",
+  })
+  const [loading, setLoading] = React.useState(false)
+  const [feedback, setFeedback] = React.useState<{ type: "success" | "error"; text: string } | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setFeedback(null)
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setFeedback({ type: "success", text: data.message })
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          majorInterest: "Rekayasa Perangkat Lunak (RPL)",
+          message: "",
+        })
+      } else {
+        setFeedback({ type: "error", text: data.message || "Gagal mengirimkan pesan." })
+      }
+    } catch {
+      setFeedback({ type: "error", text: "Terjadi gangguan koneksi jaringan." })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <section className="py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -85,7 +128,19 @@ export function ContactSection() {
                 Silakan lengkapi formulir di bawah ini, tim kami akan segera menghubungi Anda.
               </p>
 
-              <form className="mt-6 space-y-4" onSubmit={(e) => e.preventDefault()}>
+              {feedback && (
+                <div
+                  className={`mt-4 rounded-lg p-3 text-xs font-medium ${
+                    feedback.type === "success"
+                      ? "border border-green-200 bg-green-50 text-green-800"
+                      : "border border-red-200 bg-red-50 text-red-700"
+                  }`}
+                >
+                  {feedback.text}
+                </div>
+              )}
+
+              <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
                     <label className="block text-xs font-semibold text-neutral-700 mb-1.5">
@@ -94,6 +149,8 @@ export function ContactSection() {
                     <input
                       type="text"
                       required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="cth. Budi Santoso"
                       className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
                     />
@@ -105,6 +162,8 @@ export function ContactSection() {
                     <input
                       type="tel"
                       required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="cth. 081234567890"
                       className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
                     />
@@ -119,6 +178,8 @@ export function ContactSection() {
                     <input
                       type="email"
                       required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="cth. nama@domain.com"
                       className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
                     />
@@ -127,11 +188,15 @@ export function ContactSection() {
                     <label className="block text-xs font-semibold text-neutral-700 mb-1.5">
                       Pilihan Jurusan Minat
                     </label>
-                    <select className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors">
-                      <option value="rpl">Rekayasa Perangkat Lunak (RPL)</option>
-                      <option value="tkj">Teknik Komputer & Jaringan (TKJ)</option>
-                      <option value="dkv">Desain Komunikasi Visual (DKV)</option>
-                      <option value="tja">Teknik Jaringan Akses (TJA)</option>
+                    <select
+                      value={formData.majorInterest}
+                      onChange={(e) => setFormData({ ...formData, majorInterest: e.target.value })}
+                      className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3.5 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+                    >
+                      <option value="Rekayasa Perangkat Lunak (RPL)">Rekayasa Perangkat Lunak (RPL)</option>
+                      <option value="Teknik Komputer & Jaringan (TKJ)">Teknik Komputer & Jaringan (TKJ)</option>
+                      <option value="Desain Komunikasi Visual (DKV)">Desain Komunikasi Visual (DKV)</option>
+                      <option value="Teknik Jaringan Akses (TJA)">Teknik Jaringan Akses (TJA)</option>
                     </select>
                   </div>
                 </div>
@@ -143,13 +208,15 @@ export function ContactSection() {
                   <textarea
                     rows={4}
                     required
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Tuliskan pertanyaan Anda mengenai pendaftaran, tes seleksi, atau biaya..."
                     className="w-full rounded-md border border-neutral-300 bg-white p-3 text-sm text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
                   />
                 </div>
 
-                <Button type="submit" className="w-full sm:w-auto">
-                  <span>Kirim Pesan</span>
+                <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+                  <span>{loading ? "Mengirimkan..." : "Kirim Pesan"}</span>
                   <Send className="h-4 w-4" />
                 </Button>
               </form>

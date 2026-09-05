@@ -93,6 +93,8 @@ export function LoginForm({
             router.push("/dashboard/guru")
           } else if (data.user?.role === "staff") {
             router.push("/dashboard/staff")
+          } else if (data.user?.role === "siswa") {
+            router.push("/dashboard/siswa")
           } else {
             router.push("/")
           }

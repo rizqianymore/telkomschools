@@ -8,6 +8,7 @@ import {
 } from "@/lib/security"
 import { sendEmailNotification } from "@/lib/mail"
 import { createPendaftaran, PilihanJurusan, JalurPendaftaran } from "@/lib/ppdb-data"
+import { initializeStudentAcademicDossier } from "@/lib/academic-data"
 
 export async function POST(request: Request) {
   await runRateLimit(request)
@@ -84,21 +85,23 @@ export async function POST(request: Request) {
     // 4. Hash password dengan Scrypt + Salt
     const passwordHash = await hashPassword(password.trim())
 
-    // 5. Buat Akun Siswa Baru
+    // 5. Parameter Jurusan & Akun Siswa Baru
+    const selectedMajor1: PilihanJurusan = major1 || "RPL"
+    const selectedTrack: JalurPendaftaran = track || "reguler_1"
+    const cleanNisn = nisn?.trim() || "00" + Math.floor(10000000 + Math.random() * 90000000)
+
     const newUser = await registerUser({
       name: name.trim(),
       email: cleanEmail,
       password_hash: passwordHash,
       role: "siswa",
-      nis: nisn?.trim(),
+      nis: cleanNisn,
+      major: selectedMajor1,
     })
 
-    // 6. Alur Terpadu seperti Admisi BINUS: Buat berkas pendaftaran PPDB awal otomatis
-    const selectedMajor1: PilihanJurusan = major1 || "RPL"
-    const selectedTrack: JalurPendaftaran = track || "reguler_1"
-    const cleanNisn = nisn?.trim() || "00" + Math.floor(10000000 + Math.random() * 90000000)
-
+    // 6. Alur Terpadu: Buat berkas pendaftaran PPDB awal otomatis yang terhubung 1:1
     const ppdbEntry = createPendaftaran({
+      userId: newUser.id,
       nisn: cleanNisn,
       nama_lengkap: newUser.name,
       jenis_kelamin: "L",
@@ -109,6 +112,16 @@ export async function POST(request: Request) {
       jurusan_pilihan_1: selectedMajor1,
       jurusan_pilihan_2: major2 || undefined,
       nilai_rata_rapor: 85.0,
+    })
+
+    newUser.ppdbNo = ppdbEntry.no_pendaftaran
+
+    // Inisialisasi 1:1 berkas akademik (Tagihan awal PPDB, SPP, Mapel Jurusan, Presensi)
+    initializeStudentAcademicDossier({
+      studentId: newUser.id,
+      nis: cleanNisn,
+      name: newUser.name,
+      major: selectedMajor1,
     })
 
     // 7. Kirim Email Konfirmasi Registrasi & Nomor Pendaftaran PPDB Resmi

@@ -245,6 +245,7 @@ export let QUIZ_QUESTIONS: QuizQuestion[] = [
 // Log penyerahan kuis siswa (untuk dipantau Guru di dashboard)
 export interface QuizSubmissionLog {
   id: string
+  userId?: number
   studentName: string
   submittedAt: string
   primaryMajor: string

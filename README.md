@@ -10,36 +10,43 @@ Portal login terletak di rute `/login`. Sistem menggunakan logika pencarian OR o
 
 | Peran (Role) | Identitas Login (NIS / NIP / Email) | Kata Sandi | Keterangan |
 | :--- | :--- | :--- | :--- |
-| **Siswa** | NIS: `10214055` <br>atau `siswa@smktelkom-jkt.sch.id` | `siswa123` | Akses nilai, presensi, & tugas digital siswa |
-| **Orang Tua** | Email: `ortu@smktelkom-jkt.sch.id` | `ortu123` | Monitoring kehadiran & perkembangan belajar anak |
-| **Guru** | NIP: `198504122010011002` <br>atau `guru@smktelkom-jkt.sch.id` | `guru123` | Manajemen kelas, input nilai, & modul pelajaran |
-| **Staff** | Email: `staff@smktelkom-jkt.sch.id` | `staff123` | Pengelolaan administrasi sekolah & sistem |
+| **Siswa & Wali Murid** (Terpadu) | NIS: `10214055` <br>atau `siswa@smktelkom-jkt.sch.id` | `password123` | Portal terpadu siswa & pemantauan ortu (PPDB, rapor, presensi, invoice SPP & biodata ortu) |
+| **Guru** | NIP: `198504122010011002` <br>atau `guru@smktelkom-jkt.sch.id` | `password123` | Manajemen rombel kelas, input nilai rapor, absensi harian, & kuis jurusan |
+| **Staff Admin** | Email: `staff@smktelkom-jkt.sch.id` | `password123` | Administrasi sekolah, verifikasi PPDB, konfirmasi SPP, pesan konsultasi & akun user |
 
 ---
 
-## Arsitektur Database (MySQL Logic)
+## Panduan Instalasi & Import Database MySQL
 
-Logika database dirancang di [`lib/db.ts`](file:///home/fbi/website/telkomschools/lib/db.ts) dan dihubungkan ke API Route [`app/api/auth/login/route.ts`](file:///home/fbi/website/telkomschools/app/api/auth/login/route.ts):
+File struktur tabel dan seed data resmi tersedia di [`schema.sql`](file:///home/fbi/website/telkomschools/schema.sql).
 
-- **Query Pattern**:
-  ```sql
-  SELECT id, email, nis, nip, name, password_hash, role, role_label
-  FROM users
-  WHERE (email = ? OR nis = ? OR nip = ?)
-  LIMIT 1;
-  ```
-- **Koneksi Produksi (Opsional)**:
-  Bila menghubungkan ke server MySQL sungguhan, pasang dependensi `mysql2`:
-  ```bash
-  npm install mysql2
-  ```
-  Dan konfigurasikan variabel environment di file `.env`:
-  ```env
-  DB_HOST=localhost
-  DB_USER=root
-  DB_PASSWORD=password_anda
-  DB_NAME=smk_telkom_jkt
-  ```
+### Langkah 1: Buat Database di MySQL
+Masuk ke MySQL terminal:
+```bash
+sudo mysql -u root -p
+```
+Jalankan perintah SQL berikut:
+```sql
+CREATE DATABASE IF NOT EXISTS smk_telkom_jkt CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+EXIT;
+```
+
+### Langkah 2: Import Skema & Data Awal (`schema.sql`)
+Jalankan command ini langsung di terminal bash proyek:
+```bash
+sudo mysql -u root -p smk_telkom_jkt < schema.sql
+```
+> Masukkan password root MySQL Anda saat diminta. Command ini akan otomatis membuat tabel-tabel (`users`, `ppdb_registrations`, `academic_classes`, `academic_grades`, `academic_attendance`, `academic_bills`, `contact_messages`, `quiz_submissions`, `newsletters`) serta mengisi data seed awal.
+
+### Langkah 3: Konfigurasi Environment (`.env.local`)
+Sesuaikan file `.env.local`:
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=password_mysql_anda
+DB_NAME=smk_telkom_jkt
+```
 
 ---
 

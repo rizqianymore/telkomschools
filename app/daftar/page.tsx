@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 import { LoginHeader } from "@/components/sections/login/LoginHeader"
 import { LoginVisualBanner } from "@/components/sections/login/LoginVisualBanner"
 import { setStoredUser } from "@/lib/auth"
@@ -22,7 +21,6 @@ import {
   ArrowRight,
   Sparkles,
   GraduationCap,
-  FileCheck,
 } from "lucide-react"
 
 export default function RegisterCalonSiswaPage() {
@@ -341,7 +339,7 @@ export default function RegisterCalonSiswaPage() {
                   </label>
                   <select
                     value={major1}
-                    onChange={(e) => setMajor1(e.target.value as any)}
+                    onChange={(e) => setMajor1(e.target.value as "RPL" | "TKJ" | "DKV" | "TJA")}
                     className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3 text-xs text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   >
                     <option value="RPL">Rekayasa Perangkat Lunak (RPL)</option>
@@ -357,7 +355,7 @@ export default function RegisterCalonSiswaPage() {
                   </label>
                   <select
                     value={major2}
-                    onChange={(e) => setMajor2(e.target.value as any)}
+                    onChange={(e) => setMajor2(e.target.value as "RPL" | "TKJ" | "DKV" | "TJA")}
                     className="h-10 w-full rounded-md border border-neutral-300 bg-white px-3 text-xs text-neutral-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                   >
                     <option value="TKJ">Teknik Komputer & Jaringan (TKJ)</option>

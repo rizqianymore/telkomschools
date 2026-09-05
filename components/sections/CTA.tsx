@@ -29,7 +29,7 @@ export function CTA() {
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button
                 size="lg"
-                render={<Link href="/kontak" />}
+                render={<Link href="/daftar" />}
                 className="w-full sm:w-auto text-sm font-semibold shadow-sm"
               >
                 <span>Daftar Sekarang</span>
