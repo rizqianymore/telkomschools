@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { runRateLimit } from "@/lib/rateLimit"
 import { findUserByAnyIdentifier } from "@/lib/db"
+import { sendEmailNotification } from "@/lib/mail"
 import {
   checkLoginRateLimit,
   createAndStoreOtp,
@@ -55,7 +56,28 @@ export async function POST(request: Request) {
 
       const generatedOtp = createAndStoreOtp(user.email, 10)
 
-      // Di lingkungan demo / dev, sertakan preview OTP untuk memudahkan pengetesan
+      // Kirim email OTP secara asynchronous via SMTP
+      sendEmailNotification({
+        to: user.email,
+        subject: `Kode Verifikasi OTP: ${generatedOtp} - SMK Telkom Jakarta`,
+        html: `
+          <div style="font-family: Arial, sans-serif; padding: 24px; background: #f9fafb;">
+            <div style="max-width: 500px; margin: auto; background: #ffffff; border-radius: 10px; border: 1px solid #e5e7eb; padding: 24px;">
+              <h2 style="color: #dc2626; margin-top: 0;">SMK Telkom Jakarta</h2>
+              <p>Halo <strong>${user.name}</strong>,</p>
+              <p>Kami menerima permintaan verifikasi atau reset kata sandi untuk akun Anda. Gunakan kode OTP di bawah ini:</p>
+              <div style="background: #fef2f2; border: 1px dashed #ef4444; border-radius: 8px; padding: 16px; text-align: center; margin: 20px 0;">
+                <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #dc2626;">${generatedOtp}</span>
+              </div>
+              <p style="font-size: 13px; color: #4b5563;">Kode ini berlaku selama <strong>10 menit</strong>. Jangan bagikan kode ini kepada siapapun termasuk pihak sekolah.</p>
+              <hr style="border: 0; border-top: 1px solid #f3f4f6; margin: 20px 0;" />
+              <p style="font-size: 11px; color: #9ca3af; margin: 0;">Jika Anda tidak merasa meminta kode ini, abaikan pesan ini.</p>
+            </div>
+          </div>
+        `,
+      }).catch((err) => console.error("Gagal kirim email OTP:", err))
+
+      // Sertakan demoOtp hanya jika di lingkungan development
       return NextResponse.json({
         success: true,
         message: `Kode OTP verifikasi telah dikirimkan ke email ${user.email}. Berlaku 10 menit.`,
