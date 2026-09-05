@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
+import { cookies } from "next/headers"
+import { verifySessionToken } from "@/lib/security"
 import {
   QUIZ_QUESTIONS,
   QUIZ_SUBMISSIONS,
@@ -8,8 +10,27 @@ import {
   QuizOption,
 } from "@/lib/quiz-data"
 
+async function verifyGuruAuth() {
+  const cookieStore = await cookies()
+  const token = cookieStore.get("telkom_auth_session")?.value
+  if (!token) return null
+  const session = verifySessionToken(token)
+  if (!session || (session.role !== "guru" && session.role !== "staff")) {
+    return null
+  }
+  return session
+}
+
 // GET: Ambil daftar seluruh soal lengkap (dengan bobot penilaian) dan statistik untuk Guru
 export async function GET() {
+  const session = await verifyGuruAuth()
+  if (!session) {
+    return NextResponse.json(
+      { success: false, message: "Akses ditolak. Silakan login sebagai Guru/Staff." },
+      { status: 401 }
+    )
+  }
+
   return NextResponse.json({
     success: true,
     totalQuestions: QUIZ_QUESTIONS.length,
@@ -21,6 +42,14 @@ export async function GET() {
 
 // POST: Tambah soal baru oleh Guru
 export async function POST(req: NextRequest) {
+  const session = await verifyGuruAuth()
+  if (!session) {
+    return NextResponse.json(
+      { success: false, message: "Akses ditolak. Silakan login sebagai Guru/Staff." },
+      { status: 401 }
+    )
+  }
+
   try {
     const body = await req.json()
     const { question, options } = body as {
@@ -53,6 +82,14 @@ export async function POST(req: NextRequest) {
 
 // PUT: Perbarui soal kuis oleh Guru
 export async function PUT(req: NextRequest) {
+  const session = await verifyGuruAuth()
+  if (!session) {
+    return NextResponse.json(
+      { success: false, message: "Akses ditolak. Silakan login sebagai Guru/Staff." },
+      { status: 401 }
+    )
+  }
+
   try {
     const body = await req.json()
     const { id, question, options } = body as {
@@ -92,6 +129,14 @@ export async function PUT(req: NextRequest) {
 
 // DELETE: Hapus soal kuis oleh Guru
 export async function DELETE(req: NextRequest) {
+  const session = await verifyGuruAuth()
+  if (!session) {
+    return NextResponse.json(
+      { success: false, message: "Akses ditolak. Silakan login sebagai Guru/Staff." },
+      { status: 401 }
+    )
+  }
+
   try {
     const { searchParams } = new URL(req.url)
     const idParam = searchParams.get("id")

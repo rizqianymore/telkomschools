@@ -3,8 +3,21 @@
 // Applies strict security headers to all dynamic routes while excluding static assets.
 
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export function proxy() {
+export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Proteksi Anti-Bypass Halaman Dashboard (Harus memiliki sesi token telkom_auth_session)
+  if (pathname.startsWith('/dashboard')) {
+    const sessionCookie = request.cookies.get('telkom_auth_session');
+    if (!sessionCookie?.value) {
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
   const response = NextResponse.next();
 
   const isDev = process.env.NODE_ENV === 'development';

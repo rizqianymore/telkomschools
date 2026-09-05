@@ -34,7 +34,6 @@ export async function hashPassword(password: string): Promise<string> {
  * Mencegah Timing Attacks (Side-channel analysis).
  */
 export async function verifyPassword(password: string, storedHash: string): Promise<boolean> {
-  // Jika formatnya plaintext (backward-compatibility demo), hash on the fly
   if (!storedHash.includes(":")) {
     const a = Buffer.from(password)
     const b = Buffer.from(storedHash)
@@ -55,7 +54,6 @@ export async function verifyPassword(password: string, storedHash: string): Prom
 
 /**
  * 3. HMAC-SHA256 Stateless Signed Session Token
- * Standar Google: Memastikan token anti-tampering (tidak bisa dimanipulasi client).
  */
 export function createSessionToken(
   user: Omit<AuthSessionPayload, "exp" | "iat">
@@ -92,7 +90,6 @@ export function verifySessionToken(token: string): AuthSessionPayload | null {
       .update(payloadBase64)
       .digest("base64url")
 
-    // Verifikasi tanda tangan kriptografis dengan timingSafeEqual
     const sigBuffer = Buffer.from(signature)
     const expectedSigBuffer = Buffer.from(expectedSignature)
     if (sigBuffer.length !== expectedSigBuffer.length) return null
@@ -102,7 +99,6 @@ export function verifySessionToken(token: string): AuthSessionPayload | null {
       Buffer.from(payloadBase64, "base64url").toString("utf-8")
     )
 
-    // Cek kedaluwarsa token
     const now = Math.floor(Date.now() / 1000)
     if (payload.exp < now) return null
 
@@ -113,15 +109,14 @@ export function verifySessionToken(token: string): AuthSessionPayload | null {
 }
 
 /**
- * 5. Rate Limiter In-Memory (Proteksi Brute-Force Login)
- * Membatasi maksimal 5 percobaan login gagal per identifier/IP dalam 5 menit.
+ * 5. Rate Limiter In-Memory (Proteksi Brute-Force Login & OTP)
  */
 interface RateLimitRecord {
   attempts: number
   resetTime: number
 }
 
-const loginRateLimitMap = new Map<string, RateLimitRecord>()
+const rateLimitMap = new Map<string, RateLimitRecord>()
 
 export function checkLoginRateLimit(key: string, maxAttempts = 5, windowMs = 5 * 60 * 1000): {
   allowed: boolean
@@ -129,10 +124,10 @@ export function checkLoginRateLimit(key: string, maxAttempts = 5, windowMs = 5 *
   retryAfterSeconds?: number
 } {
   const now = Date.now()
-  const record = loginRateLimitMap.get(key)
+  const record = rateLimitMap.get(key)
 
   if (!record || now > record.resetTime) {
-    loginRateLimitMap.set(key, { attempts: 1, resetTime: now + windowMs })
+    rateLimitMap.set(key, { attempts: 1, resetTime: now + windowMs })
     return { allowed: true, remainingAttempts: maxAttempts - 1 }
   }
 
@@ -146,5 +141,113 @@ export function checkLoginRateLimit(key: string, maxAttempts = 5, windowMs = 5 *
 }
 
 export function resetLoginRateLimit(key: string) {
-  loginRateLimitMap.delete(key)
+  rateLimitMap.delete(key)
+}
+
+/**
+ * 6. OTP Storage & Verification Memory Store
+ */
+interface OtpRecord {
+  email: string
+  otpHash: string
+  expiresAt: number
+  attempts: number
+}
+
+const otpStore = new Map<string, OtpRecord>()
+
+export function generateSecureOtp(length = 6): string {
+  // Generate digit numerik kriptografis aman
+  const randomBytes = crypto.randomBytes(length)
+  let otp = ""
+  for (let i = 0; i < length; i++) {
+    otp += (randomBytes[i] % 10).toString()
+  }
+  return otp
+}
+
+export function createAndStoreOtp(email: string, minutesValid = 10): string {
+  const cleanEmail = email.trim().toLowerCase()
+  const rawOtp = generateSecureOtp(6)
+  const otpHash = crypto.createHash("sha256").update(rawOtp).digest("hex")
+
+  otpStore.set(cleanEmail, {
+    email: cleanEmail,
+    otpHash,
+    expiresAt: Date.now() + minutesValid * 60 * 1000,
+    attempts: 0,
+  })
+
+  return rawOtp
+}
+
+export function verifyStoredOtp(email: string, inputOtp: string): { success: boolean; message: string } {
+  const cleanEmail = email.trim().toLowerCase()
+  const record = otpStore.get(cleanEmail)
+
+  if (!record) {
+    return { success: false, message: "Kode OTP belum diminta atau telah kedaluwarsa." }
+  }
+
+  if (Date.now() > record.expiresAt) {
+    otpStore.delete(cleanEmail)
+    return { success: false, message: "Kode OTP telah kedaluwarsa. Silakan minta kode baru." }
+  }
+
+  if (record.attempts >= 4) {
+    otpStore.delete(cleanEmail)
+    return { success: false, message: "Terlalu banyak percobaan kode OTP yang salah. Silakan minta kode baru." }
+  }
+
+  record.attempts += 1
+  const inputHash = crypto.createHash("sha256").update(inputOtp.trim()).digest("hex")
+
+  if (crypto.timingSafeEqual(Buffer.from(inputHash), Buffer.from(record.otpHash))) {
+    // Hanguskan OTP setelah berhasil diverifikasi (One-Time Use)
+    otpStore.delete(cleanEmail)
+    return { success: true, message: "Kode OTP valid." }
+  }
+
+  return { success: false, message: `Kode OTP tidak sesuai. Sisa kesempatan: ${4 - record.attempts}` }
+}
+
+/**
+ * 7. Signed Password Reset Token
+ * Menghasilkan token reset berumur pendek (15 menit) setelah OTP sukses diverifikasi
+ */
+export function createPasswordResetToken(email: string): string {
+  const payload = {
+    email: email.trim().toLowerCase(),
+    exp: Math.floor(Date.now() / 1000) + 15 * 60, // 15 menit
+  }
+  const payloadBase64 = Buffer.from(JSON.stringify(payload)).toString("base64url")
+  const signature = crypto
+    .createHmac("sha256", SESSION_SECRET)
+    .update(`reset:${payloadBase64}`)
+    .digest("base64url")
+
+  return `${payloadBase64}.${signature}`
+}
+
+export function verifyPasswordResetToken(token: string): string | null {
+  try {
+    const parts = token.split(".")
+    if (parts.length !== 2) return null
+    const [payloadBase64, signature] = parts
+    const expected = crypto
+      .createHmac("sha256", SESSION_SECRET)
+      .update(`reset:${payloadBase64}`)
+      .digest("base64url")
+
+    if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
+      return null
+    }
+
+    const payload = JSON.parse(Buffer.from(payloadBase64, "base64url").toString("utf-8"))
+    if (payload.exp < Math.floor(Date.now() / 1000)) return null
+
+    return payload.email
+  } catch {
+    return null
+  }
 }

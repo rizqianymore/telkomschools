@@ -161,7 +161,7 @@ export function LoginForm({
               Kata Sandi
             </FieldLabel>
             <a
-              href="#"
+              href="/lupa-password"
               className="text-xs text-neutral-500 hover:text-primary transition-colors underline-offset-4 hover:underline"
             >
               Lupa kata sandi?

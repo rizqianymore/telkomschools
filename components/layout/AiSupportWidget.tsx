@@ -133,7 +133,10 @@ export function AiSupportWidget() {
 
       const res = await fetch("/api/ai/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-client-signature": "telkom-schools-ai-client-v1",
+        },
         body: JSON.stringify({ prompt, history }),
       })
 

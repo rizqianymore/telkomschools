@@ -88,3 +88,15 @@ export async function findUserByAnyIdentifier(
 
   return user || null
 }
+
+/**
+ * Memperbarui password user setelah reset berhasil
+ */
+export async function updateUserPassword(email: string, newPasswordHash: string): Promise<boolean> {
+  const cleanEmail = email.trim().toLowerCase()
+  const user = MOCK_MYSQL_USERS.find((u) => u.email.toLowerCase() === cleanEmail)
+  if (!user) return false
+  user.password_hash = newPasswordHash
+  return true
+}
+
