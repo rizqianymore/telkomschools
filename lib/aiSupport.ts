@@ -1,6 +1,6 @@
 import crypto from "node:crypto"
 
-const API = process.env.AI_API_ENDPOINT || "https://api.overchat.ai/v1/chat/completions"
+const API = process.env.AI_API_ENDPOINT || ""
 
 const USER_AGENT =
   process.env.AI_USER_AGENT ||

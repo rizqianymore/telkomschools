@@ -1,7 +1,10 @@
 import crypto from "node:crypto"
 
-// Rahasia server untuk signing token session (gunakan ENV di produksi atau fallback dev yang stabil)
-const SESSION_SECRET = process.env.SESSION_SECRET || "telkom-schools-production-secure-key-2026"
+// Rahasia server untuk signing token session (wajib dikonfigurasi di file .env)
+const SESSION_SECRET = process.env.SESSION_SECRET || ""
+if (!SESSION_SECRET && process.env.NODE_ENV === "production") {
+  console.warn("PERINGATAN KEAMANAN: SESSION_SECRET belum dikonfigurasi di file environment (.env)!")
+}
 const TOKEN_MAX_AGE_SECONDS = 60 * 60 * 24 * 7 // 7 hari
 
 export interface AuthSessionPayload {
