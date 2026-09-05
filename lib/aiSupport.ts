@@ -1,10 +1,7 @@
 import crypto from "node:crypto"
 
-const API = process.env.AI_API_ENDPOINT || ""
-
-const USER_AGENT =
-  process.env.AI_USER_AGENT ||
-  "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Mobile Safari/537.36"
+const API = process.env.AI_API_ENDPOINT!
+const USER_AGENT = process.env.AI_USER_AGENT!
 
 // Prompt ketat dengan format jawaban yang sangat rapi, bersih, dan berstruktur
 const SYSTEM_PROMPT = `[SYSTEM PROTOCOL: STRICT SMK TELKOM JAKARTA HELPDESK]

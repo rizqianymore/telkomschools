@@ -131,7 +131,7 @@ export function AiSupportWidget() {
         content: m.text,
       }))
 
-      const clientSignature = process.env.NEXT_PUBLIC_AI_CLIENT_SIGNATURE || ""
+      const clientSignature = process.env.NEXT_PUBLIC_AI_CLIENT_SIGNATURE!
 
       const res = await fetch("/api/ai/chat", {
         method: "POST",
